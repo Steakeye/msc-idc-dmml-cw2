@@ -1,0 +1,29 @@
+---
+title: "q1"
+output: html_document
+---
+
+
+```{r setup-f2, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r deps-f2, echo=FALSE, include=FALSE, message=FALSE}
+```
+
+<section>
+
+#Question 1: q1
+
+##Premise
+
+>Brief goes here
+
+<!--
+Objectives go here
+-->
+
+TBD
+
+</section>
