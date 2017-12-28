@@ -1,0 +1,34 @@
+---
+title: "q1"
+output: html_document
+bibliography: bibliography.ris
+---
+
+
+```{r setup-t6, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r deps-t6, echo=FALSE, include=FALSE, message=FALSE}
+```
+
+<section>
+
+#Task 6: Measure Performance
+
+##Premise
+
+>For each type of classifier calculate and display the following performance related metrics in R. Use the library library(ROCR)
+
+<!--
+• Confusion matrix estimation 6
+• Precision vs. Recall estimation 4
+• Accuracy estimation 4
+• ROC(receiver operating characteristic curve) plot 3
+• RAUC (receiver under the curve area) plot 3
+-->
+
+TBD
+
+</section>

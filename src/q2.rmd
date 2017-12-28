@@ -1,0 +1,37 @@
+---
+title: "q2"
+output: html_document
+bibliography: bibliography.ris
+---
+
+
+```{r setup-t2, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r deps-t2, echo=FALSE, include=FALSE, message=FALSE}
+```
+
+<section>
+
+#Task 2: Formation of Training and Test Sets
+
+##Premise
+
+>Assuming we have collected one large dataset of already-classified instances, you need to look at three methods
+of forming training and test sets from this single dataset in R as described below.
+>• The holdout method
+>• Cross-validation
+>• Leave-one-out cross-validation (Jack Knife)
+
+<!--
+Formation of training and test sets from in R using the methods below.
+• The holdout method 5
+• Cross-validation 5
+• Leave-one-out cross-validation (Jack Knife) 5
+-->
+
+TBD
+
+</section>

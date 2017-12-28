@@ -24,7 +24,7 @@ chapters: yes
 fontsize: 12pt
 css: null
 papersize: A4
-abstract: TODO!
+abstract: Show evidence of understanding of the clustering and modelling concepts, through the implementation of requested algorithms using real datasets. Implementation is performed in R environment, while students need to perform some critical evaluation of their results.
 toc-depth: 2
 toc-title: Table of Contents
 bibliography: bibliography.ris
@@ -36,14 +36,21 @@ csl: ../build/harvard-university-of-westminster.csl
 ```{r WhiteWine, child = 'q1.rmd'}
 ```
 
-<!--```{r WhiteWine2, child = 'WhiteWine2.rmd'}
-```-->
+```{r WhiteWine, child = 'q2.rmd'}
+```
 
-<!--```{r forecasting1, child = 'forecasting1.rmd'}
-```-->
+```{r WhiteWine, child = 'q3.rmd'}
+```
 
-<!--```{r forecasting1, child = 'forecasting2.rmd'}
-```-->
+```{r WhiteWine, child = 'q4.rmd'}
+```
+
+```{r WhiteWine, child = 'q5.rmd'}
+```
+
+```{r WhiteWine, child = 'q6.rmd'}
+```
+
 
 <section>
 

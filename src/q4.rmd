@@ -1,0 +1,32 @@
+---
+title: "q1"
+output: html_document
+bibliography: bibliography.ris
+---
+
+
+```{r setup-t4, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r deps-t4, echo=FALSE, include=FALSE, message=FALSE}
+```
+
+<section>
+
+#Task 4: Build Train and Test a Naïve Bayes type Classifier
+
+##Premise
+
+>You need to construct, train and test Naïve Byes type classifier in R. Train and test your Naïve Byes classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
+
+<!--
+• Building of Naïve Bayes type classifier in R 4
+• Training of Naïve Bayes type classifier in R 5
+• Testing of Naïve Bayes type classifier in R 6
+-->
+
+TBD
+
+</section>

@@ -1,0 +1,32 @@
+---
+title: "q1"
+output: html_document
+bibliography: bibliography.ris
+---
+
+
+```{r setup-t3, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r deps-t3, echo=FALSE, include=FALSE, message=FALSE}
+```
+
+<section>
+
+#Task 3: Build Train and Test a Decision Tree type Classifier
+
+##Premise
+
+>You need to construct, train and test Decision Tree type classifier (C4.5, Random Forest) in R. Train and test your decision tree classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
+
+<!--
+• Building of Decision Tree type classifier (C4.5, Random Forest) in R 8
+• Training of Decision Tree type classifier (C4.5, Random Forest) in R 8
+• Testing of Decision Tree type classifier (C4.5, Random Forest) 9
+-->
+
+TBD
+
+</section>

@@ -1,0 +1,32 @@
+---
+title: "q1"
+output: html_document
+bibliography: bibliography.ris
+---
+
+
+```{r setup-t5, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r deps-t5, echo=FALSE, include=FALSE, message=FALSE}
+```
+
+<section>
+
+#Task 5: Build Train and Test a K-NN type Classifier
+
+##Premise
+
+>You need to construct, train and test K-NN type classifier in R. Train and test your K-NN classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
+
+<!--
+• Building of K-NN type classifier in R 4
+• Training of K-NN type classifier in R 5
+• Testing of K-NN type classifier in R 6
+-->
+
+TBD
+
+</section>
