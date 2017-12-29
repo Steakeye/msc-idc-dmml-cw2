@@ -40,17 +40,37 @@ library("data.table")
 
 ##Picking the data set
 
+The first task was to find out where to look for datasets, most sources of advice referred to the UCI repository, other sources often reused this data and hosted it in a new format, like Kaggle. After looking online for suitable datasets, specifically for the problem of classification, 2 datasets were possible candidates for study; between the Taiwanese Credit Card dataset and the Abalone shellfish dataset, I opted for the Abalone dataset on the basis that if has fewer variables and fewer intances, so it should be easier to work with without so much preparation; the credit card dats would require more considerated cleansing of outliers and potentially pruning of variables considered as well as PCA for dimensionality reduction.
+
+The Abalone dataset has a litle over 4,000 instances complared to 30,000 for the Credit Card dataset, 8 attrbitues for Abelone compared to 24 for the Credit Card data. Hopefully the dimensionality of the Abalone datset should lend itself to less data cleansing because the variables are concrete characteristics of the animals:
+
+ - Sex
+ - Length
+ - Diameter
+ - Height
+ - Whole weight
+ - Shucked weight
+ - Viscera weight
+ - Shell weight
+ - Rings 
+
+###How to classify this data
+
+The typical way to classify this data, is to determine approximate age based on the ring value, according to the UCI page for this datset, the rings roughtly suggest age such that \(y = r + 2.5\), where y is number of years and r is number of rings. Classification of the Abalone suggests that they are grouped by age converted to a factor, like _young, middle, old_; then and test instance can be compared by other attrbibutes and mapped to one of these age group factor values.
+
+
+###Getting the data
 Firstly we need to load the data...
 
 ```{r read-excel-ww1}
 #going to import the Excel spreadsheet WhiteWine dataset
-wine.raw <- read_excel("../data/Whitewine.xlsx")
+#wine.raw <- read_excel("../data/Whitewine.xlsx")
 ```
 
 Here's a glance at the dataset
 
 ```{r show-wine-ww1}
-head(wine.raw)
-str(wine.raw)
+#head(wine.raw)
+#str(wine.raw)
 ```
 </section>
