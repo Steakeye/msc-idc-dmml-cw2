@@ -11,6 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t1, echo=FALSE, include=FALSE, message=FALSE}
+mirrorUrl = "http://cran.ma.imperial.ac.uk"
+
+# Install and load all packages up-front!
+if(!require(readxl)) install.packages("readxl", repos = mirrorUrl)
+if(!require(Metrics)) install.packages("Metrics", repos = mirrorUrl)
+if(!require(scales)) install.packages("scales", repos = mirrorUrl)
+if(!require(data.table)) install.packages("data.table", repos = mirrorUrl)
+#
+library("readxl")
+library("Metrics")
+library("scales")
+library("data.table")
 ```
 
 <section>
@@ -26,6 +38,19 @@ knitr::opts_chunk$set(echo = TRUE)
 • Visualisation in R of main data set properties 5
 -->
 
-TBD
+##Picking the data set
 
+Firstly we need to load the data...
+
+```{r read-excel-ww1}
+#going to import the Excel spreadsheet WhiteWine dataset
+wine.raw <- read_excel("../data/Whitewine.xlsx")
+```
+
+Here's a glance at the dataset
+
+```{r show-wine-ww1}
+head(wine.raw)
+str(wine.raw)
+```
 </section>
