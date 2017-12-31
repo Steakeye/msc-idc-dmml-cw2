@@ -18,11 +18,16 @@ if(!require(readxl)) install.packages("readxl", repos = mirrorUrl)
 if(!require(Metrics)) install.packages("Metrics", repos = mirrorUrl)
 if(!require(scales)) install.packages("scales", repos = mirrorUrl)
 if(!require(data.table)) install.packages("data.table", repos = mirrorUrl)
+if(!require(ggplot2)) install.packages("ggplot2", repos = mirrorUrl)
 #
 library("readxl")
 library("Metrics")
 library("scales")
 library("data.table")
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(knitr)
 ```
 
 <section>
@@ -58,19 +63,121 @@ The Abalone dataset has a litle over 4,000 instances complared to 30,000 for the
 
 The typical way to classify this data, is to determine approximate age based on the ring value, according to the UCI page for this datset, the rings roughtly suggest age such that \(y = r + 2.5\), where y is number of years and r is number of rings. Classification of the Abalone suggests that they are grouped by age converted to a factor, like _young, middle, old_; then and test instance can be compared by other attrbibutes and mapped to one of these age group factor values.
 
-
 ###Getting the data
-Firstly we need to load the data...
 
-```{r read-excel-ww1}
-#going to import the Excel spreadsheet WhiteWine dataset
-#wine.raw <- read_excel("../data/Whitewine.xlsx")
+Having downloaded the data from the UCI repo we need convert the data into a table and check it's usable.
+
+```{r read-abalone-1}
+abalone_data = data.frame(read.table("../assets/data/abalone.data", sep = ","))
+abalone_attr_names = c("sex", "length", "diameter", "height", "weight.whole", "weight.shucked", "weight.viscera", "weight.shell", "rings")
+colnames(abalone_data) = abalone_attr_names
+
+#We need to check there are no missing values, as if any instances are incomlete we will need to remove
+missing_vals = sum(is.na(abalone_data))
+print(c("Number of missing values:", missing_vals), quote = FALSE)
 ```
 
-Here's a glance at the dataset
+Here's a glance at the dataset.
 
-```{r show-wine-ww1}
-#head(wine.raw)
-#str(wine.raw)
+```{r show-abalone-1}
+head(abalone_data)
+abalone_summary = summary(abalone_data)
+
+grid.table(abalone_summary)
+kable(abalone_summary)
+
 ```
+### The attributes explained
+
+The Abalone ius a type of shellfish and each attribute describes a characteristic of the animal. Not being an expert on this animal, I've had to research a little bit about the Abalone in order to get an idea of what these traits are. Knowing a bit more about these properites, should hopefully lead to a better understanding of the data. What follwois is a list of definitions for each column.
+
+<dl>
+  <dt>sex</dt>
+  <dd>M (male), F (female), or I (infant). Presumably, an infant Abalone lacks a sex or it's too hard to identify</dd>
+  <dt>length</dt>
+  <dd>Longest shell measurement, in millimetres</dd>
+  <dt>diameter</dt>
+  <dd>Perpendicular measurement to measured length, in millimetres</dd>
+  <dt>height</dt>
+  <dd>Height of abalone, including body, in millimetres</dd>
+  <dt>weight.whole</dt>
+  <dd>Weight of whole abalone, in grams</dd>
+  <dt>weight.shucked</dt>
+  <dd>Weight of meat alone, in grams</dd>
+  <dt>weight.viscera</dt>
+  <dd>Weight of guts and other non meat alone, in grams</dd>
+  <dt>weight.shell</dt>
+  <dd>weight of shell alone, after drying, in grams</dd>
+  <dt>rings</dt>
+  <dd>Number of rings in the shell, strongly correlated to age but with a delta</dd>
+</dl>
+
+### A little bit of basic data cleansing
+
+The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entires that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data.
+
+```{r basic-data-sanity}
+
+for (abalone_attr in abalone_numeric_attr)
+{
+  bad_vals = abalone_data[abalone_data[abalone_attr] == 0, ]
+  #col_data = unlist(abalone_data[abalone_attr])
+  if (nrow(bad_vals) > 0)
+  {
+    print(abalone_attr)
+    print(abalone_data[abalone_data[abalone_attr] == 0, ])
+  }
+
+}
+
+rm(bad_vals)
+```
+
+It appears that there are two height values that are incorrect, so we should remove these instances from our dataset.
+
+```{r basic-data-sanity}
+abalone_data$height[abalone_data$height==0] = NA
+abalone_data = na.omit(abalone_data)
+```
+
+It's also worth examining the weight data, to ensure that the total data is not less than the combined values to the other weight values.
+
+```{r crazy-weight}
+abalone_data_bad_weight = abalone_data[(abalone_data$weight.whole - (abalone_data$weight.shucked + abalone_data$weight.viscera + abalone_data$weight.shell)) < 0,]
+
+head(abalone_data_bad_weight)
+print(paste(c("Number of instances where total weight is less than constiuent weights:", nrow(abalone_data_bad_weight)), sep = ""), quote = FALSE)
+```
+
+It would appear that the data isn't completely sanitized, with this sort of erroneous data entry needing to be handled as well. The simplest option is to rule out these instances as well.
+<!--Given that the mean value for the whole weight is 0.8287g, -->
+```{r cleanse-crazy-weight}
+abalone_data <- abalone_data[!(abalone_data$weight.whole - (abalone_data$weight.shucked + abalone_data$weight.viscera + abalone_data$weight.shell)) < 0,]
+```
+
+### A graphical look at the attributes 
+
+Below is an examination of each attribute to see if there are any obvious outliers that might need to be removed
+
+```{r attribute-graphs}
+#boxplot(scale(abalone_data), main="Looking at the data graphically", xlab="Abalone Attributes", ylab="Values") 
+
+plot(abalone_data$sex)
+
+abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
+
+for (abalone_attr in abalone_numeric_attr)
+{
+  #print(abalone_attr)
+  col_data = unlist(abalone_data[abalone_attr])
+  #print(col_data)
+  plot(density(col_data), xlab=abalone_attr, main=paste(c("Density of ", abalone_attr), collapse = ''))
+}
+
+rm(col_data)
+
+```
+
+```
+
 </section>
