@@ -174,9 +174,61 @@ for (abalone_attr in abalone_numeric_attr)
   plot(density(col_data), xlab=abalone_attr, main=paste(c("Density of ", abalone_attr), collapse = ''))
 }
 
+rm(abalone_attr)
 rm(col_data)
 
 ```
+
+#### Correlation between the 'rings' attribute and attributes pertaining to length or mass.
+
+Seeing as the intent is to see if classification can be used to determine approximate age from physical attributes (aside from rings), it's worth looking for existing correlations between the attributes and the number of rings. 
+
+```{r}
+
+rm(abalone_attr)
+#rm(col_data)
+  qplot(x = length, 
+      y = rings, 
+      data = abalone_data,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = diameter, 
+      y = rings, 
+      data = abalone_data,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = height, 
+      y = rings, 
+      data = abalone_data,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.whole, 
+      y = rings, 
+      data = abalone_data,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.shucked, 
+      y = rings, 
+      data = abalone_data,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.viscera, 
+      y = rings, 
+      data = abalone_data,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.shell, 
+      y = rings, 
+      data = abalone_data,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
 
 ```
 
