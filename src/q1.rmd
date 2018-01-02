@@ -179,57 +179,139 @@ rm(col_data)
 
 ```
 
+
+In order to work out which attributes should be considered to have valid outliers, I've gone with a heuristic approach, choosing to look at the distance between the uppermost outliers for each attribute and it's nearest neighbour.
+
+```{r find-sparse-tails-abalone}
+#Create a list to populate with our tail neighbour distances
+tail_deltas <- c()
+
+abalone_data_no_sex = abalone_data[, -1]
+
+for (attrib in abalone_data_no_sex) {
+ #get the last two values
+ data_tails <- tail(sort(attrib),2)
+ #push the delta on to our list 
+ tail_deltas <- c(tail_deltas, diff(data_tails))
+}
+
+#grab out attribute keys to include in our new table/frame
+attributes <- names(abalone_data_no_sex)
+
+#make a new dataframe from 
+dataframe <- data.frame(attributes = attributes, tail_neighbour_d=tail_deltas)
+
+#get the order for the nearest neighbour starting with the greatest distance and descending
+neighbour_order <- order(dataframe$tail_neighbour_d, decreasing=TRUE)
+
+#now apply the order to the frame
+sorted_attributes_by_neighbour_d <- dataframe[ neighbour_order, ]
+sorted_attributes_by_neighbour_d
+```
+
+While rings is at the top of the leaderboard regarding the delta, it's important to take into account that this data isn't scaled; it's very likely that this outlier is the results of a particularly lucky Abalone that managed to live longer than the rest of the long tail through some luck. Given that the other values are meant to be in grams and millimetres, it's reasonable to compare values like for like in this instance. As such the weight deltas as comparable and can be excluded from outlier cleansing, with the same applying to dimateter and length; height seems to be anomlous though and will need futher attention.
+
+
+It's easier to see on a boxplot that one value is way out far from any neighbours, with its nearest neighbour also having no nearby neighbour; we could probably benefit just from removing the two farthest outliers.
+
+```{r}
+boxplot(abalone_data$height)
+```
+```{r}
+abalone_data_cleansed <- abalone_data[ abalone_data$height < .5, ]
+boxplot(abalone_data_cleansed$height)
+```
+
 #### Correlation between the 'rings' attribute and attributes pertaining to length or mass.
 
 Seeing as the intent is to see if classification can be used to determine approximate age from physical attributes (aside from rings), it's worth looking for existing correlations between the attributes and the number of rings. 
 
 ```{r}
-
-rm(abalone_attr)
-#rm(col_data)
   qplot(x = length, 
       y = rings, 
-      data = abalone_data,
+      data = abalone_data_cleansed,
       alpha = I(0.2), # alpha to help convery density
       geom = "jitter") + # jitter so points don't stack so much
   geom_smooth(method = lm)
   qplot(x = diameter, 
       y = rings, 
-      data = abalone_data,
+      data = abalone_data_cleansed,
       alpha = I(0.2), # alpha to help convery density
       geom = "jitter") + # jitter so points don't stack so much
   geom_smooth(method = lm)
   qplot(x = height, 
       y = rings, 
-      data = abalone_data,
+      data = abalone_data_cleansed,
       alpha = I(0.2), # alpha to help convery density
       geom = "jitter") + # jitter so points don't stack so much
   geom_smooth(method = lm)
   qplot(x = weight.whole, 
       y = rings, 
-      data = abalone_data,
+      data = abalone_data_cleansed,
       alpha = I(0.2), # alpha to help convery density
       geom = "jitter") + # jitter so points don't stack so much
   geom_smooth(method = lm)
   qplot(x = weight.shucked, 
       y = rings, 
-      data = abalone_data,
+      data = abalone_data_cleansed,
       alpha = I(0.2), # alpha to help convery density
       geom = "jitter") + # jitter so points don't stack so much
   geom_smooth(method = lm)
   qplot(x = weight.viscera, 
       y = rings, 
-      data = abalone_data,
+      data = abalone_data_cleansed,
       alpha = I(0.2), # alpha to help convery density
       geom = "jitter") + # jitter so points don't stack so much
   geom_smooth(method = lm)
   qplot(x = weight.shell, 
       y = rings, 
-      data = abalone_data,
+      data = abalone_data_cleansed,
       alpha = I(0.2), # alpha to help convery density
       geom = "jitter") + # jitter so points don't stack so much
   geom_smooth(method = lm)
+```
 
+With our cleansed data we can see that there is an evident correlation  between all of these attrbitures and the number of rings but in particular those relating to phyical size show the strongest relationship as the points best match the line of best fit; the weight values are distributed in such a way that there's a little curve away from the line as you reach 0 on both axes and they also seem to diverge more from the line as the dimension values increase. Should any attrbutes be selected as ones to work with, discarding the others, it would be:
+
+ - length
+ - diameter
+ - height
+ - weight.whole
+
+Given that the all attrbutes appear to display a fairly linear relationship to the ring count we can use r-squared, otherwise known as the Coefficient of Determination to verify how well the data matches the line of best fit
+
+```{r}
+abalone.lm_length <- lm(data = abalone_data_cleansed, formula = rings ~ length)
+abalone.lm_diameter <- lm(data = abalone_data_cleansed, formula = rings ~ diameter)
+abalone.lm_height <- lm(data = abalone_data_cleansed, formula = rings ~ height)
+abalone.lm_weight.whole <- lm(data = abalone_data_cleansed, formula = rings ~ weight.whole)
+abalone.lm_weight.shucked <- lm(data = abalone_data_cleansed, formula = rings ~ weight.shucked)
+abalone.lm_weight.viscera <- lm(data = abalone_data_cleansed, formula = rings ~ weight.viscera)
+abalone.lm_weight.shell <- lm(data = abalone_data_cleansed, formula = rings ~ weight.shell)
+
+abalone.r_squareds <- c(
+  summary(abalone.lm_length)$adj.r.squared,
+summary(abalone.lm_diameter)$adj.r.squared,
+summary(abalone.lm_height)$adj.r.squared,
+summary(abalone.lm_weight.whole)$adj.r.squared,
+summary(abalone.lm_weight.shucked)$adj.r.squared,
+summary(abalone.lm_weight.viscera)$adj.r.squared,
+summary(abalone.lm_weight.shell)$adj.r.squared
+)
+
+abalone_numeric_attr_no_rings <- abalone_numeric_attr[which(abalone_numeric_attr!="rings")] 
+
+#make a new dataframe from 
+dataframe.rsquareds <- data.frame(attributes = abalone_numeric_attr_no_rings, r_squared=abalone.r_squareds)
+
+#get the order for the nearest neighbour starting with the greatest distance and descending
+rsquareds_order <- order(dataframe.rsquareds$r_squared, decreasing=TRUE)
+
+#now apply the order to the frame
+sorted_attributes_by_r_squared <- dataframe.rsquareds[ rsquareds_order, ]
+sorted_attributes_by_r_squared
+
+#abalone.lm_length
 ```
 
 </section>
