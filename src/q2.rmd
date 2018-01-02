@@ -25,6 +25,8 @@ of forming training and test sets from this single dataset in R as described bel
 >• Cross-validation
 >• Leave-one-out cross-validation (Jack Knife)
 
+##Holdout dataset 
+
 <!--
 Formation of training and test sets from in R using the methods below.
 • The holdout method 5

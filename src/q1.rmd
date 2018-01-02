@@ -314,4 +314,7 @@ sorted_attributes_by_r_squared
 #abalone.lm_length
 ```
 
+After looking at these results it may be wiser to consider using the shell weight alone if necessary; the r-squared value isn't a perfect predictor of the fitness but perhaps in this case, it could make more sense to use a weight value that could fluctuate less in nature. Selection of the attributes relating to size appear to be validated.
+
+
 </section>
