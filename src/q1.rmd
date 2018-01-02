@@ -117,6 +117,7 @@ The Abalone ius a type of shellfish and each attribute describes a characteristi
 The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entires that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data.
 
 ```{r basic-data-sanity}
+abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
 
 for (abalone_attr in abalone_numeric_attr)
 {
@@ -135,7 +136,7 @@ rm(bad_vals)
 
 It appears that there are two height values that are incorrect, so we should remove these instances from our dataset.
 
-```{r basic-data-sanity}
+```{r basic-data-sanity-2}
 abalone_data$height[abalone_data$height==0] = NA
 abalone_data = na.omit(abalone_data)
 ```
@@ -163,8 +164,6 @@ Below is an examination of each attribute to see if there are any obvious outlie
 #boxplot(scale(abalone_data), main="Looking at the data graphically", xlab="Abalone Attributes", ylab="Values") 
 
 plot(abalone_data$sex)
-
-abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
 
 for (abalone_attr in abalone_numeric_attr)
 {

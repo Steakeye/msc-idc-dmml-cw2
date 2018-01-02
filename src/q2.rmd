@@ -27,6 +27,12 @@ of forming training and test sets from this single dataset in R as described bel
 
 ##Holdout dataset 
 
+
+```{r test}
+head(abalone_data_cleansed)
+```
+
+
 <!--
 Formation of training and test sets from in R using the methods below.
 • The holdout method 5
