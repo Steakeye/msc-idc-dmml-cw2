@@ -7,6 +7,7 @@ bibliography: bibliography.ris
 
 ```{r setup-t1, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+set.seed(4321)
 ```
 
 
