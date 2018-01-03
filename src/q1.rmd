@@ -7,6 +7,7 @@ bibliography: bibliography.ris
 
 ```{r setup-t1, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+set.seed(4321)
 ```
 
 
@@ -19,6 +20,7 @@ if(!require(Metrics)) install.packages("Metrics", repos = mirrorUrl)
 if(!require(scales)) install.packages("scales", repos = mirrorUrl)
 if(!require(data.table)) install.packages("data.table", repos = mirrorUrl)
 if(!require(ggplot2)) install.packages("ggplot2", repos = mirrorUrl)
+if(!require(caret)) install.packages("caret", repos = mirrorUrl)
 #
 library("readxl")
 library("Metrics")
@@ -28,6 +30,7 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 library(knitr)
+library(caret)
 ```
 
 <section>
@@ -117,6 +120,7 @@ The Abalone ius a type of shellfish and each attribute describes a characteristi
 The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entires that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data.
 
 ```{r basic-data-sanity}
+abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
 
 for (abalone_attr in abalone_numeric_attr)
 {
@@ -135,7 +139,7 @@ rm(bad_vals)
 
 It appears that there are two height values that are incorrect, so we should remove these instances from our dataset.
 
-```{r basic-data-sanity}
+```{r basic-data-sanity-2}
 abalone_data$height[abalone_data$height==0] = NA
 abalone_data = na.omit(abalone_data)
 ```
@@ -163,8 +167,6 @@ Below is an examination of each attribute to see if there are any obvious outlie
 #boxplot(scale(abalone_data), main="Looking at the data graphically", xlab="Abalone Attributes", ylab="Values") 
 
 plot(abalone_data$sex)
-
-abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
 
 for (abalone_attr in abalone_numeric_attr)
 {
@@ -271,6 +273,8 @@ Seeing as the intent is to see if classification can be used to determine approx
   geom_smooth(method = lm)
 ```
 
+###Picking data attributes to select
+
 With our cleansed data we can see that there is an evident correlation  between all of these attrbitures and the number of rings but in particular those relating to phyical size show the strongest relationship as the points best match the line of best fit; the weight values are distributed in such a way that there's a little curve away from the line as you reach 0 on both axes and they also seem to diverge more from the line as the dimension values increase. Should any attrbutes be selected as ones to work with, discarding the others, it would be:
 
  - length
@@ -313,5 +317,35 @@ sorted_attributes_by_r_squared
 
 #abalone.lm_length
 ```
+
+After looking at these results it may be wiser to consider using the shell weight alone if necessary; the r-squared value isn't a perfect predictor of the fitness but perhaps in this case, it could make more sense to use a weight value that could fluctuate less in nature. Selection of the attributes relating to size appear to be validated.
+
+####Substatiating the selection 
+
+With the use of a correlation matrix, it's possible to further validate which attributes could be worth focussing on:
+
+```{r abalone-feature-correlation}
+# calculate correlation matrix
+correlationMatrix <- cor(abalone_data_cleansed[,2:9])
+# summarize the correlation matrix
+print(correlationMatrix)
+# find attributes that are highly corrected (ideally &gt;0.75)
+highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.5)
+
+abalone.correlation <- data.frame(correlation=correlationMatrix[,8])
+#get rid of rings, that's obviously going to be max correlation to itself!
+abalone.correlation <- data.frame(attributes=rownames(abalone.correlation)[1:7], 'correlation to rings'=abalone.correlation[1:7, 0:1])
+
+#get the order for correlations
+correlation_order <- order(abalone.correlation$correlation, decreasing=TRUE)
+
+#now apply the order to the frame
+sorted_correlation_order <- abalone.correlation[ correlation_order, 1:2]
+print(sorted_correlation_order)
+
+```
+
+The correlation between ring values and the other attributes, when ordered, actually matches the order of the r-squared values; so much so, that weight.shell should be considered the primary correlate of them all, followed by height. 
+
 
 </section>
