@@ -33,9 +33,11 @@ csl: ../build/harvard-university-of-westminster.csl
 #  @RefWorks:doc:5a148d4fe4b08b76da9713a4, @RefWorks:doc:5a10594ee4b096feb09fb15d, @RefWorks:doc:5a1058c5e4b0eb1ce060a9f3, @RefWorks:doc:5a0fa8f6e4b0eb1ce0608d7a, @RefWorks:doc:5a0fa2dde4b07c4a92081012, @RefWorks:doc:5a0fa245e4b03a0f90249026, @RefWorks:doc:5a0f45afe4b0373bf38bf6a2, @RefWorks:doc:5a0f2483e4b0eb1ce0607726, @RefWorks:doc:5a0bb9d3e4b099144f48efa7, @RefWorks:doc:5a0bb87be4b0e70d304e0f7e, @RefWorks:doc:5a0bb737e4b028f0a94165d8, @RefWorks:doc:5a0bb563e4b099144f48ee88, @RefWorks:doc:5a0bb3f8e4b051ffd92fd130, @RefWorks:doc:5a0bb282e4b051ffd92fd0f4, @RefWorks:doc:5a0badc1e4b028f0a941638a, @RefWorks:doc:5a0badc1e4b028f0a9416389, @RefWorks:doc:5a0badc1e4b028f0a9416388
 ---
 
-```{r }
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 set.seed(4321)
 ```
+
 
 ```{r q1, child = 'q1.rmd'}
 ```

@@ -17,6 +17,7 @@ mirrorUrl = "http://cran.ma.imperial.ac.uk"
 # Install and load all packages up-front!
 if(!require(readxl)) install.packages("readxl", repos = mirrorUrl)
 if(!require(Metrics)) install.packages("Metrics", repos = mirrorUrl)
+if(!require(gridExtra)) install.packages("gridExtra", repos = mirrorUrl)
 if(!require(scales)) install.packages("scales", repos = mirrorUrl)
 if(!require(data.table)) install.packages("data.table", repos = mirrorUrl)
 if(!require(ggplot2)) install.packages("ggplot2", repos = mirrorUrl)
