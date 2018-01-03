@@ -48,20 +48,67 @@ library("partykit")
 
 ##C4.5 Decision Tree
 
-```{r dt-c4_5-h}
+Finding the C4.5 method as an existing library within R, brought up more than one option, both appear to use a an open-source equivalent of C4.5 rather than an official C4.5 implementation; other options we to use C5.0 which apparently supercedes C4.5; seeing as the task was to investigate C4.5, J48 has been chosen as a more faithful example of the algorithm.
+
+Below is not only an investigation into C4.5 but also, a comparison of two variations.
+
+###The J48 method
+
+```{r dt-c4_5_j48-h}
 #method = 'J48'
 #as.factor(
-dt.c4_5_h <- J48(rings~., holdout.training) 
-#dt.c4_5_h <- J48(as.factor(rings)~., holdout.training) 
-#dt.c4_5_h2 <- train(as.factor(rings) ~., method="J48", holdout.training, tuneLength = 8)
+#dt.c4_5_h <- J48(rings~., holdout.training) 
+dt.c4_5_j48_h <- J48(as.factor(rings)~., holdout.training) 
+```
+
+The J48 function is extremely quick with the dataset, trainig takes less than a second, which on it's on is not necessarily worthy of note but certainly more interesting when compared to the speed of using the caret train method with a "J48" method arguemtn value.
+
+
+###The caret train J48 argument
+
+```{r dt-c4_5_train-h}
+dt.c4_5_h2 <- train(as.factor(rings) ~., method="J48", holdout.training, tuneLength = 8)
 #dt.c4_5_h <- train(rings ~., method="J48", data=holdout.training, tuneLength = 8)
 
 #dt.c4_5_h
 #dt.c4_5_h2$finalModel
 ```
 
-```{r dt-plots}
+Whilst in comparisons to other forms of training and data-mining algorithms, under 5 minutes for a 4,000 by 9 dataset might seem okay, in comparison to the J48 function, there seems to be something at odds. The proof will be in the comparison of the two models with regard to accuracy on the test datset.
+
+###Comparing the two C4.5/J48 methods
+
+
+```{r dt-c4_5h_test}
 #plot(dt.c4_5_h$finalModel, box.palette = "Reds", tweak = 1.2)
+holdout.test_rings <- holdout.testing$rings
+dt.c4_5_h_test <- predict(dt.c4_5_h, newdata = holdout.testing)
+table(dt.c4_5_h_test, holdout.test_rings)
+#confusionMatrix(dt.c4_5_h_test, holdout.testing$rings)
+#table(factor(dt.c4_5_h_test, levels=min(holdout.test_rings):max(holdout.test_rings)), factor(holdout.test_rings, levels=min(holdout.test_rings):max(holdout.test_rings)))
+holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
+confusionMatrix(factor(dt.c4_5_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+```
+
+```{r dt-c4_5h2_test}
+#plot(dt.c4_5_h$finalModel, box.palette = "Reds", tweak = 1.2)
+#holdout.test_rings <- holdout.testing$rings
+dt.c4_5_h2_test <- predict(dt.c4_5_h2, newdata = holdout.testing)
+table(dt.c4_5_h2_test, holdout.test_rings)
+#confusionMatrix(dt.c4_5_h_test, holdout.testing$rings)
+#table(factor(dt.c4_5_h_test, levels=min(holdout.test_rings):max(holdout.test_rings)), factor(holdout.test_rings, levels=min(holdout.test_rings):max(holdout.test_rings)))
+#holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
+confusionMatrix(factor(dt.c4_5_h2_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+```
+
+```{r dt-c4_5h2_fm_test}
+dt.c4_5_h2_fm <- dt.c4_5_h2$finalModel
+dt.c4_5_h2_fm_test <- predict(dt.c4_5_h2_fm, newdata = holdout.testing)
+table(dt.c4_5_h2_fm_test, holdout.test_rings)
+#confusionMatrix(dt.c4_5_h_test, holdout.testing$rings)
+#table(factor(dt.c4_5_h_test, levels=min(holdout.test_rings):max(holdout.test_rings)), factor(holdout.test_rings, levels=min(holdout.test_rings):max(holdout.test_rings)))
+#holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
+confusionMatrix(factor(dt.c4_5_h2_fm_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
 ```
 
 ```{r dt-test}
