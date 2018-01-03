@@ -7,10 +7,30 @@ bibliography: bibliography.ris
 
 ```{r setup-t1, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+set.seed(4321)
 ```
 
 
 ```{r deps-t1, echo=FALSE, include=FALSE, message=FALSE}
+mirrorUrl = "http://cran.ma.imperial.ac.uk"
+
+# Install and load all packages up-front!
+if(!require(readxl)) install.packages("readxl", repos = mirrorUrl)
+if(!require(Metrics)) install.packages("Metrics", repos = mirrorUrl)
+if(!require(scales)) install.packages("scales", repos = mirrorUrl)
+if(!require(data.table)) install.packages("data.table", repos = mirrorUrl)
+if(!require(ggplot2)) install.packages("ggplot2", repos = mirrorUrl)
+if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+#
+library("readxl")
+library("Metrics")
+library("scales")
+library("data.table")
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(knitr)
+library(caret)
 ```
 
 <section>
@@ -26,6 +46,306 @@ knitr::opts_chunk$set(echo = TRUE)
 • Visualisation in R of main data set properties 5
 -->
 
-TBD
+##Picking the data set
+
+The first task was to find out where to look for datasets, most sources of advice referred to the UCI repository, other sources often reused this data and hosted it in a new format, like Kaggle. After looking online for suitable datasets, specifically for the problem of classification, 2 datasets were possible candidates for study; between the Taiwanese Credit Card dataset and the Abalone shellfish dataset, I opted for the Abalone dataset on the basis that if has fewer variables and fewer intances, so it should be easier to work with without so much preparation; the credit card dats would require more considerated cleansing of outliers and potentially pruning of variables considered as well as PCA for dimensionality reduction.
+
+The Abalone dataset has a litle over 4,000 instances complared to 30,000 for the Credit Card dataset, 8 attrbitues for Abelone compared to 24 for the Credit Card data. Hopefully the dimensionality of the Abalone datset should lend itself to less data cleansing because the variables are concrete characteristics of the animals:
+
+ - Sex
+ - Length
+ - Diameter
+ - Height
+ - Whole weight
+ - Shucked weight
+ - Viscera weight
+ - Shell weight
+ - Rings 
+
+###How to classify this data
+
+The typical way to classify this data, is to determine approximate age based on the ring value, according to the UCI page for this datset, the rings roughtly suggest age such that \(y = r + 2.5\), where y is number of years and r is number of rings. Classification of the Abalone suggests that they are grouped by age converted to a factor, like _young, middle, old_; then and test instance can be compared by other attrbibutes and mapped to one of these age group factor values.
+
+###Getting the data
+
+Having downloaded the data from the UCI repo we need convert the data into a table and check it's usable.
+
+```{r read-abalone-1}
+abalone_data = data.frame(read.table("../assets/data/abalone.data", sep = ","))
+abalone_attr_names = c("sex", "length", "diameter", "height", "weight.whole", "weight.shucked", "weight.viscera", "weight.shell", "rings")
+colnames(abalone_data) = abalone_attr_names
+
+#We need to check there are no missing values, as if any instances are incomlete we will need to remove
+missing_vals = sum(is.na(abalone_data))
+print(c("Number of missing values:", missing_vals), quote = FALSE)
+```
+
+Here's a glance at the dataset.
+
+```{r show-abalone-1}
+head(abalone_data)
+abalone_summary = summary(abalone_data)
+
+grid.table(abalone_summary)
+kable(abalone_summary)
+
+```
+### The attributes explained
+
+The Abalone ius a type of shellfish and each attribute describes a characteristic of the animal. Not being an expert on this animal, I've had to research a little bit about the Abalone in order to get an idea of what these traits are. Knowing a bit more about these properites, should hopefully lead to a better understanding of the data. What follwois is a list of definitions for each column.
+
+<dl>
+  <dt>sex</dt>
+  <dd>M (male), F (female), or I (infant). Presumably, an infant Abalone lacks a sex or it's too hard to identify</dd>
+  <dt>length</dt>
+  <dd>Longest shell measurement, in millimetres</dd>
+  <dt>diameter</dt>
+  <dd>Perpendicular measurement to measured length, in millimetres</dd>
+  <dt>height</dt>
+  <dd>Height of abalone, including body, in millimetres</dd>
+  <dt>weight.whole</dt>
+  <dd>Weight of whole abalone, in grams</dd>
+  <dt>weight.shucked</dt>
+  <dd>Weight of meat alone, in grams</dd>
+  <dt>weight.viscera</dt>
+  <dd>Weight of guts and other non meat alone, in grams</dd>
+  <dt>weight.shell</dt>
+  <dd>weight of shell alone, after drying, in grams</dd>
+  <dt>rings</dt>
+  <dd>Number of rings in the shell, strongly correlated to age but with a delta</dd>
+</dl>
+
+### A little bit of basic data cleansing
+
+The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entires that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data.
+
+```{r basic-data-sanity}
+abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
+
+for (abalone_attr in abalone_numeric_attr)
+{
+  bad_vals = abalone_data[abalone_data[abalone_attr] == 0, ]
+  #col_data = unlist(abalone_data[abalone_attr])
+  if (nrow(bad_vals) > 0)
+  {
+    print(abalone_attr)
+    print(abalone_data[abalone_data[abalone_attr] == 0, ])
+  }
+
+}
+
+rm(bad_vals)
+```
+
+It appears that there are two height values that are incorrect, so we should remove these instances from our dataset.
+
+```{r basic-data-sanity-2}
+abalone_data$height[abalone_data$height==0] = NA
+abalone_data = na.omit(abalone_data)
+```
+
+It's also worth examining the weight data, to ensure that the total data is not less than the combined values to the other weight values.
+
+```{r crazy-weight}
+abalone_data_bad_weight = abalone_data[(abalone_data$weight.whole - (abalone_data$weight.shucked + abalone_data$weight.viscera + abalone_data$weight.shell)) < 0,]
+
+head(abalone_data_bad_weight)
+print(paste(c("Number of instances where total weight is less than constiuent weights:", nrow(abalone_data_bad_weight)), sep = ""), quote = FALSE)
+```
+
+It would appear that the data isn't completely sanitized, with this sort of erroneous data entry needing to be handled as well. The simplest option is to rule out these instances as well.
+<!--Given that the mean value for the whole weight is 0.8287g, -->
+```{r cleanse-crazy-weight}
+abalone_data <- abalone_data[!(abalone_data$weight.whole - (abalone_data$weight.shucked + abalone_data$weight.viscera + abalone_data$weight.shell)) < 0,]
+```
+
+### A graphical look at the attributes 
+
+Below is an examination of each attribute to see if there are any obvious outliers that might need to be removed
+
+```{r attribute-graphs}
+#boxplot(scale(abalone_data), main="Looking at the data graphically", xlab="Abalone Attributes", ylab="Values") 
+
+plot(abalone_data$sex)
+
+for (abalone_attr in abalone_numeric_attr)
+{
+  #print(abalone_attr)
+  col_data = unlist(abalone_data[abalone_attr])
+  #print(col_data)
+  plot(density(col_data), xlab=abalone_attr, main=paste(c("Density of ", abalone_attr), collapse = ''))
+}
+
+rm(abalone_attr)
+rm(col_data)
+
+```
+
+
+In order to work out which attributes should be considered to have valid outliers, I've gone with a heuristic approach, choosing to look at the distance between the uppermost outliers for each attribute and it's nearest neighbour.
+
+```{r find-sparse-tails-abalone}
+#Create a list to populate with our tail neighbour distances
+tail_deltas <- c()
+
+abalone_data_no_sex = abalone_data[, -1]
+
+for (attrib in abalone_data_no_sex) {
+ #get the last two values
+ data_tails <- tail(sort(attrib),2)
+ #push the delta on to our list 
+ tail_deltas <- c(tail_deltas, diff(data_tails))
+}
+
+#grab out attribute keys to include in our new table/frame
+attributes <- names(abalone_data_no_sex)
+
+#make a new dataframe from 
+dataframe <- data.frame(attributes = attributes, tail_neighbour_d=tail_deltas)
+
+#get the order for the nearest neighbour starting with the greatest distance and descending
+neighbour_order <- order(dataframe$tail_neighbour_d, decreasing=TRUE)
+
+#now apply the order to the frame
+sorted_attributes_by_neighbour_d <- dataframe[ neighbour_order, ]
+sorted_attributes_by_neighbour_d
+```
+
+While rings is at the top of the leaderboard regarding the delta, it's important to take into account that this data isn't scaled; it's very likely that this outlier is the results of a particularly lucky Abalone that managed to live longer than the rest of the long tail through some luck. Given that the other values are meant to be in grams and millimetres, it's reasonable to compare values like for like in this instance. As such the weight deltas as comparable and can be excluded from outlier cleansing, with the same applying to dimateter and length; height seems to be anomlous though and will need futher attention.
+
+
+It's easier to see on a boxplot that one value is way out far from any neighbours, with its nearest neighbour also having no nearby neighbour; we could probably benefit just from removing the two farthest outliers.
+
+```{r}
+boxplot(abalone_data$height)
+```
+```{r}
+abalone_data_cleansed <- abalone_data[ abalone_data$height < .5, ]
+boxplot(abalone_data_cleansed$height)
+```
+
+#### Correlation between the 'rings' attribute and attributes pertaining to length or mass.
+
+Seeing as the intent is to see if classification can be used to determine approximate age from physical attributes (aside from rings), it's worth looking for existing correlations between the attributes and the number of rings. 
+
+```{r}
+  qplot(x = length, 
+      y = rings, 
+      data = abalone_data_cleansed,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = diameter, 
+      y = rings, 
+      data = abalone_data_cleansed,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = height, 
+      y = rings, 
+      data = abalone_data_cleansed,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.whole, 
+      y = rings, 
+      data = abalone_data_cleansed,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.shucked, 
+      y = rings, 
+      data = abalone_data_cleansed,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.viscera, 
+      y = rings, 
+      data = abalone_data_cleansed,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+  qplot(x = weight.shell, 
+      y = rings, 
+      data = abalone_data_cleansed,
+      alpha = I(0.2), # alpha to help convery density
+      geom = "jitter") + # jitter so points don't stack so much
+  geom_smooth(method = lm)
+```
+
+###Picking data attributes to select
+
+With our cleansed data we can see that there is an evident correlation  between all of these attrbitures and the number of rings but in particular those relating to phyical size show the strongest relationship as the points best match the line of best fit; the weight values are distributed in such a way that there's a little curve away from the line as you reach 0 on both axes and they also seem to diverge more from the line as the dimension values increase. Should any attrbutes be selected as ones to work with, discarding the others, it would be:
+
+ - length
+ - diameter
+ - height
+ - weight.whole
+
+Given that the all attrbutes appear to display a fairly linear relationship to the ring count we can use r-squared, otherwise known as the Coefficient of Determination to verify how well the data matches the line of best fit
+
+```{r}
+abalone.lm_length <- lm(data = abalone_data_cleansed, formula = rings ~ length)
+abalone.lm_diameter <- lm(data = abalone_data_cleansed, formula = rings ~ diameter)
+abalone.lm_height <- lm(data = abalone_data_cleansed, formula = rings ~ height)
+abalone.lm_weight.whole <- lm(data = abalone_data_cleansed, formula = rings ~ weight.whole)
+abalone.lm_weight.shucked <- lm(data = abalone_data_cleansed, formula = rings ~ weight.shucked)
+abalone.lm_weight.viscera <- lm(data = abalone_data_cleansed, formula = rings ~ weight.viscera)
+abalone.lm_weight.shell <- lm(data = abalone_data_cleansed, formula = rings ~ weight.shell)
+
+abalone.r_squareds <- c(
+  summary(abalone.lm_length)$adj.r.squared,
+summary(abalone.lm_diameter)$adj.r.squared,
+summary(abalone.lm_height)$adj.r.squared,
+summary(abalone.lm_weight.whole)$adj.r.squared,
+summary(abalone.lm_weight.shucked)$adj.r.squared,
+summary(abalone.lm_weight.viscera)$adj.r.squared,
+summary(abalone.lm_weight.shell)$adj.r.squared
+)
+
+abalone_numeric_attr_no_rings <- abalone_numeric_attr[which(abalone_numeric_attr!="rings")] 
+
+#make a new dataframe from 
+dataframe.rsquareds <- data.frame(attributes = abalone_numeric_attr_no_rings, r_squared=abalone.r_squareds)
+
+#get the order for the nearest neighbour starting with the greatest distance and descending
+rsquareds_order <- order(dataframe.rsquareds$r_squared, decreasing=TRUE)
+
+#now apply the order to the frame
+sorted_attributes_by_r_squared <- dataframe.rsquareds[ rsquareds_order, ]
+sorted_attributes_by_r_squared
+
+#abalone.lm_length
+```
+
+After looking at these results it may be wiser to consider using the shell weight alone if necessary; the r-squared value isn't a perfect predictor of the fitness but perhaps in this case, it could make more sense to use a weight value that could fluctuate less in nature. Selection of the attributes relating to size appear to be validated.
+
+####Substatiating the selection 
+
+With the use of a correlation matrix, it's possible to further validate which attributes could be worth focussing on:
+
+```{r abalone-feature-correlation}
+# calculate correlation matrix
+correlationMatrix <- cor(abalone_data_cleansed[,2:9])
+# summarize the correlation matrix
+print(correlationMatrix)
+# find attributes that are highly corrected (ideally &gt;0.75)
+highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.5)
+
+abalone.correlation <- data.frame(correlation=correlationMatrix[,8])
+#get rid of rings, that's obviously going to be max correlation to itself!
+abalone.correlation <- data.frame(attributes=rownames(abalone.correlation)[1:7], 'correlation to rings'=abalone.correlation[1:7, 0:1])
+
+#get the order for correlations
+correlation_order <- order(abalone.correlation$correlation, decreasing=TRUE)
+
+#now apply the order to the frame
+sorted_correlation_order <- abalone.correlation[ correlation_order, 1:2]
+print(sorted_correlation_order)
+
+```
+
+The correlation between ring values and the other attributes, when ordered, actually matches the order of the r-squared values; so much so, that weight.shell should be considered the primary correlate of them all, followed by height. 
+
 
 </section>
