@@ -13,8 +13,8 @@ set.seed(4321)
 
 ```{r deps-t3, echo=FALSE, include=FALSE, message=FALSE}
 if(!require(rJava)) install.packages('rJava')
-if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
 #e1071
 if(!require(e1071)) install.packages("e1071", repos = mirrorUrl)
 #libcoin
@@ -29,7 +29,7 @@ library("caret")
 library("RWeka")
 library("rpart.plot")
 library("libcoin")
-#library("partykit")
+library("partykit")
 ```
 
 <section>
@@ -57,7 +57,20 @@ dt.c4_5_h2 <- train(as.factor(rings) ~., method="J48", holdout.training, tuneLen
 #dt.c4_5_h <- train(rings ~., method="J48", data=holdout.training, tuneLength = 8)
 
 dt.c4_5_h
-prp(dt.c4_5_h$finalModel, box.palette = "Reds", tweak = 1.2)
+dt.c4_5_h2$finalModel
+```
+
+```{r}
+plot(dt.c4_5_h$finalModel, box.palette = "Reds", tweak = 1.2)
+```
+
+```{r}
+set.seed(1958)  # set a seed to get replicable results
+train <- createFolds(iris$Species, k=10)
+C45Fit <- train(Species ~., method="J48", data=iris,
+                tuneLength = 5,
+                trControl = trainControl(
+                  method="cv", indexOut=train))
 ```
 
 </section>
