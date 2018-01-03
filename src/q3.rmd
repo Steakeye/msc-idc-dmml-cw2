@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q3"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -51,7 +51,7 @@ library("partykit")
 ```{r dt-c4_5-h}
 #method = 'J48'
 #as.factor(
-#dt.c4_5_h <- J48(rings~., holdout.training) 
+dt.c4_5_h <- J48(rings~., holdout.training) 
 #dt.c4_5_h <- J48(as.factor(rings)~., holdout.training) 
 #dt.c4_5_h2 <- train(as.factor(rings) ~., method="J48", holdout.training, tuneLength = 8)
 #dt.c4_5_h <- train(rings ~., method="J48", data=holdout.training, tuneLength = 8)
