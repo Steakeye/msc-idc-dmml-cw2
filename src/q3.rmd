@@ -7,10 +7,14 @@ bibliography: bibliography.ris
 
 ```{r setup-t3, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+set.seed(4321)
 ```
 
 
 ```{r deps-t3, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
+#
+library("RWeka")
 ```
 
 <section>
@@ -27,6 +31,12 @@ knitr::opts_chunk$set(echo = TRUE)
 • Testing of Decision Tree type classifier (C4.5, Random Forest) 9
 -->
 
-TBD
+##C4.5 Decision Tree
+
+```{r dt-c4_5-h}
+#method = 'J48'
+dt.c4_4_h <- train(rings ~., method="J48", data=holdout.training,
+                tuneLength = 8)
+```
 
 </section>
