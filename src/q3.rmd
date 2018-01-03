@@ -15,9 +15,21 @@ set.seed(4321)
 if(!require(rJava)) install.packages('rJava')
 if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+#e1071
+if(!require(e1071)) install.packages("e1071", repos = mirrorUrl)
+#libcoin
+if(!require(coin)) install.packages("coin", repos = mirrorUrl)
+#partykit
+if(!require(partykit)) install.packages("partykit", repos = mirrorUrl)
+#rpart
+if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
 #
+library("e1071")
 library("caret")
 library("RWeka")
+library("rpart.plot")
+library("libcoin")
+#library("partykit")
 ```
 
 <section>
@@ -42,7 +54,10 @@ library("RWeka")
 #dt.c4_5_h <- J48(rings~., holdout.training) 
 dt.c4_5_h <- J48(as.factor(rings)~., holdout.training) 
 dt.c4_5_h2 <- train(as.factor(rings) ~., method="J48", holdout.training, tuneLength = 8)
-dt.c4_5_h <- train(rings ~., method="J48", data=holdout.training, tuneLength = 8)
+#dt.c4_5_h <- train(rings ~., method="J48", data=holdout.training, tuneLength = 8)
+
+dt.c4_5_h
+prp(dt.c4_5_h$finalModel, box.palette = "Reds", tweak = 1.2)
 ```
 
 </section>
