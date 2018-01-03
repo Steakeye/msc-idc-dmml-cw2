@@ -12,6 +12,9 @@ set.seed(4321)
 
 
 ```{r deps-t2, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+#
+library(caret)
 ```
 
 <section>
@@ -75,8 +78,8 @@ For the sake of evaluating this method more thoroughly, the datset will be used 
 
 ```{r cross-val-k-fold}
 cv.train_control_8 <- trainControl(method="cv", number=8)
-cv.train_control_8_5 <- trainControl(method="cv", number=8, repeats = 5)
-cv.train_control_13_5 <- trainControl(method="cv", number=13, repeats = 5)
+cv.train_control_8_5 <- trainControl(method="repeatedcv", number=8, repeats = 5)
+cv.train_control_13_5 <- trainControl(method="repeatedcv", number=13, repeats = 5)
 ```
 
 These training controls will be used later on in this study to train the various models for the task of classification but for now they are merely abstract instructions on how to chunk the data.
