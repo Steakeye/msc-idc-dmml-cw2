@@ -237,7 +237,7 @@ dt.c4_5_h2_a_test_cm$overall[1]
 
 The accuracy has improved markedly....
 
-todo...
+todo... this is our baseline, now we want to quickly train and test the same dataset but with the cross-validation, and jack-knife train & test options.
 
 ####TODO! - conclude this section!
 
