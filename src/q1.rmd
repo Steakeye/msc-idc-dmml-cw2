@@ -358,6 +358,9 @@ An alternative dataset can be created that mitigates this issue by creating an a
 summary(abalone_data_cleansed$rings)
 quantile(abalone_data_cleansed$rings, c(1/3, 2/3)) 
 abalone_age_groups <- cut(abalone_data_cleansed$rings, breaks=c(-Inf, 9, 12, Inf), labels=c("young","middle","old"))
+
+summary(abalone_age_groups)
+
 abalone_data_cleansed_age_groups <- subset(abalone_data_cleansed, select=-rings)
 abalone_data_cleansed_age_groups$age_group <- abalone_age_groups
 rm(abalone_age_groups)

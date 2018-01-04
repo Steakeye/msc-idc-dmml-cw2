@@ -257,14 +257,14 @@ dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_gr
 ```{r dt-c4_5_j48-train-rkf_a}
 #dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8_5)
 #abalone_data_cleansed_age_groups
-dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8_5)
+dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8_5)
 ```
 
 **K-folds, with 13 folds, 5 repetitions**
 ```{r dt-c4_5_j48-train-rkf_a}
 #dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_13_5)
 #abalone_data_cleansed_age_groups
-dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_13_5)
+dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_13_5)
 ```
 
 #####Training results J48 method and k-folds training 
@@ -276,7 +276,7 @@ Below is a comparison of the different training results for k-folds; ultimately,
 dt_sum.c4_5_j48_kf_a <- summary(dt.c4_5_j48_kf_a)
 dt.c4_5_j48_kf_a_final <- summary(dt.c4_5_j48_kf_a$finalModel)
 #
-dt_sum.c4_5_h2_a
+dt_sum.c4_5_j48_kf_a
 #
 dt.c4_5_j48_kf_a_finalModel <- dt.c4_5_h2_a$finalModel
 dt.c4_5_j48_kf_a_finalModel_party <- as.party(dt.c4_5_h2_a$finalModel)
@@ -322,12 +322,86 @@ depth(dt.c4_5_j48_r5kf13_a_finalModel_party)
 plot(dt.c4_5_j48_r5kf13_a_finalModel_party)
 ```
 
-After having run the training, the preliminary results suggest that ...
 
-####J48 with repeated leave-one-out training 
+```{r c4_5_cv-pcCorrect}
+dt_sum.c4_5_j48_kf_a$details[1]
+dt_sum.c4_5_r5kf8_a$details[1]
+dt_sum.c4_5_r5kf13_a$details[1]
+```
+
+After having run the training, the preliminary results suggest that while repeating the whole k-folds process a number of times can add some more accuracy, increasing the k count doesn't add much more; depending on the size of the real-world dataset and the economic benefit of even the slightest improvement in accuracy, it's arguable that a tradeoff between accuracy and performance can be made and sometimes a quicker less accurate option is the right tool for the job. That being said, prediction is significantly faster than training for decision trees; once the model has been built, new data is just processed into a class. 
+
+The fact that for the k-folds with 5 repititions, the \(k = 13\) version took about twice as long to compute as the \(k = 8\) version, the 8 version will be considered the preffered choice, assuming the validation doesn't suggest otherwise.
+
+#####Testing results J48 method and k-folds training 
+
+**K-folds, with 8 folds**
+```{r dt-c4_5h2_test}
+dt.c4_5_j48_kf_a_test <- predict(dt.c4_5_j48_kf_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_kf_a_test_cm <- confusionMatrix(dt.c4_5_j48_kf_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_kf_a_test_cm$table
+dt.c4_5_j48_kf_a_test_cm$overall[1]
+```
+
+**K-folds, with 8 folds, 5 repetitions**
+```{r dt-c4_5h2_test}
+dt.c4_5_j48_r5kf8_a_test <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_r5kf8_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf8_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_r5kf8_a_test_cm$table
+dt.c4_5_j48_r5kf8_a_test_cm$overall[1]
+```
+
+**K-folds, with 13 folds, 5 repetitions**
+```{r dt-c4_5h2_test}
+dt.c4_5_j48_r5kf13_a_test <- predict(dt.c4_5_j48_r5kf13_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_r5kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf13_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_r5kf13_a_test_cm$table
+dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
+```
+
+
+####J48 with leave-one-out training 
+
+The last C4.5 decision tree to explore is a model using the leave-one-out training method.
+
+```{r dt-c4_5_loo_train-h_a}
+dt.c4_5_loo_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = loocv.train_control)
+```
+
+#####J48, leave-one-out training results
+
+```{r dt-c4_5_loo_train-h_a_results}
+dt_sum.c4_5_loo_a <- summary(dt.c4_5_loo_a)
+dt_sum.c4_5_loo_a_final <- summary(dt.c4_5_loo_a$finalModel)
+#
+dt_sum.c4_5_loo_a
+#
+dt.c4_5_loo_a_finalModel <- dt.c4_5_loo_a$finalModel
+dt.c4_5_loo_a_finalModel_party <- as.party(dt.c4_5_loo_a_finalModel)
+#
+length(dt.c4_5_loo_a_finalModel_party)
+width(dt.c4_5_loo_a_finalModel_party)
+depth(dt.c4_5_loo_a_finalModel_party)
+#
+plot(dt.c4_5_loo_a_finalModel_party)
+```
+
+
+```{r c4_5_cv-pcCorrect}
+dt_sum.c4_5_loo_a$details[1]
+```
+
+#####J48, leave-one-out training results
+
+```{r dt-c4_5h2_test}
+dt.c4_5_loo_a_test <- predict(dt.c4_5_loo_a, newdata = holdout_age_groups.testing)
+dt.c4_5_loo_a_test_cm <- confusionMatrix(dt.c4_5_loo_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_loo_a_test_cm$table
+dt.c4_5_loo_a_test_cm$overall[1]
+```
 
 ####TODO! - conclude this section!
-
+...
 
 ##Random Forest Decision Tree
 
