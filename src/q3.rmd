@@ -79,6 +79,12 @@ Whilst in comparisons to other forms of training and data-mining algorithms, und
 ###Comparing the two C4.5/J48 methods
 
 
+```{r}
+summary(dt.c4_5_j48_h)
+summary(dt.c4_5_h2)
+summary(dt.c4_5_h2$finalModel)
+```
+
 ```{r dt-c4_5h_test}
 #plot(dt.c4_5_h$finalModel, box.palette = "Reds", tweak = 1.2)
 holdout.test_rings <- holdout.testing$rings
