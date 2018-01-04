@@ -34,18 +34,6 @@ library("partykit")
 
 <section>
 
-
-```{r dt-test}
-#set.seed(1958)  # set a seed to get replicable results
-#train <- createFolds(iris$Species, k=10)
-#C45Fit <- train(Species ~., method="J48", data=iris,
-#                tuneLength = 5,
-#                trControl = trainControl(
-#                  method="cv", indexOut=train))
-test.c4_5 <- J48(Species ~., iris) 
-
-```
-
 #Task 3: Build Train and Test a Decision Tree type Classifier
 
 ##Premise
@@ -235,9 +223,50 @@ dt.c4_5_h2_a_test_cm$table
 dt.c4_5_h2_a_test_cm$overall[1]
 ```
 
-The accuracy has improved markedly....
+The accuracy has improved markedly so it's safe to say that the combinatation of streamliining the formula and creating a simpler classification requirement hase improved things; this is the new baseline, now it's worth looking at any improvment that can be made through using the k-folds and leave-one-out cross-validation technues.
 
-todo... this is our baseline, now we want to quickly train and test the same dataset but with the cross-validation, and jack-knife train & test options.
+###C4.5 with cross-validation techniques
+
+Given how the accuracy between the two form of C4.5 model generation narrowed to an absolute percentage delta of lest than 1 percent, coupled with the speed at which  the J48 function returns, the next phase of experimentation will occur only with this function and the relevant training control options.
+
+####J48 with k-folds training 
+
+The J48 function does not accept the caret training control objects as valid control parameters; calling the Weka function `WOW` with `"J48"` as the sole argument presents the list of arguments that can be passed in to a `Weka_control` function call to configure training.
+
+```{r j48-WOW}
+WOW("J48")
+```
+
+####Train with J48 method and k-folds training 
+
+Unfortunately, for the perfomant J48 method, none of these options seems to allow for custom methods of training. At this point, J48 has to be disregarded due to inflexibilty despite such good runtime training speeds.
+
+```{r dt-c4_5_j48-train-rkf_a}
+
+##dt.c4_5_j48_kf_a <- J48(dt.formula, holdout_age_groups.training)
+#dt.c4_5_j48_kf_a <- J48(dt.formula, holdout_age_groups.training, control = tempcv.train_control_8_5)
+dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8)
+#J48(dt.formula, holdout_age_groups.training, control = tempcv.train_control_8_5)
+```
+
+```{r dt-c4_5_train-h_a_results}
+dt_sum.c4_5_h2_a <- summary(dt.c4_5_j48_kf_a)
+dt.c4_5_j48_kf_a_final <- summary(dt.c4_5_j48_kf_a$finalModel)
+#
+dt_sum.c4_5_h2_a
+#
+dt.c4_5_j48_kf_a_finalModel <- dt.c4_5_h2_a$finalModel
+dt.c4_5_j48_kf_a_finalModel_party <- as.party(dt.c4_5_h2_a$finalModel)
+#
+length(dt.c4_5_j48_kf_a_finalModel_party)
+width(dt.c4_5_j48_kf_a_finalModel_party)
+depth(dt.c4_5_j48_kf_a_finalModel_party)
+#
+plot(dt.c4_5_j48_kf_a_finalModel_party)
+```
+
+
+####J48 with repeated leave-one-out training 
 
 ####TODO! - conclude this section!
 
