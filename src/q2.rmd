@@ -41,7 +41,7 @@ Formation of training and test sets from in R using the methods below.
 
 The holdout method is the most basic separation of the dataset into training and testing data. This method just creates one division, albeit randomly selecting those values from across those dataset rather than in a linear fashion.
 
-```{r test}
+```{r holdout-create}
 set.seed(4321)
 head(abalone_data_cleansed)
 
@@ -63,6 +63,20 @@ dim(holdout.training)
 dim(holdout.testing)
 ```
 
+###Holdout set for age group factor dataset
+
+As an addition, the dataset modified to have an age_group factor attrbiute instead of rings attrbute of intergers, will also be partitioned for use with the holdout method.
+
+```{r holdout-agre-group-create}
+head(abalone_data_cleansed_age_groups)
+
+holdout_age_groups.train_indeces <- createDataPartition(y = abalone_data_cleansed_age_groups$weight.shell, p= 2/3, list = FALSE)
+head(holdout_age_groups.train_indeces, n=20)
+
+holdout_age_groups.training <- abalone_data_cleansed_age_groups[holdout.train_indeces,]
+
+holdout_age_groups.testing <- abalone_data_cleansed_age_groups[-holdout.train_indeces,]
+```
 
 ##Cross-validation datasets 
 

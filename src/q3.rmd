@@ -136,26 +136,75 @@ The J48 function has a significantly higher accuracy compared to the train funct
 
 ####Comparing the two C4.5/J48 model after prediction
 
-```{r dt-c4_5h_test}
-#holdout.test_rings <- holdout.testing$rings
-#dt.c4_5_h_test <- predict(dt.c4_5_h, newdata = holdout.testing)
-#table(dt.c4_5_h_test, holdout.test_rings)
-#holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
-#confusionMatrix(factor(dt.c4_5_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+What follows is the output of testing the models against the test subset.
+
+```{r dt-c4_5_j48_test}
+holdout.test_rings <- holdout.testing$rings
+dt.c4_5_j48_h_test <- predict(dt.c4_5_j48_h, newdata = holdout.testing)
+holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
+dt.c4_5_j48_h_test_cm <- confusionMatrix(factor(dt.c4_5_j48_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+dt.c4_5_j48_h_test_cm$table
+dt.c4_5_j48_h_test_cm$overall[1]
 ```
 
 ```{r dt-c4_5h2_test}
-#dt.c4_5_h2_test <- predict(dt.c4_5_h2, newdata = holdout.testing)
-#table(dt.c4_5_h2_test, holdout.test_rings)
-#confusionMatrix(factor(dt.c4_5_h2_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+#dt.c4_5_h2
+dt.c4_5_h2_test <- predict(dt.c4_5_h2, newdata = holdout.testing)
+dt.c4_5_h2_test_cm <- confusionMatrix(factor(dt.c4_5_h2_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+dt.c4_5_h2_test_cm$table
+dt.c4_5_h2_test_cm$overall[1]
+```
+It would appear that despite the J48 function derived model claiming a higher accuracy, the resulting confustion matric data suggests otherwise. Neither 23.6% or 20.9 is particulary encouraging, however for the improvement in speed, the loss of about 12.% in accuracy (approximately 3% from 24%), might be reasonable is the overall accuracy can be improved. To investigate this further, the next steps are to look at reducing the number of attrbutes observed based on the earlier analysis of data, and  training the models to achieve simpler classification goals.
+
+###C4.5 with refined dataset
+
+To attempt attainment of high accuracy, it's worth looking to run the very same decision tree functions against a streamline classification aim, with a more targetted formula. Using raw rings and the classification levels amounted to nearly 30 possible outomces, so bringing that down do a concrete tiered factor of 3 age groups has to make things not only more perormant but it's easier to be more accurate when the intened classification type has a larger scope.
+
+####Refined formula
+
+Previously, each of the attributes of a continues numeric type were analysed for a correlation to the number of rings. To have a simpler decision tree it stands to reason that picking only the most relevant attributes for the problem of this particular classification are used. This this end, the attributes selected for the revised formula will be those top three correlates: weight.shell, height, diameter.
+
+```{r tree-formula}
+dt.formula <- as.formula(age_group ~ weight.shell + height + diameter)
 ```
 
-```{r dt-c4_5h2_fm_test}
-#dt.c4_5_h2_fm <- dt.c4_5_h2$finalModel
-#dt.c4_5_h2_fm_test <- predict(dt.c4_5_h2_fm, newdata = holdout.testing)
-#table(dt.c4_5_h2_fm_test, holdout.test_rings)
-#confusionMatrix(factor(dt.c4_5_h2_fm_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+####The J48 method with updated formula and simpler classification
+
+```{r dt-c4_5_j48-h_a}
+dt.c4_5_j48_h_a <- J48(dt.formula, holdout_age_groups.training) 
+dt_sum.c4_5_j48_h_a <- summary(dt.c4_5_j48_h_a)
+dt.c4_5_j48_h_a_party <- as.party(dt.c4_5_j48_h_a)
+#
+dt_sum.c4_5_j48_h_a
+#
+length(dt.c4_5_j48_h_a_party)
+width(dt.c4_5_j48_h_a_party)
+depth(dt.c4_5_j48_h_a_party)
+#
+plot(dt.c4_5_j48_h_a_party)
 ```
+
+###The caret train J48 argument with updated formula and simpler classification
+
+```{r dt-c4_5_train-h_a}
+dt.c4_5_h2_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8)
+```
+```{r dt-c4_5_train-h_a_results}
+dt_sum.c4_5_h2_a <- summary(dt.c4_5_h2_a)
+dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2$finalModel)
+#
+dt_sum.c4_5_h2_a
+#
+dt.c4_5_h2_a_finalModel <- dt.c4_5_h2_a$finalModel
+dt.c4_5_h2_a_finalModel_party <- as.party(dt.c4_5_h2_a$finalModel)
+#
+length(dt.c4_5_h2_a_finalModel_party)
+width(dt.c4_5_h2_a_finalModel_party)
+depth(dt.c4_5_h2_a_finalModel_party)
+#
+plot(dt.c4_5_h2_a_finalModel_party)
+```
+
 ##Random Forest Decision Tree
 
 ##Conclusion
