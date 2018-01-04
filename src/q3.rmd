@@ -191,7 +191,7 @@ dt.c4_5_h2_a <- train(dt.formula, method="J48", holdout_age_groups.training, tun
 ```
 ```{r dt-c4_5_train-h_a_results}
 dt_sum.c4_5_h2_a <- summary(dt.c4_5_h2_a)
-dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2$finalModel)
+dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2_a$finalModel)
 #
 dt_sum.c4_5_h2_a
 #
@@ -204,6 +204,43 @@ depth(dt.c4_5_h2_a_finalModel_party)
 #
 plot(dt.c4_5_h2_a_finalModel_party)
 ```
+####Accuracy comparison of revised C4.5/J48 models
+
+```{r}
+dt_sum.c4_5_j48_h_a$details[1]
+dt_sum.c4_5_h2_a$details[1]
+```
+
+Interestingly the J48 function has produced an accurnacy rating that is only marginally better than the previous version while the train J48 function call seems to have improved significantly so that it's nearly on par with the J48 function result. Looking at the models after validation has happened will hopefully provide even more revealing findings.
+
+####Comparing the rivised C4.5/J48 model after prediction
+
+What follows is the output of testing the models against the test subset.
+
+```{r dt-c4_5_j48_h_a_test}
+#holdout.test_rings <- holdout.testing$rings
+dt.c4_5_j48_h_a_test <- predict(dt.c4_5_j48_h_a, newdata = holdout_age_groups.testing)
+#holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
+#dt.c4_5_j48_h_a_test_cm <- confusionMatrix(factor(dt.c4_5_j48_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+dt.c4_5_j48_h_a_test_cm <- confusionMatrix(dt.c4_5_j48_h_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_h_a_test_cm$table
+dt.c4_5_j48_h_a_test_cm$overall[1]
+```
+
+```{r dt-c4_5h2_test}
+#dt.c4_5_h2
+dt.c4_5_h2_a_test <- predict(dt.c4_5_h2_a, newdata = holdout_age_groups.testing)
+dt.c4_5_h2_a_test_cm <- confusionMatrix(dt.c4_5_h2_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_h2_a_test_cm$table
+dt.c4_5_h2_a_test_cm$overall[1]
+```
+
+The accuracy has improved markedly....
+
+todo...
+
+####TODO! - conclude this section!
+
 
 ##Random Forest Decision Tree
 
