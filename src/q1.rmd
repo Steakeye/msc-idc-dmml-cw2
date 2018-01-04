@@ -49,9 +49,9 @@ library(caret)
 
 ##Picking the data set
 
-The first task was to find out where to look for datasets, most sources of advice referred to the UCI repository, other sources often reused this data and hosted it in a new format, like Kaggle. After looking online for suitable datasets, specifically for the problem of classification, 2 datasets were possible candidates for study; between the Taiwanese Credit Card dataset and the Abalone shellfish dataset, I opted for the Abalone dataset on the basis that if has fewer variables and fewer intances, so it should be easier to work with without so much preparation; the credit card dats would require more considerated cleansing of outliers and potentially pruning of variables considered as well as PCA for dimensionality reduction.
+The first task was to find out where to look for datasets, most sources of advice referred to the UCI repository, other sources often reused this data and hosted it in a new format, like Kaggle. After looking online for suitable datasets, specifically for the problem of classification, 2 datasets were possible candidates for study; between the Taiwanese Credit Card dataset and the Abalone shellfish dataset, I opted for the Abalone dataset on the basis that if has fewer variables and fewer instances, so it should be easier to work with without so much preparation; the credit card data would require more considered cleansing of outliers and potentially pruning of variables considered as well as PCA for dimensionality reduction.
 
-The Abalone dataset has a litle over 4,000 instances complared to 30,000 for the Credit Card dataset, 8 attrbitues for Abelone compared to 24 for the Credit Card data. Hopefully the dimensionality of the Abalone datset should lend itself to less data cleansing because the variables are concrete characteristics of the animals:
+The Abalone dataset has a little over 4,000 instances compared to 30,000 for the Credit Card dataset, 8 attributes for Abalone compared to 24 for the Credit Card data. Hopefully the dimensionality of the Abalone dataset should lend itself to less data cleansing because the variables are concrete characteristics of the animals:
 
  - Sex
  - Length
@@ -65,11 +65,11 @@ The Abalone dataset has a litle over 4,000 instances complared to 30,000 for the
 
 ###How to classify this data
 
-The typical way to classify this data, is to determine approximate age based on the ring value, according to the UCI page for this datset, the rings roughtly suggest age such that \(y = r + 2.5\), where y is number of years and r is number of rings. The simplest approach is to attempt to guess the correct number of rings for a test instance based on other attrbitutes.
+The typical way to classify this data, is to determine approximate age based on the ring value, according to the UCI page for this dataset, the rings roughly suggest age such that \(y = r + 2.5\), where y is number of years and r is number of rings. The simplest approach is to attempt to guess the correct number of rings for a test instance based on other attributes.
 
 ###Getting the data
 
-Having downloaded the data from the UCI repo we need convert the data into a table and check it's usable.
+Having downloaded the data from the UCI repository we need convert the data into a table and check it's usable.
 
 ```{r read-abalone-1}
 abalone_data = data.frame(read.table("../assets/data/abalone.data", sep = ","))
@@ -93,7 +93,7 @@ kable(abalone_summary)
 ```
 ### The attributes explained
 
-The Abalone ius a type of shellfish and each attribute describes a characteristic of the animal. Not being an expert on this animal, I've had to research a little bit about the Abalone in order to get an idea of what these traits are. Knowing a bit more about these properites, should hopefully lead to a better understanding of the data. What follwois is a list of definitions for each column.
+The Abalone is a type of shellfish and each attribute describes a characteristic of the animal. Not being an expert on this animal, I've had to research a little bit about the Abalone in order to get an idea of what these traits are. Knowing a bit more about these properties, should hopefully lead to a better understanding of the data. What follows is a list of definitions for each column.
 
 <dl>
   <dt>sex</dt>
@@ -118,7 +118,7 @@ The Abalone ius a type of shellfish and each attribute describes a characteristi
 
 ### A little bit of basic data cleansing
 
-The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entires that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data.
+The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entries that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data.
 
 ```{r basic-data-sanity}
 abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
@@ -212,10 +212,10 @@ sorted_attributes_by_neighbour_d <- dataframe[ neighbour_order, ]
 sorted_attributes_by_neighbour_d
 ```
 
-While rings is at the top of the leaderboard regarding the delta, it's important to take into account that this data isn't scaled; it's very likely that this outlier is the results of a particularly lucky Abalone that managed to live longer than the rest of the long tail through some luck. Given that the other values are meant to be in grams and millimetres, it's reasonable to compare values like for like in this instance. As such the weight deltas as comparable and can be excluded from outlier cleansing, with the same applying to dimateter and length; height seems to be anomlous though and will need futher attention.
+While rings is at the top of the leader-board regarding the delta, it's important to take into account that this data isn't scaled; it's very likely that this outlier is the results of a particularly lucky Abalone that managed to live longer than the rest of the long tail through some luck. Given that the other values are meant to be in grams and millimetres, it's reasonable to compare values like for like in this instance. As such the weight deltas as comparable and can be excluded from outlier cleansing, with the same applying to diameter and length; height seems to be anomalous though and will need further attention.
 
 
-It's easier to see on a boxplot that one value is way out far from any neighbours, with its nearest neighbour also having no nearby neighbour; we could probably benefit just from removing the two farthest outliers.
+It's easier to see on a box-plot that one value is way out far from any neighbours, with its nearest neighbour also having no nearby neighbour; we could probably benefit just from removing the two farthest outliers.
 
 ```{r}
 boxplot(abalone_data$height)
@@ -276,14 +276,14 @@ Seeing as the intent is to see if classification can be used to determine approx
 
 ###Picking data attributes to select
 
-With our cleansed data we can see that there is an evident correlation  between all of these attrbitures and the number of rings but in particular those relating to phyical size show the strongest relationship as the points best match the line of best fit; the weight values are distributed in such a way that there's a little curve away from the line as you reach 0 on both axes and they also seem to diverge more from the line as the dimension values increase. Should any attrbutes be selected as ones to work with, discarding the others, it would be:
+With our cleansed data we can see that there is an evident correlation  between all of these attributes and the number of rings but in particular those relating to physical size show the strongest relationship as the points best match the line of best fit; the weight values are distributed in such a way that there's a little curve away from the line as you reach 0 on both axes and they also seem to diverge more from the line as the dimension values increase. Should any attributes be selected as ones to work with, discarding the others, it would be:
 
  - length
  - diameter
  - height
  - weight.whole
 
-Given that the all attrbutes appear to display a fairly linear relationship to the ring count we can use r-squared, otherwise known as the Coefficient of Determination to verify how well the data matches the line of best fit
+Given that the all attributes appear to display a fairly linear relationship to the ring count we can use r-squared, otherwise known as the Coefficient of Determination to verify how well the data matches the line of best fit
 
 ```{r}
 abalone.lm_length <- lm(data = abalone_data_cleansed, formula = rings ~ length)
@@ -323,7 +323,7 @@ After looking at these results it may be wiser to consider using the shell weigh
 
 ####Substatiating the selection 
 
-With the use of a correlation matrix, it's possible to further validate which attributes could be worth focussing on:
+With the use of a correlation matrix, it's possible to further validate which attributes could be worth focusing on:
 
 ```{r abalone-feature-correlation}
 # calculate correlation matrix
@@ -350,9 +350,9 @@ The correlation between ring values and the other attributes, when ordered, actu
 
 ##Creating a simpler classifaction value
 
-Given that the number of rings is actually a range of integers from 1 to 29, to use each individual possible integer presents a problem; firstly as the ring value cannot be considered continuous it's not really sensible to treat it as such, thus converting to a a numeric floating range is not approriate; in addition to this, the datset might not have instances that cover every single possible ring value between 1 and 29, which will cause inaccuracy in some of the models.
+Given that the number of rings is actually a range of integers from 1 to 29, to use each individual possible integer presents a problem; firstly as the ring value cannot be considered continuous it's not really sensible to treat it as such, thus converting to a a numeric floating range is not appropriate; in addition to this, the dataset might not have instances that cover every single possible ring value between 1 and 29, which will cause inaccuracy in some of the models.
 
-An alternative dataset can be created that mitigates this issue by creating an approximate age factor; classification of the Abalone can be more loosely done against age ranges, like _young, middle, old_ with the test instances still being compared by other attrbibutes and mapped to one of these age group factor values.
+An alternative dataset can be created that mitigates this issue by creating an approximate age factor; classification of the Abalone can be more loosely done against age ranges, like _young, middle, old_ with the test instances still being compared by other attributes and mapped to one of these age group factor values.
 
 ```{r abalone-age-granges}
 abalone_age_groups <- cut(abalone_data_cleansed$rings, breaks=c(-Inf, 9, 19, Inf), labels=c("young","middle","old"))
