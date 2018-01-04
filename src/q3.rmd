@@ -123,8 +123,18 @@ dt_sum.c4_5_j48_h
 dt_sum.c4_5_h2
 ```
 
-####Accuracy comparison of C4.5/J48 methods
+####Accuracy comparison of C4.5/J48 models
 
+Despite the values being present in the summaries, to clafiry understanding, they are repeated below:
+
+```{r}
+dt_sum.c4_5_j48_h$details[1]
+dt_sum.c4_5_h2$details[1]
+```
+
+The J48 function has a significantly higher accuracy compared to the train function J48 call but at this stage it's hard to be confident this is a good thing; given the difference in tree complexity, it could well be that the J48 function suffers from massive overfitting, while the train call has done some excessive pruning which has not noly accounted for the extra time for the function to complete but also the diminished accuracy. To understand things further it's really necessary to test the trees against the validation subset.
+
+####Comparing the two C4.5/J48 model after prediction
 
 ```{r dt-c4_5h_test}
 #holdout.test_rings <- holdout.testing$rings
@@ -146,5 +156,8 @@ dt_sum.c4_5_h2
 #table(dt.c4_5_h2_fm_test, holdout.test_rings)
 #confusionMatrix(factor(dt.c4_5_h2_fm_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
 ```
+##Random Forest Decision Tree
+
+##Conclusion
 
 </section>
