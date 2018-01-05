@@ -1,18 +1,46 @@
 ---
-title: "q1"
+title: "q3"
 output: html_document
 bibliography: bibliography.ris
 ---
 
 
 ```{r setup-t3, include=FALSE, message=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+set.seed(4321)
 ```
 
 
 ```{r deps-t3, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(doMC)) install.packages('doMC')
+if(!require(rJava)) install.packages('rJava')
+if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
+#e1071
+if(!require(e1071)) install.packages("e1071", repos = mirrorUrl)
+#libcoin
+if(!require(coin)) install.packages("coin", repos = mirrorUrl)
+#partykit
+if(!require(partykit)) install.packages("partykit", repos = mirrorUrl)
+#rpart
+if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
+#randomForest
+if(!require(randomForest)) install.packages("randomForest", repos = mirrorUrl)
+#
+# configure multicore
+library("doMC")
+library("e1071")
+library("caret")
+library("RWeka")
+library("rpart.plot")
+library("libcoin")
+library("partykit")
+library("randomForest")
 ```
 
+```{r setup-t3, include=FALSE, message=FALSE}
+registerDoMC()
+```
 <section>
 
 #Task 3: Build Train and Test a Decision Tree type Classifier
@@ -27,6 +55,406 @@ knitr::opts_chunk$set(echo = TRUE)
 • Testing of Decision Tree type classifier (C4.5, Random Forest) 9
 -->
 
-TBD
+##C4.5 Decision Tree
+
+Finding the C4.5 method as an existing library within R, brought up more than one option, both appear to use a an open-source equivalent of C4.5 rather than an official C4.5 implementation; other options we to use C5.0 which apparently supersedes C4.5; seeing as the task was to investigate C4.5, J48 has been chosen as a more faithful example of the algorithm.
+
+Below is not only an investigation into C4.5 but also, a comparison of two variations. Initially all available dimensions will be used for training.
+
+###The J48 method
+
+```{r dt-c4_5_j48-h}
+dt.c4_5_j48_h <- J48(as.factor(rings)~., holdout.training) 
+dt_sum.c4_5_j48_h <- summary(dt.c4_5_j48_h)
+dt.c4_5_j48_h_party <- as.party(dt.c4_5_j48_h)
+```
+
+The J48 function is extremely quick with the dataset, training takes less than a second, which on it's on is not necessarily worthy of note but certainly more interesting when compared to the speed of using the caret train method with a "J48" method argument value.
+
+We can look at the complexity of the tree by looking at the dimensionality, where the length is effectively the tree size, width is the number of leaves, or terminal nodes and the depth is effectively the number of conditional branch layers.
+
+```{r}
+length(dt.c4_5_j48_h_party)
+width(dt.c4_5_j48_h_party)
+depth(dt.c4_5_j48_h_party)
+```
+
+The complexity of this tree is sufficiently complex to render a graphical representation useless. In fact the tree is complex it's time intensive as well as being of no value.
+
+
+###The caret train J48 argument
+
+```{r dt-c4_5_train-h}
+dt.c4_5_h2 <- train(as.factor(rings) ~., method="J48", holdout.training, tuneLength = 8)
+dt_sum.c4_5_h2 <- summary(dt.c4_5_h2)
+dt_sum.c4_5_h2_final <- summary(dt.c4_5_h2$finalModel)
+```
+
+Whilst in comparisons to other forms of training and data-mining algorithms, under 5 minutes for a 4,000 by 9 dataset might seem okay, in comparison to the J48 function, there seems to be something at odds. The proof will be in the comparison of the two models with regard to accuracy on the test dataset.
+
+Again, we can look at the complexity of the tree through dimensionality, length being total size, width being leaf nodes and depth being branch layer count. 
+
+```{r}
+#dt.c4_5_h2
+dt.c4_5_h2_finalModel <- dt.c4_5_h2$finalModel
+#dt.c4_5_h2_finalModel
+dt.c4_5_h2_finalModel_party <- as.party(dt.c4_5_h2$finalModel)
+length(dt.c4_5_h2_finalModel_party)
+width(dt.c4_5_h2_finalModel_party)
+depth(dt.c4_5_h2_finalModel_party)
+```
+It would appear that the 'final model' we are looking at derived from the train function has already been pruned, making for a simpler decision tree; this tree is actually able to be represented graphically within a reasonable amount of time (under 10 seconds).
+
+```{r}
+#plot(dt.c4_5_h2_finalModel)
+plot(dt.c4_5_h2_finalModel_party)
+```
+
+Even though the tree is able to be rendered it's not easy to get anything meaningful out of this. Perhaps the most pertinent point is that the not only could the classification levels benefit from being simplified but using fewer dimensions for observation would also force a simpler set of conditional branching.
+
+###Comparing the two C4.5/J48 methods
+
+Below follows the summaries from both methods, for examination: 
+```{r}
+dt_sum.c4_5_j48_h
+dt_sum.c4_5_h2
+```
+
+####Accuracy comparison of C4.5/J48 models
+
+Despite the values being present in the summaries, to clarify understanding, they are repeated below:
+
+```{r}
+dt_sum.c4_5_j48_h$details[1]
+dt_sum.c4_5_h2$details[1]
+```
+
+The J48 function has a significantly higher accuracy compared to the train function J48 call but at this stage it's hard to be confident this is a good thing; given the difference in tree complexity, it could well be that the J48 function suffers from massive over-fitting, while the train call has done some excessive pruning which has not only accounted for the extra time for the function to complete but also the diminished accuracy. To understand things further it's really necessary to test the trees against the validation subset.
+
+####Comparing the two C4.5/J48 model after prediction
+
+What follows is the output of testing the models against the test subset.
+
+```{r dt-c4_5_j48_test}
+holdout.test_rings <- holdout.testing$rings
+dt.c4_5_j48_h_test <- predict(dt.c4_5_j48_h, newdata = holdout.testing)
+holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
+dt.c4_5_j48_h_test_cm <- confusionMatrix(factor(dt.c4_5_j48_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+dt.c4_5_j48_h_test_cm$table
+dt.c4_5_j48_h_test_cm$overall[1]
+```
+
+```{r dt-c4_5h2_test}
+#dt.c4_5_h2
+dt.c4_5_h2_test <- predict(dt.c4_5_h2, newdata = holdout.testing)
+dt.c4_5_h2_test_cm <- confusionMatrix(factor(dt.c4_5_h2_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+dt.c4_5_h2_test_cm$table
+dt.c4_5_h2_test_cm$overall[1]
+```
+It would appear that despite the J48 function derived model claiming a higher accuracy, the resulting confusion matrix data suggests otherwise. Neither 23.6% or 20.9 is particularly encouraging, however for the improvement in speed, the loss of about 12.% in accuracy (approximately 3% from 24%), might be reasonable is the overall accuracy can be improved. To investigate this further, the next steps are to look at reducing the number of attributes observed based on the earlier analysis of data, and  training the models to achieve simpler classification goals.
+
+###C4.5 with refined dataset
+
+To attempt attainment of high accuracy, it's worth looking to run the very same decision tree functions against a streamline classification aim, with a more targeted formula. Using raw rings and the classification levels amounted to nearly 30 possible outcomes, so bringing that down do a concrete tiered factor of 3 age groups has to make things not only more performant but it's easier to be more accurate when the intended classification type has a larger scope.
+
+####Refined formula
+
+Previously, each of the attributes of a continues numeric type were analysed for a correlation to the number of rings. To have a simpler decision tree it stands to reason that picking only the most relevant attributes for the problem of this particular classification are used. This this end, the attributes selected for the revised formula will be those top three correlates: weight.shell, height, diameter.
+
+```{r tree-formula}
+dt.formula <- as.formula(age_group ~ weight.shell + height + diameter)
+```
+
+####The J48 method with updated formula and simpler classification
+
+```{r dt-c4_5_j48-h_a}
+dt.c4_5_j48_h_a <- J48(dt.formula, holdout_age_groups.training) 
+dt_sum.c4_5_j48_h_a <- summary(dt.c4_5_j48_h_a)
+dt.c4_5_j48_h_a_party <- as.party(dt.c4_5_j48_h_a)
+#
+dt_sum.c4_5_j48_h_a
+#
+length(dt.c4_5_j48_h_a_party)
+width(dt.c4_5_j48_h_a_party)
+depth(dt.c4_5_j48_h_a_party)
+#
+plot(dt.c4_5_j48_h_a_party)
+```
+
+###The caret train J48 argument with updated formula and simpler classification
+
+```{r dt-c4_5_train-h_a}
+dt.c4_5_h2_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8)
+```
+
+```{r dt-c4_5_train-h_a_results}
+dt_sum.c4_5_h2_a <- summary(dt.c4_5_h2_a)
+dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2_a$finalModel)
+#
+dt_sum.c4_5_h2_a
+#
+dt.c4_5_h2_a_finalModel <- dt.c4_5_h2_a$finalModel
+dt.c4_5_h2_a_finalModel_party <- as.party(dt.c4_5_h2_a_finalModel)
+#
+length(dt.c4_5_h2_a_finalModel_party)
+width(dt.c4_5_h2_a_finalModel_party)
+depth(dt.c4_5_h2_a_finalModel_party)
+#
+plot(dt.c4_5_h2_a_finalModel_party)
+```
+####Accuracy comparison of revised C4.5/J48 models
+
+```{r}
+dt_sum.c4_5_j48_h_a$details[1]
+dt_sum.c4_5_h2_a$details[1]
+```
+
+Interestingly the J48 function has produced an accuracy rating that is only marginally better than the previous version while the train J48 function call seems to have improved significantly so that it's nearly on par with the J48 function result. Looking at the models after validation has happened will hopefully provide even more revealing findings.
+
+####Comparing the rivised C4.5/J48 model after prediction
+
+What follows is the output of testing the models against the test subset.
+
+```{r dt-c4_5_j48_h_a_test}
+#holdout.test_rings <- holdout.testing$rings
+dt.c4_5_j48_h_a_test <- predict(dt.c4_5_j48_h_a, newdata = holdout_age_groups.testing)
+#holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
+#dt.c4_5_j48_h_a_test_cm <- confusionMatrix(factor(dt.c4_5_j48_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
+dt.c4_5_j48_h_a_test_cm <- confusionMatrix(dt.c4_5_j48_h_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_h_a_test_cm$table
+dt.c4_5_j48_h_a_test_cm$overall[1]
+```
+
+```{r dt-c4_5h2_test}
+#dt.c4_5_h2
+dt.c4_5_h2_a_test <- predict(dt.c4_5_h2_a, newdata = holdout_age_groups.testing)
+dt.c4_5_h2_a_test_cm <- confusionMatrix(dt.c4_5_h2_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_h2_a_test_cm$table
+dt.c4_5_h2_a_test_cm$overall[1]
+```
+
+The accuracy has improved markedly so it's safe to say that the combination of streamlining the formula and creating a simpler classification requirement has improved things; this is the new baseline, now it's worth looking at any improvement that can be made through using the k-folds and leave-one-out cross-validation techniques.
+
+###C4.5 with cross-validation techniques
+
+Given how the accuracy between the two form of C4.5 model generation narrowed to an absolute percentage delta of lest than 1 percent, coupled with the speed at which  the J48 function returns, the next phase of experimentation will occur only with this function and the relevant training control options.
+
+####J48 with k-folds training 
+
+The J48 function does not accept the caret training control objects as valid control parameters; calling the Weka function `WOW` with `"J48"` as the sole argument presents the list of arguments that can be passed in to a `Weka_control` function call to configure training.
+
+```{r j48-WOW}
+WOW("J48")
+```
+
+Unfortunately, for the performant J48 method, none of these options seems to allow for custom methods of training. At this point, J48 has to be disregarded due to inflexibility despite such good run-time training speeds.
+
+####Train with J48 method and k-folds training 
+
+Three types of k-folds cross-validation configurations were created; at this point it's opportune to examine which, if any, are able to improve the accuracy of training and validation. Each of the three types of k-folds configurations will be used to train the decision tree.
+
+The imporant implementation detail to emphasise here is that while the holdout method required a one-off expicit call to partition the data, with the user assigning which part as training or testing subset, with cross-validation the entire dataset is passed into the traniing call; this is because the training will occur several times using many subsampled testing subsets from the original sample. For the sake of completeness, the holdout testing suset can still be used to further interrogate the model, in order to better compare against other classifiers.
+
+**K-folds, with 8 folds**
+```{r dt-c4_5_j48-train-rkf_a}
+#dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8)
+#abalone_data_cleansed_age_groups
+dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8)
+```
+
+**K-folds, with 8 folds, 5 repetitions**
+```{r dt-c4_5_j48-train-rkf_a}
+#dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8_5)
+#abalone_data_cleansed_age_groups
+dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8_5)
+```
+
+**K-folds, with 13 folds, 5 repetitions**
+```{r dt-c4_5_j48-train-rkf_a}
+#dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_13_5)
+#abalone_data_cleansed_age_groups
+dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_13_5)
+```
+
+#####Training results J48 method and k-folds training 
+
+Below is a comparison of the different training results for k-folds; ultimately, the best one will be picked as the preferred use of k-folds going forward; obviously should this preferred configuration turn out to be too time intensive with other types of classifier, falling back to another configuration will be considered.
+
+**K-folds, with 8 folds**
+```{r dt-c4_5_train-fk_a_results}
+dt_sum.c4_5_j48_kf_a <- summary(dt.c4_5_j48_kf_a)
+dt.c4_5_j48_kf_a_final <- summary(dt.c4_5_j48_kf_a$finalModel)
+#
+dt_sum.c4_5_j48_kf_a
+#
+dt.c4_5_j48_kf_a_finalModel <- dt.c4_5_h2_a$finalModel
+dt.c4_5_j48_kf_a_finalModel_party <- as.party(dt.c4_5_h2_a$finalModel)
+#
+length(dt.c4_5_j48_kf_a_finalModel_party)
+width(dt.c4_5_j48_kf_a_finalModel_party)
+depth(dt.c4_5_j48_kf_a_finalModel_party)
+#
+plot(dt.c4_5_j48_kf_a_finalModel_party)
+```
+
+**K-folds, with 8 folds, 5 repetitions**
+```{r dt-c4_5_train-r5kf8_a_results}
+dt_sum.c4_5_r5kf8_a <- summary(dt.c4_5_j48_r5kf8_a)
+dt.c4_5_j48_r5kf8_a_final <- summary(dt.c4_5_j48_r5kf8_a$finalModel)
+#
+dt_sum.c4_5_r5kf8_a
+#
+dt.c4_5_j48_r5kf8_a_finalModel <- dt.c4_5_j48_r5kf8_a$finalModel
+dt.c4_5_j48_r5kf8_a_finalModel_party <- as.party(dt.c4_5_j48_r5kf8_a_finalModel)
+#
+length(dt.c4_5_j48_r5kf8_a_finalModel_party)
+width(dt.c4_5_j48_r5kf8_a_finalModel_party)
+depth(dt.c4_5_j48_r5kf8_a_finalModel_party)
+#
+plot(dt.c4_5_j48_r5kf8_a_finalModel_party)
+```
+
+**K-folds, with 13 folds, 5 repetitions**
+```{r dt-c4_5_train-r5kf13_a_results}
+dt_sum.c4_5_r5kf13_a <- summary(dt.c4_5_j48_r5kf13_a)
+dt.c4_5_j48_r5kf13_a_final <- summary(dt.c4_5_j48_r5kf13_a$finalModel)
+#
+dt_sum.c4_5_r5kf13_a
+#
+dt.c4_5_j48_r5kf13_a_finalModel <- dt.c4_5_j48_r5kf13_a$finalModel
+dt.c4_5_j48_r5kf13_a_finalModel_party <- as.party(dt.c4_5_j48_r5kf13_a_finalModel)
+#
+length(dt.c4_5_j48_r5kf13_a_finalModel_party)
+width(dt.c4_5_j48_r5kf13_a_finalModel_party)
+depth(dt.c4_5_j48_r5kf13_a_finalModel_party)
+#
+plot(dt.c4_5_j48_r5kf13_a_finalModel_party)
+```
+
+
+```{r c4_5_cv-pcCorrect}
+dt_sum.c4_5_j48_kf_a$details[1]
+dt_sum.c4_5_r5kf8_a$details[1]
+dt_sum.c4_5_r5kf13_a$details[1]
+```
+
+After having run the training, the preliminary results suggest that while repeating the whole k-folds process a number of times can add some more accuracy, increasing the k count doesn't add much more; depending on the size of the real-world dataset and the economic benefit of even the slightest improvement in accuracy, it's arguable that a tradeoff between accuracy and performance can be made and sometimes a quicker less accurate option is the right tool for the job. That being said, prediction is significantly faster than training for decision trees; once the model has been built, new data is just processed into a class. 
+
+The fact that for the k-folds with 5 repititions, the \(k = 13\) version took about twice as long to compute as the \(k = 8\) version, the 8 version will be considered the preffered choice, assuming the validation doesn't suggest otherwise.
+
+#####Testing results J48 method and k-folds training 
+
+**K-folds, with 8 folds**
+```{r dt-c4_5h2_test}
+dt.c4_5_j48_kf_a_test <- predict(dt.c4_5_j48_kf_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_kf_a_test_cm <- confusionMatrix(dt.c4_5_j48_kf_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_kf_a_test_cm$table
+dt.c4_5_j48_kf_a_test_cm$overall[1]
+```
+
+**K-folds, with 8 folds, 5 repetitions**
+```{r dt-c4_5h2_test}
+dt.c4_5_j48_r5kf8_a_test <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_r5kf8_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf8_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_r5kf8_a_test_cm$table
+dt.c4_5_j48_r5kf8_a_test_cm$overall[1]
+```
+
+**K-folds, with 13 folds, 5 repetitions**
+```{r dt-c4_5h2_test}
+dt.c4_5_j48_r5kf13_a_test <- predict(dt.c4_5_j48_r5kf13_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_r5kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf13_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_r5kf13_a_test_cm$table
+dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
+```
+
+
+####J48 with leave-one-out training 
+
+The last C4.5 decision tree to explore is a model using the leave-one-out training method, however research and experimentation suggests this is too computationally expensive for decision trees; when attempting to train a tree with this training control, over an hour passed without any output; it would appear that for trees, not only _p_ but _n_ (the total number of observations) should also be very low, certainly smaller than the Abalone dataset. 
+
+####TODO! - conclude this section!
+...
+
+##Random Forest Decision Tree
+
+TODO! ... Add intro here
+
+###Random Forest Holdout
+
+####Random Forest Holdout training
+
+```{r dt-rf-h_a}
+dt.rf_h_a <- train(dt.formula, data = holdout_age_groups.training, method = "rf", prox= TRUE)
+```
+
+
+```{r dt-rf-h_a-train_results}
+dt.rf_h_a_finalModel <- dt.rf_h_a$finalModel
+dt_sum.rf_h_a <- summary(dt.rf_h_a)
+#
+dt.rf_h_a_finalModel$forest[11]
+dt.rf_h_a_finalModel$forest[12]
+#
+print(dt.rf_h_a)
+print(dt.rf_h_a_finalModel)
+plot(dt.rf_h_a_finalModel)
+```
+
+####Random Forest Holdout testing
+
+```{r dt-rf-h_a-test_results}
+dt.rf_h_a_test <- predict(dt.rf_h_a, newdata = holdout_age_groups.testing)
+
+dt.c4_5_j48_h_a_test_cm <- confusionMatrix(dt.rf_h_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_h_a_test_cm$table
+dt.c4_5_j48_h_a_test_cm$overall[1]
+```
+
+###Random Forest Cross-validation
+
+TODO: open with premise for fandom forest that includes avoiding over-fitting.
+
+####Random Forest Cross-validation training
+
+```{r dt-rf-cv-r5kf8_a}
+dt.rf_cv_r5kf8_a <- train(dt.formula, data = abalone_data_cleansed_age_groups, method = "rf", prox= TRUE, trControl = cv.train_control_8_5)
+```
+
+
+```{r dt-rf-cv-r5kf8_a-train_results}
+dt.rf_cv_r5kf8_a_finalModel <- dt.rf_cv_r5kf8_a$finalModel
+dt_sum.rf_cv_r5kf8_a <- summary(dt.rf_cv_r5kf8_a)
+#
+dt.rf_cv_r5kf8_a_finalModel$forest[11]
+dt.rf_cv_r5kf8_a_finalModel$forest[12]
+#
+print(dt.rf_cv_r5kf8_a)
+print(dt.rf_cv_r5kf8_a_finalModel)
+plot(dt.rf_cv_r5kf8_a_finalModel)
+```
+
+####Random Forest Cross-validation testing
+
+... Based on the previous perfermances for k-folds cross-validation, only one configuarion has been used for the ske of the random forest tree, being the one considered the happy medium of the original 3.
+
+```{r dt-rf-h_a-test_results}
+dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing)
+
+dt.rf_cv_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
+dt.rf_cv_r5kf8_a_test_cm$table
+dt.rf_cv_r5kf8_a_test_cm$overall[1]
+```
+
+... TODO: write up about the performance
+
+###Random Forest Leave-one-out
+
+As with the C4.5 decisiotn tree, Leave-one-out Cross-validation is not suitable for this type of model.
+
+### Decision Tree Conclusion
+
+Random forests are really good for avoiding over-fitting and can improve real world accuracy
+
 
 </section>
