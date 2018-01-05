@@ -12,6 +12,7 @@ set.seed(4321)
 
 
 ```{r deps-t3, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(doMC)) install.packages('doMC')
 if(!require(rJava)) install.packages('rJava')
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
 if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
@@ -23,15 +24,23 @@ if(!require(coin)) install.packages("coin", repos = mirrorUrl)
 if(!require(partykit)) install.packages("partykit", repos = mirrorUrl)
 #rpart
 if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
+#randomForest
+if(!require(randomForest)) install.packages("randomForest", repos = mirrorUrl)
 #
+# configure multicore
+library("doMC")
 library("e1071")
 library("caret")
 library("RWeka")
 library("rpart.plot")
 library("libcoin")
 library("partykit")
+library("randomForest")
 ```
 
+```{r setup-t3, include=FALSE, message=FALSE}
+registerDoMC()
+```
 <section>
 
 #Task 3: Build Train and Test a Decision Tree type Classifier
@@ -362,48 +371,80 @@ dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
 
 ####J48 with leave-one-out training 
 
-The last C4.5 decision tree to explore is a model using the leave-one-out training method.
-
-```{r dt-c4_5_loo_train-h_a}
-dt.c4_5_loo_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = loocv.train_control)
-```
-
-#####J48, leave-one-out training results
-
-```{r dt-c4_5_loo_train-h_a_results}
-dt_sum.c4_5_loo_a <- summary(dt.c4_5_loo_a)
-dt_sum.c4_5_loo_a_final <- summary(dt.c4_5_loo_a$finalModel)
-#
-dt_sum.c4_5_loo_a
-#
-dt.c4_5_loo_a_finalModel <- dt.c4_5_loo_a$finalModel
-dt.c4_5_loo_a_finalModel_party <- as.party(dt.c4_5_loo_a_finalModel)
-#
-length(dt.c4_5_loo_a_finalModel_party)
-width(dt.c4_5_loo_a_finalModel_party)
-depth(dt.c4_5_loo_a_finalModel_party)
-#
-plot(dt.c4_5_loo_a_finalModel_party)
-```
-
-
-```{r c4_5_cv-pcCorrect}
-dt_sum.c4_5_loo_a$details[1]
-```
-
-#####J48, leave-one-out training results
-
-```{r dt-c4_5h2_test}
-dt.c4_5_loo_a_test <- predict(dt.c4_5_loo_a, newdata = holdout_age_groups.testing)
-dt.c4_5_loo_a_test_cm <- confusionMatrix(dt.c4_5_loo_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_loo_a_test_cm$table
-dt.c4_5_loo_a_test_cm$overall[1]
-```
+The last C4.5 decision tree to explore is a model using the leave-one-out training method, however research and experimentation suggests this is too computationally expensive for decision trees; when attempting to train a tree with this training control, over an hour passed without any output; it would appear that for trees, not only _p_ but _n_ (the total number of observations) should also be very low, certainly smaller than the Abalone dataset. 
 
 ####TODO! - conclude this section!
 ...
 
 ##Random Forest Decision Tree
+
+TODO! ... Add intro here
+
+###Random Forest Holdout
+
+####Random Forest Holdout training
+
+```{r dt-rf-h_a}
+dt.rf_h_a <- train(dt.formula, data = holdout_age_groups.training, method = "rf", prox= TRUE)
+```
+
+
+```{r dt-rf-h_a-train_results}
+dt.rf_h_a_finalModel <- dt.rf_h_a$finalModel
+dt_sum.rf_h_a <- summary(dt.rf_h_a)
+#
+dt.rf_h_a_finalModel$forest[11]
+dt.rf_h_a_finalModel$forest[12]
+#
+print(dt.rf_h_a)
+print(dt.rf_h_a_finalModel)
+plot(dt.rf_h_a_finalModel)
+```
+
+####Random Forest Holdout testing
+
+```{r dt-rf-h_a-test_results}
+dt.rf_h_a_test <- predict(dt.rf_h_a, newdata = holdout_age_groups.testing)
+
+dt.c4_5_j48_h_a_test_cm <- confusionMatrix(dt.rf_h_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_h_a_test_cm$table
+dt.c4_5_j48_h_a_test_cm$overall[1]
+```
+
+###Random Forest Cross-validation
+
+####Random Forest Cross-validation training
+
+```{r dt-rf-cv-r5kf8_a}
+#dt.rf_h <- train(dt.formula, data = holdout.training, method = "rf", prox = FALSE, trControl = trControl)
+#abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8_5
+dt.rf_cv_r5kf8_a <- train(dt.formula, data = abalone_data_cleansed_age_groups, method = "rf", prox= TRUE, trControl = cv.train_control_8_5)
+```
+
+
+```{r dt-rf-cv-r5kf8_a-train_results}
+dt.rf_cv_r5kf8_a_finalModel <- dt.rf_cv_r5kf8_a$finalModel
+dt_sum.rf_cv_r5kf8_a <- summary(dt.rf_cv_r5kf8_a)
+#
+dt.rf_cv_r5kf8_a_finalModel$forest[11]
+dt.rf_cv_r5kf8_a_finalModel$forest[12]
+#
+print(dt.rf_cv_r5kf8_a)
+print(dt.rf_cv_r5kf8_a_finalModel)
+plot(dt.rf_cv_r5kf8_a_finalModel)
+```
+
+####Random Forest Cross-validation testing
+
+```{r dt-rf-h_a-test_results}
+dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing)
+
+dt.rf_cv_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
+dt.rf_cv_r5kf8_a_test_cm$table
+dt.rf_cv_r5kf8_a_test_cm$overall[1]
+```
+
+
 
 ##Conclusion
 
