@@ -11,6 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t4, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+if(!require(klaR)) install.packages("klaR", repos = mirrorUrl)
+
+#
+
+library("caret")
+library("klaR")
 ```
 
 <section>
@@ -29,6 +36,61 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Naive Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth sharing. If a proposed algorithm cannot improve on Naive Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
 
+##Naive Bayes training
 
+Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and onwards.
+
+##Naive Bayes formula and simpler classification
+
+```{r nb-h_a}
+#model <- NaiveBayes(Species~., data=data_train)
+#nb.h_a <- NaiveBayes(Species~., data=data_train)
+#nb.h_a <- train(dt.formula, data=iris, trControl=train_control, method="nb")
+nb.h_a <- train(dt.formula, data=holdout_age_groups.training, method="nb")
+#dt.c4_5_j48_h_a <- J48(dt.formula, holdout_age_groups.training) 
+nb_sum.h_a <- summary(nb.h_a)
+
+nb_sum.h_a
+
+#dt.c4_5_j48_h_a_party <- as.party(dt.c4_5_j48_h_a)
+#
+#dt_sum.c4_5_j48_h_a
+#
+#length(dt.c4_5_j48_h_a_party)
+#width(dt.c4_5_j48_h_a_party)
+#depth(dt.c4_5_j48_h_a_party)
+#
+#plot(nb.h_a)
+```
+
+##The caret train J48 argument with updated formula and simpler classification
+
+```{r dt-c4_5_train-h_a}
+dt.c4_5_h2_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8)
+```
+
+```{r dt-c4_5_train-h_a_results}
+dt_sum.c4_5_h2_a <- summary(dt.c4_5_h2_a)
+dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2_a$finalModel)
+#
+dt_sum.c4_5_h2_a
+#
+dt.c4_5_h2_a_finalModel <- dt.c4_5_h2_a$finalModel
+dt.c4_5_h2_a_finalModel_party <- as.party(dt.c4_5_h2_a_finalModel)
+#
+length(dt.c4_5_h2_a_finalModel_party)
+width(dt.c4_5_h2_a_finalModel_party)
+depth(dt.c4_5_h2_a_finalModel_party)
+#
+plot(dt.c4_5_h2_a_finalModel_party)
+```
+###Accuracy comparison of revised C4.5/J48 models
+
+```{r}
+dt_sum.c4_5_j48_h_a$details[1]
+dt_sum.c4_5_h2_a$details[1]
+```
+
+Interestingly the J48 function has produced an accuracy rating that is only marginally better than the previous version while the train J48 function call seems to have improved significantly so that it's nearly on par with the J48 function result. Looking at the models after validation has happened will hopefully provide even more revealing findings.
 
 </section>
