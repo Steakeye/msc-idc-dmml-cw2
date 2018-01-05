@@ -38,7 +38,7 @@ library("partykit")
 library("randomForest")
 ```
 
-```{r setup-t3, include=FALSE, message=FALSE}
+```{r setup-t3_2, include=FALSE, message=FALSE}
 registerDoMC()
 ```
 <section>
