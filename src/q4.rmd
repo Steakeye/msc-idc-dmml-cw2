@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Premise
 
->You need to construct, train and test Naïve Byes type classifier in R. Train and test your Naïve Byes classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
+>You need to construct, train and test Naïve Bayes type classifier in R. Train and test your Naïve Byes classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
 
 <!--
 • Building of Naïve Bayes type classifier in R 4
@@ -27,6 +27,8 @@ knitr::opts_chunk$set(echo = TRUE)
 • Testing of Naïve Bayes type classifier in R 6
 -->
 
-TBD
+Naive Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth sharing. If a proposed algorithm cannot improve on Naive Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
+
+
 
 </section>
