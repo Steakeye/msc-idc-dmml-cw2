@@ -413,11 +413,11 @@ dt.c4_5_j48_h_a_test_cm$overall[1]
 
 ###Random Forest Cross-validation
 
+TODO: open with premise for fandom forest that includes avoiding over-fitting.
+
 ####Random Forest Cross-validation training
 
 ```{r dt-rf-cv-r5kf8_a}
-#dt.rf_h <- train(dt.formula, data = holdout.training, method = "rf", prox = FALSE, trControl = trControl)
-#abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8_5
 dt.rf_cv_r5kf8_a <- train(dt.formula, data = abalone_data_cleansed_age_groups, method = "rf", prox= TRUE, trControl = cv.train_control_8_5)
 ```
 
@@ -436,6 +436,8 @@ plot(dt.rf_cv_r5kf8_a_finalModel)
 
 ####Random Forest Cross-validation testing
 
+... Based on the previous perfermances for k-folds cross-validation, only one configuarion has been used for the ske of the random forest tree, being the one considered the happy medium of the original 3.
+
 ```{r dt-rf-h_a-test_results}
 dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing)
 
@@ -444,8 +446,11 @@ dt.rf_cv_r5kf8_a_test_cm$table
 dt.rf_cv_r5kf8_a_test_cm$overall[1]
 ```
 
+...
 
+### Decision Tree Conclusion
 
-##Conclusion
+Random forests are really good for avoiding over-fitting and can improve real world accuracy
+
 
 </section>
