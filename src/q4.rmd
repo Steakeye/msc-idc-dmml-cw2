@@ -38,52 +38,47 @@ Naive Bayes is a relatively quick and simple probabilistic classifier that is of
 
 ##Naive Bayes training
 
+###Naive Bayes formula and simpler classification
+
 Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and onwards.
 
-##Naive Bayes formula and simpler classification
+###Naive Bayes with holdout
 
 ```{r nb-h_a}
 #model <- NaiveBayes(Species~., data=data_train)
 #nb.h_a <- NaiveBayes(Species~., data=data_train)
 #nb.h_a <- train(dt.formula, data=iris, trControl=train_control, method="nb")
-nb.h_a <- train(dt.formula, data=holdout_age_groups.training, method="nb")
-#dt.c4_5_j48_h_a <- J48(dt.formula, holdout_age_groups.training) 
-nb_sum.h_a <- summary(nb.h_a)
-
-nb_sum.h_a
-
-#dt.c4_5_j48_h_a_party <- as.party(dt.c4_5_j48_h_a)
-#
-#dt_sum.c4_5_j48_h_a
-#
-#length(dt.c4_5_j48_h_a_party)
-#width(dt.c4_5_j48_h_a_party)
-#depth(dt.c4_5_j48_h_a_party)
-#
-#plot(nb.h_a)
+#nb.h_a <- train(dt.formula, data=holdout_age_groups.training, method="nb")
+nb.h_a <- NaiveBayes(dt.formula, data=holdout_age_groups.training)
 ```
 
-##The caret train J48 argument with updated formula and simpler classification
-
-```{r dt-c4_5_train-h_a}
-dt.c4_5_h2_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8)
+```{r nb-h_a-summary}
+nb.h_a
 ```
+
+###Naive Bayes with holdout, training results
 
 ```{r dt-c4_5_train-h_a_results}
-dt_sum.c4_5_h2_a <- summary(dt.c4_5_h2_a)
-dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2_a$finalModel)
+#dt_sum.c4_5_h2_a <- summary(dt.c4_5_h2_a)
+#dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2_a$finalModel)
+##
+#dt_sum.c4_5_h2_a
+##
+#dt.c4_5_h2_a_finalModel <- dt.c4_5_h2_a$finalModel
+#dt.c4_5_h2_a_finalModel_party <- as.party(dt.c4_5_h2_a_finalModel)
+##
+#length(dt.c4_5_h2_a_finalModel_party)
+#width(dt.c4_5_h2_a_finalModel_party)
+#depth(dt.c4_5_h2_a_finalModel_party)
 #
-dt_sum.c4_5_h2_a
-#
-dt.c4_5_h2_a_finalModel <- dt.c4_5_h2_a$finalModel
-dt.c4_5_h2_a_finalModel_party <- as.party(dt.c4_5_h2_a_finalModel)
-#
-length(dt.c4_5_h2_a_finalModel_party)
-width(dt.c4_5_h2_a_finalModel_party)
-depth(dt.c4_5_h2_a_finalModel_party)
-#
-plot(dt.c4_5_h2_a_finalModel_party)
+#plot(dt.c4_5_h2_a_finalModel_party)
 ```
+
+```{R dt-rf-h_a-test_results}
+dt.rf_cv_r5kf8_a_test <- predict(model, x_test)
+# summarize results
+confusionMatrix(predictions$class, y_test)
+
 ###Accuracy comparison of revised C4.5/J48 models
 
 ```{r}
