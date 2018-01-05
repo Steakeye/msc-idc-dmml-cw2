@@ -446,7 +446,12 @@ dt.rf_cv_r5kf8_a_test_cm$table
 dt.rf_cv_r5kf8_a_test_cm$overall[1]
 ```
 
-...
+... TODO: write up about the performance
+
+###Random Forest Leave-one-out
+```{r dt-rf-h_a}
+dt.rf_loo_a <- train(dt.formula, data = abalone_data_cleansed_age_groups, method = "LOOCV", trControl = loocv.train_control)
+```
 
 ### Decision Tree Conclusion
 
