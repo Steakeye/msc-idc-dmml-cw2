@@ -11,13 +11,21 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t4, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(doMC)) install.packages('doMC')
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
 if(!require(klaR)) install.packages("klaR", repos = mirrorUrl)
+if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
 
 #
-
+library("doMC")
 library("caret")
 library("klaR")
+library("rpart.plot")
+```
+
+
+```{r setup-t4_2, include=FALSE, message=FALSE}
+registerDoMC()
 ```
 
 <section>
@@ -45,47 +53,71 @@ Precedent was set in the previous task to use a specific formula to target key p
 ###Naive Bayes with holdout
 
 ```{r nb-h_a}
-#model <- NaiveBayes(Species~., data=data_train)
-#nb.h_a <- NaiveBayes(Species~., data=data_train)
-#nb.h_a <- train(dt.formula, data=iris, trControl=train_control, method="nb")
-#nb.h_a <- train(dt.formula, data=holdout_age_groups.training, method="nb")
 nb.h_a <- NaiveBayes(dt.formula, data=holdout_age_groups.training)
 ```
 
 ```{r nb-h_a-summary}
-nb.h_a
+plot(nb.h_a)
 ```
 
-###Naive Bayes with holdout, training results
+####Naive Bayes with holdout, training results
 
-```{r dt-c4_5_train-h_a_results}
-#dt_sum.c4_5_h2_a <- summary(dt.c4_5_h2_a)
-#dt_sum.c4_5_h2_a_final <- summary(dt.c4_5_h2_a$finalModel)
-##
-#dt_sum.c4_5_h2_a
-##
-#dt.c4_5_h2_a_finalModel <- dt.c4_5_h2_a$finalModel
-#dt.c4_5_h2_a_finalModel_party <- as.party(dt.c4_5_h2_a_finalModel)
-##
-#length(dt.c4_5_h2_a_finalModel_party)
-#width(dt.c4_5_h2_a_finalModel_party)
-#depth(dt.c4_5_h2_a_finalModel_party)
-#
-#plot(dt.c4_5_h2_a_finalModel_party)
-```
-
-```{R dt-rf-h_a-test_results}
-dt.rf_cv_r5kf8_a_test <- predict(model, x_test)
+```{r nb-h_a_test_results}
+nb.h_a_test <- predict(nb.h_a, holdout_age_groups.testing)
 # summarize results
-confusionMatrix(predictions$class, y_test)
+nb.h_a_test_cm <- confusionMatrix(nb.h_a_test$class, holdout_age_groups.testing$age_group)
+nb.h_a_test_cm
+```
 
-###Accuracy comparison of revised C4.5/J48 models
+
+###Naive Bayes with Repeated K-folds Cross-validation
+
+```{r nb-r5kf8_a}
+nb.r5kf8_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl = cv.train_control_8_5, method="nb")
+```
+
+```{r nb-r5kf8_a-summary}
+plot(nb.r5kf8_a)
+```
+
+####Naive Bayes with Repeated K-folds, training results
+
+```{r nb-r5kf8_a_test_results}
+nb.r5kf8_a_test <- predict(nb.r5kf8_a, holdout_age_groups.testing)
+# summarize results
+nb.r5kf8_a_test_cm <- confusionMatrix(nb.r5kf8_a_test, holdout_age_groups.testing$age_group)
+nb.r5kf8_a_test_cm
+```
+
+###Naive Bayes with Leave-one-out Cross-validation
+
+```{r nb-loo_a}
+nb.loo_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl = loocv.train_control, method="nb")
+```
+
+```{r nb-loo_a-summary}
+plot(nb.loo_a)
+```
+
+####Naive Bayes with Leave-one-out, training results
+
+```{r nb-loo_a_test_results}
+nb.loo_a_test <- predict(nb.loo_a, holdout_age_groups.testing)
+# summarize results
+nb.loo_a_test_cm <- confusionMatrix(nb.loo_a_test, holdout_age_groups.testing$age_group)
+nb.loo_a_test_cm
+```
+
+
+
+###Accuracy comparison of NB models
+
 
 ```{r}
-dt_sum.c4_5_j48_h_a$details[1]
-dt_sum.c4_5_h2_a$details[1]
+nb.h_a_test_cm$overall[1]
+nb.r5kf8_a_test_cm$overall[1]
+nb.loo_a_test_cm$overall[1]
 ```
 
-Interestingly the J48 function has produced an accuracy rating that is only marginally better than the previous version while the train J48 function call seems to have improved significantly so that it's nearly on par with the J48 function result. Looking at the models after validation has happened will hopefully provide even more revealing findings.
 
 </section>
