@@ -57,6 +57,7 @@ plot(nb.h_a)
 
 ```{r nb-h_a_test_results}
 nb.h_a_test <- predict(nb.h_a, holdout_age_groups.testing)
+nb.h_a_test_prob <- predict(nb.h_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 nb.h_a_test_cm <- confusionMatrix(nb.h_a_test$class, holdout_age_groups.testing$age_group)
 nb.h_a_test_cm
@@ -77,6 +78,7 @@ plot(nb.r5kf8_a)
 
 ```{r nb-r5kf8_a_test_results}
 nb.r5kf8_a_test <- predict(nb.r5kf8_a, holdout_age_groups.testing)
+nb.r5kf8_a_test_prob <- predict(nb.r5kf8_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 nb.r5kf8_a_test_cm <- confusionMatrix(nb.r5kf8_a_test, holdout_age_groups.testing$age_group)
 nb.r5kf8_a_test_cm

@@ -40,73 +40,76 @@ library("ROCR")
 
 ##Precision & Recall comparison
 
-###C4.5 Decision Tree candidate
+>>>Precision-Recall is a useful measure of success of prediction when the classes are very imbalanced. In information retrieval, precision is a measure of result relevancy, while recall is a measure of how many truly relevant results are returned.
+The precision-recall curve shows the tradeoff between precision and recall for different threshold. A high area under the curve represents both high recall and high precision, where high precision relates to a low false positive rate, and high recall relates to a low false negative rate. High scores for both show that the classifier is returning accurate results (high precision), as well as returning a majority of all positive results (high recall).
+A system with high recall but low precision returns many results, but most of its predicted labels are incorrect when compared to the training labels. A system with high precision but low recall is just the opposite, returning very few results, but most of its predicted labels are correct when compared to the training labels. An ideal system with high precision and high recall will return many results, with all results labeled correctly.
 
-```{r}
-data(ROCR.simple)
-
-outlook = c('rain', 'overcast', 'rain', 'sunny', 'rain', 
-            'rain', 'sunny', 'overcast', 'overcast', 'overcast', 
-            'sunny', 'sunny', 'rain', 'rain', 'overcast',
-            'sunny', 'overcast', 'overcast', 'sunny', 'sunny',
-            'sunny', 'overcast')
-humidity = c(79, 74, 80, 60, 65, 79, 60, 74, 77, 80, 
-             71, 70, 80, 65, 70, 56, 80, 70, 56, 70,
-             71, 77)
-windy = c(T, T, F, T, F, T, T, T, T, F, T, F, F, F, T, T, F, T, T, F, T, T)
-play = c(F, F, T, F, T, F, F, T, T, T, F, F, T, T, T, T, T, T, F, T, F, T)
-
-game = data.frame(outlook, humidity, windy, play)
-game$score = NA
-
-attach(game)
-game$score[outlook == 'sunny' & humidity <= 70] = 5/8
-game$score[outlook == 'sunny' & humidity > 70] = 1 - 3/4
-game$score[outlook == 'overcast'] = 4/5
-game$score[outlook == 'rain' & windy == T] = 1 - 2/2
-game$score[outlook == 'rain' & windy == F] = 3/3
-detach(game)
-
-game$predict = game$score >= 0.5
-game$correct = game$predict == game$play
-
-library(ROCR)
-
-pred = prediction(game$score, game$play)
-roc = performance(pred, measure="tpr", x.measure="fpr")
-plot(roc, col="orange", lwd=2) 
-lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
-
-auc = performance(pred, 'auc')
-slot(auc, 'y.values')
+```{r f-score-func}
+ f_score <- function (prec, rec)
+{
+  return(2 * prec * rec / (prec + rec))
+}
 ```
 
+###C4.5 Decision Tree candidate
+
 ```{r dt-c4_5-p&r}
-#diag <- diag(cm) # number of correctly classified instances per class 
-#rowsums <- apply(cm, 1, sum) # number of instances per class
-#colsums <- apply(cm, 2, sum) # number of predictions per class
- 
-#pred_dt.c4_5 <- prediction( ROCR.simple$predictions, ROCR.simple$labels)
-#precision <- diag / colsums 
-#recall <- diag / rowsums 
-#f1 = 2 * precision * recall / (precision + recall) 
-#data.frame(precision, recall, f1) 
+pred_dt.c4_5_highest_probs <- apply(dt.c4_5_j48_r5kf8_a_test_prob, 1, "max") 
+pred_dt.c4_5_correct <- dt.c4_5_j48_r5kf8_a_test == holdout_age_groups.testing$age_group
 
-#pred_dt.c4_5 <- prediction(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
-#pred_dt.c4_5 <- predict(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
-#pred_dt.rf <- predict(as.numeric(dt.rf_cv_r5kf8_a_test), as.numeric(holdout_age_groups.testing$age_group))
+pred_dt.c4_5 <- prediction(pred_dt.c4_5_highest_probs, pred_dt.c4_5_correct)
 
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.c4_5 <- performance(pred_dt.c4_5, "prec", "rec")
+plot(pr_dt.c4_5)
 ```
 
 ###Random Forest Decision Tree candidate
 
 ```{r dt-rf-p&r}
+#TODO: clean this up!
+pred_dt.highest_probs <- apply(dt.rf_cv_r5kf8_a_test_prob, 1, "max") 
+pred_dt.correct <- dt.rf_cv_r5kf8_a_test == holdout_age_groups.testing$age_group
 
-pred_dt.rf <- predict(as.numeric(dt.rf_cv_r5kf8_a_test_prob), as.numeric(holdout_age_groups.testing$age_group))
+#pred_dt.rf <- prediction(dt.rf_cv_r5kf8_a_test_prob, holdout_age_groups.testing$age_group)
+pred_dt.rf <- prediction(pred_dt.highest_probs, pred_dt.correct)
+roc_dt.rf = performance(pred_dt.rf, measure="tpr", x.measure="fpr")
+plot(roc_dt.rf, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 
+auc_dt.rf = performance(pred_dt.rf, "auc")
+slot(auc_dt.rf, 'y.values')
+
+auc_dt.rf@y.values[[1]]
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.rf <- performance(pred_dt.rf, "prec", "rec")
+plot(pr_dt.rf)
 ```
 
-###Naive Bayes candidate
+###Naive Bayes candidates
+
+```{r dt-nb_h-p&r}
+pred_dt.nb_h_highest_probs <- apply(nb.h_a_test_prob$posterior, 1, "max") 
+pred_dt.nb_h_correct <- nb.h_a_test_prob$class == holdout_age_groups.testing$age_group
+
+pred_dt.nb_h <- prediction(pred_dt.nb_h_highest_probs, pred_dt.nb_h_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.nb_h <- performance(pred_dt.nb_h, "prec", "rec")
+plot(pr_dt.nb_h)
+```
+
+```{r dt-nb_r5kf8-p&r}
+pred_dt.nb_r5kf8_highest_probs <- apply(nb.r5kf8_a_test_prob, 1, "max") 
+pred_dt.nb_r5kf8_correct <- nb.r5kf8_a_test == holdout_age_groups.testing$age_group
+
+pred_dt.nb_r5kf8 <- prediction(pred_dt.nb_r5kf8_highest_probs, pred_dt.nb_r5kf8_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.nb_r5kf8 <- performance(pred_dt.nb_r5kf8, "prec", "rec")
+plot(pr_dt.nb_r5kf8)
+```
 
 ###KNN candidate
 
