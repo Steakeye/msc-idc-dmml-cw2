@@ -11,6 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t6, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+if(!require(ROCR)) install.packages("ROCR", repos = mirrorUrl)
+#
+library("caret")
+library("ROCR")
 ```
 
 <section>
@@ -31,7 +36,79 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Confusion matrix comparison
 
+... Re-use earlier values
+
 ##Precision & Recall comparison
+
+###C4.5 Decision Tree candidate
+
+```{r}
+data(ROCR.simple)
+
+outlook = c('rain', 'overcast', 'rain', 'sunny', 'rain', 
+            'rain', 'sunny', 'overcast', 'overcast', 'overcast', 
+            'sunny', 'sunny', 'rain', 'rain', 'overcast',
+            'sunny', 'overcast', 'overcast', 'sunny', 'sunny',
+            'sunny', 'overcast')
+humidity = c(79, 74, 80, 60, 65, 79, 60, 74, 77, 80, 
+             71, 70, 80, 65, 70, 56, 80, 70, 56, 70,
+             71, 77)
+windy = c(T, T, F, T, F, T, T, T, T, F, T, F, F, F, T, T, F, T, T, F, T, T)
+play = c(F, F, T, F, T, F, F, T, T, T, F, F, T, T, T, T, T, T, F, T, F, T)
+
+game = data.frame(outlook, humidity, windy, play)
+game$score = NA
+
+attach(game)
+game$score[outlook == 'sunny' & humidity <= 70] = 5/8
+game$score[outlook == 'sunny' & humidity > 70] = 1 - 3/4
+game$score[outlook == 'overcast'] = 4/5
+game$score[outlook == 'rain' & windy == T] = 1 - 2/2
+game$score[outlook == 'rain' & windy == F] = 3/3
+detach(game)
+
+game$predict = game$score >= 0.5
+game$correct = game$predict == game$play
+
+library(ROCR)
+
+pred = prediction(game$score, game$play)
+roc = performance(pred, measure="tpr", x.measure="fpr")
+plot(roc, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+
+auc = performance(pred, 'auc')
+slot(auc, 'y.values')
+```
+
+```{r dt-c4_5-p&r}
+#diag <- diag(cm) # number of correctly classified instances per class 
+#rowsums <- apply(cm, 1, sum) # number of instances per class
+#colsums <- apply(cm, 2, sum) # number of predictions per class
+ 
+#pred_dt.c4_5 <- prediction( ROCR.simple$predictions, ROCR.simple$labels)
+#precision <- diag / colsums 
+#recall <- diag / rowsums 
+#f1 = 2 * precision * recall / (precision + recall) 
+#data.frame(precision, recall, f1) 
+
+#pred_dt.c4_5 <- prediction(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
+#pred_dt.c4_5 <- predict(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
+#pred_dt.rf <- predict(as.numeric(dt.rf_cv_r5kf8_a_test), as.numeric(holdout_age_groups.testing$age_group))
+
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-p&r}
+
+pred_dt.rf <- predict(as.numeric(dt.rf_cv_r5kf8_a_test_prob), as.numeric(holdout_age_groups.testing$age_group))
+
+```
+
+###Naive Bayes candidate
+
+###KNN candidate
 
 ##Accuracy estimation comparison
 

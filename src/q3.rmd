@@ -361,6 +361,7 @@ dt.c4_5_j48_kf_a_test_cm$overall[1]
 **K-folds, with 8 folds, 5 repetitions**
 ```{r dt-c4_5_j48_r5kf8_a_test}
 dt.c4_5_j48_r5kf8_a_test <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_r5kf8_a_test_prob <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 dt.c4_5_j48_r5kf8_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf8_a_test, holdout_age_groups.testing$age_group)
 dt.c4_5_j48_r5kf8_a_test_cm$table
 dt.c4_5_j48_r5kf8_a_test_cm$overall[1]
@@ -412,9 +413,9 @@ plot(dt.rf_h_a_finalModel)
 ```{r dt-rf-h_a-test_results}
 dt.rf_h_a_test <- predict(dt.rf_h_a, newdata = holdout_age_groups.testing)
 
-dt.c4_5_j48_h_a_test_cm <- confusionMatrix(dt.rf_h_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_j48_h_a_test_cm$table
-dt.c4_5_j48_h_a_test_cm$overall[1]
+dt.rf_h_a_test_cm <- confusionMatrix(dt.rf_h_a_test, holdout_age_groups.testing$age_group)
+dt.rf_h_a_test_cm$table
+dt.rf_h_a_test_cm$overall[1]
 ```
 
 ###Random Forest Cross-validation
@@ -445,7 +446,9 @@ plot(dt.rf_cv_r5kf8_a_finalModel)
 ... Based on the previous perfermances for k-folds cross-validation, only one configuarion has been used for the ske of the random forest tree, being the one considered the happy medium of the original 3.
 
 ```{r dt-rf-r5kf8_a-test_results}
+#dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = c("raw"))
 dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing)
+dt.rf_cv_r5kf8_a_test_prob <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 
 dt.rf_cv_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
 dt.rf_cv_r5kf8_a_test_cm$table

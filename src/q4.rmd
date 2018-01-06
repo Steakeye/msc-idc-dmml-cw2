@@ -11,21 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t4, echo=FALSE, include=FALSE, message=FALSE}
-#if(!require(doMC)) install.packages('doMC')
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
 if(!require(klaR)) install.packages("klaR", repos = mirrorUrl)
 if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
 
 #
-#library("doMC")
 library("caret")
 library("klaR")
 library("rpart.plot")
-```
-
-
-```{r setup-t4_2, include=FALSE, message=FALSE}
-#registerDoMC()
 ```
 
 <section>
