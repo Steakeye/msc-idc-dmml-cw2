@@ -6,13 +6,13 @@ bibliography: bibliography.ris
 
 
 ```{r setup-t3, include=FALSE, message=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+#knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 set.seed(4321)
 ```
 
-
 ```{r deps-t3, echo=FALSE, include=FALSE, message=FALSE}
-if(!require(doMC)) install.packages('doMC')
+#if(!require(doMC)) install.packages('doMC')
 if(!require(rJava)) install.packages('rJava')
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
 if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
@@ -28,7 +28,7 @@ if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
 if(!require(randomForest)) install.packages("randomForest", repos = mirrorUrl)
 #
 # configure multicore
-library("doMC")
+#library("doMC")
 library("e1071")
 library("caret")
 library("RWeka")
@@ -39,7 +39,7 @@ library("randomForest")
 ```
 
 ```{r setup-t3_2, include=FALSE, message=FALSE}
-registerDoMC()
+#registerDoMC()
 ```
 <section>
 
@@ -64,6 +64,10 @@ Below is not only an investigation into C4.5 but also, a comparison of two varia
 ###The J48 method
 
 ```{r dt-c4_5_j48-h}
+load("holdout.training.rda")
+load("holdout.testing.rda")
+
+
 dt.c4_5_j48_h <- J48(as.factor(rings)~., holdout.training) 
 dt_sum.c4_5_j48_h <- summary(dt.c4_5_j48_h)
 dt.c4_5_j48_h_party <- as.party(dt.c4_5_j48_h)
@@ -73,7 +77,7 @@ The J48 function is extremely quick with the dataset, training takes less than a
 
 We can look at the complexity of the tree by looking at the dimensionality, where the length is effectively the tree size, width is the number of leaves, or terminal nodes and the depth is effectively the number of conditional branch layers.
 
-```{r}
+```{r dt-c4_5_j48-h_dimensions}
 length(dt.c4_5_j48_h_party)
 width(dt.c4_5_j48_h_party)
 depth(dt.c4_5_j48_h_party)
@@ -87,25 +91,27 @@ The complexity of this tree is sufficiently complex to render a graphical repres
 ```{r dt-c4_5_train-h}
 dt.c4_5_h2 <- train(as.factor(rings) ~., method="J48", holdout.training, tuneLength = 8)
 dt_sum.c4_5_h2 <- summary(dt.c4_5_h2)
-dt_sum.c4_5_h2_final <- summary(dt.c4_5_h2$finalModel)
+dt.c4_5_h2_finalModel <- dt.c4_5_h2$finalModel
+dt_sum.c4_5_h2_final <- summary(dt.c4_5_h2_finalModel)
 ```
 
 Whilst in comparisons to other forms of training and data-mining algorithms, under 5 minutes for a 4,000 by 9 dataset might seem okay, in comparison to the J48 function, there seems to be something at odds. The proof will be in the comparison of the two models with regard to accuracy on the test dataset.
 
 Again, we can look at the complexity of the tree through dimensionality, length being total size, width being leaf nodes and depth being branch layer count. 
 
-```{r}
+```{r dt-c4_5_train-h_dimensions}
 #dt.c4_5_h2
-dt.c4_5_h2_finalModel <- dt.c4_5_h2$finalModel
+#dt.c4_5_h2_finalModel <- dt.c4_5_h2$finalModel
 #dt.c4_5_h2_finalModel
-dt.c4_5_h2_finalModel_party <- as.party(dt.c4_5_h2$finalModel)
+dt.c4_5_h2_finalModel_party <- as.party(dt.c4_5_h2_finalModel)
+#dt.c4_5_h2_finalModel_party <- as.party(dt.c4_5_h2$finalModel)
 length(dt.c4_5_h2_finalModel_party)
 width(dt.c4_5_h2_finalModel_party)
 depth(dt.c4_5_h2_finalModel_party)
 ```
 It would appear that the 'final model' we are looking at derived from the train function has already been pruned, making for a simpler decision tree; this tree is actually able to be represented graphically within a reasonable amount of time (under 10 seconds).
 
-```{r}
+```{r c4_5-plot_tree}
 #plot(dt.c4_5_h2_finalModel)
 plot(dt.c4_5_h2_finalModel_party)
 ```
@@ -115,7 +121,7 @@ Even though the tree is able to be rendered it's not easy to get anything meanin
 ###Comparing the two C4.5/J48 methods
 
 Below follows the summaries from both methods, for examination: 
-```{r}
+```{r c4_5-summaries}
 dt_sum.c4_5_j48_h
 dt_sum.c4_5_h2
 ```
@@ -124,7 +130,7 @@ dt_sum.c4_5_h2
 
 Despite the values being present in the summaries, to clarify understanding, they are repeated below:
 
-```{r}
+```{r c4_5-accuracy_comparison}
 dt_sum.c4_5_j48_h$details[1]
 dt_sum.c4_5_h2$details[1]
 ```
@@ -204,7 +210,7 @@ plot(dt.c4_5_h2_a_finalModel_party)
 ```
 ####Accuracy comparison of revised C4.5/J48 models
 
-```{r}
+```{r c4_5-a-accuracy_comparison}
 dt_sum.c4_5_j48_h_a$details[1]
 dt_sum.c4_5_h2_a$details[1]
 ```
@@ -225,7 +231,7 @@ dt.c4_5_j48_h_a_test_cm$table
 dt.c4_5_j48_h_a_test_cm$overall[1]
 ```
 
-```{r dt-c4_5h2_test}
+```{r dt-c4_5h2_a_test}
 #dt.c4_5_h2
 dt.c4_5_h2_a_test <- predict(dt.c4_5_h2_a, newdata = holdout_age_groups.testing)
 dt.c4_5_h2_a_test_cm <- confusionMatrix(dt.c4_5_h2_a_test, holdout_age_groups.testing$age_group)
@@ -263,14 +269,14 @@ dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_gr
 ```
 
 **K-folds, with 8 folds, 5 repetitions**
-```{r dt-c4_5_j48-train-rkf_a}
+```{r dt-c4_5_j48-train-r5kf8_a}
 #dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8_5)
 #abalone_data_cleansed_age_groups
 dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8_5)
 ```
 
 **K-folds, with 13 folds, 5 repetitions**
-```{r dt-c4_5_j48-train-rkf_a}
+```{r dt-c4_5_j48-train-r5kf13_a}
 #dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_13_5)
 #abalone_data_cleansed_age_groups
 dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_13_5)
@@ -345,7 +351,7 @@ The fact that for the k-folds with 5 repititions, the \(k = 13\) version took ab
 #####Testing results J48 method and k-folds training 
 
 **K-folds, with 8 folds**
-```{r dt-c4_5h2_test}
+```{r dt-c4_5_j48_kf_a_test}
 dt.c4_5_j48_kf_a_test <- predict(dt.c4_5_j48_kf_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_kf_a_test_cm <- confusionMatrix(dt.c4_5_j48_kf_a_test, holdout_age_groups.testing$age_group)
 dt.c4_5_j48_kf_a_test_cm$table
@@ -353,7 +359,7 @@ dt.c4_5_j48_kf_a_test_cm$overall[1]
 ```
 
 **K-folds, with 8 folds, 5 repetitions**
-```{r dt-c4_5h2_test}
+```{r dt-c4_5_j48_r5kf8_a_test}
 dt.c4_5_j48_r5kf8_a_test <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r5kf8_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf8_a_test, holdout_age_groups.testing$age_group)
 dt.c4_5_j48_r5kf8_a_test_cm$table
@@ -361,7 +367,7 @@ dt.c4_5_j48_r5kf8_a_test_cm$overall[1]
 ```
 
 **K-folds, with 13 folds, 5 repetitions**
-```{r dt-c4_5h2_test}
+```{r dt-c4_5_j48_r5kf13_a_test}
 dt.c4_5_j48_r5kf13_a_test <- predict(dt.c4_5_j48_r5kf13_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r5kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf13_a_test, holdout_age_groups.testing$age_group)
 dt.c4_5_j48_r5kf13_a_test_cm$table
@@ -438,7 +444,7 @@ plot(dt.rf_cv_r5kf8_a_finalModel)
 
 ... Based on the previous perfermances for k-folds cross-validation, only one configuarion has been used for the ske of the random forest tree, being the one considered the happy medium of the original 3.
 
-```{r dt-rf-h_a-test_results}
+```{r dt-rf-r5kf8_a-test_results}
 dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing)
 
 dt.rf_cv_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
