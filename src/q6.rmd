@@ -67,27 +67,17 @@ plot(pr_dt.c4_5)
 ###Random Forest Decision Tree candidate
 
 ```{r dt-rf-p&r}
-#TODO: clean this up!
 pred_dt.highest_probs <- apply(dt.rf_cv_r5kf8_a_test_prob, 1, "max") 
 pred_dt.correct <- dt.rf_cv_r5kf8_a_test == holdout_age_groups.testing$age_group
 
-#pred_dt.rf <- prediction(dt.rf_cv_r5kf8_a_test_prob, holdout_age_groups.testing$age_group)
 pred_dt.rf <- prediction(pred_dt.highest_probs, pred_dt.correct)
-roc_dt.rf = performance(pred_dt.rf, measure="tpr", x.measure="fpr")
-plot(roc_dt.rf, col="orange", lwd=2) 
-lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
-
-auc_dt.rf = performance(pred_dt.rf, "auc")
-slot(auc_dt.rf, 'y.values')
-
-auc_dt.rf@y.values[[1]]
 
 ## precision/recall curve (x-axis: recall, y-axis: precision)
 pr_dt.rf <- performance(pred_dt.rf, "prec", "rec")
 plot(pr_dt.rf)
 ```
 
-###Naive Bayes candidates
+###Naive Bayes holdout candidate
 
 ```{r dt-nb_h-p&r}
 pred_nb.h_highest_probs <- apply(nb.h_a_test_prob$posterior, 1, "max") 
@@ -100,6 +90,8 @@ pr_nb.h <- performance(pred_nb.h, "prec", "rec")
 plot(pr_nb.h)
 ```
 
+###Naive Bayes repeat k-folds cross-validation candidate
+
 ```{r dt-nb_r5kf8-p&r}
 pred_nb.r5kf8_highest_probs <- apply(nb.r5kf8_a_test_prob, 1, "max") 
 pred_nb.r5kf8_correct <- nb.r5kf8_a_test == holdout_age_groups.testing$age_group
@@ -111,7 +103,9 @@ pr_nb.r5kf8 <- performance(pred_dt.nb_r5kf8, "prec", "rec")
 plot(pr_nb.r5kf8)
 ```
 
-###KNN candidate
+###KNN candidates
+
+####KNN holdout candidate
 
 ```{r knn-h-p&r}
 pred_knn.h_highest_probs <- apply(knn.h_a_test_prob, 1, "max") 
@@ -123,6 +117,8 @@ pred_knn.h <- prediction(pred_knn.h_highest_probs, pred_knn.h_correct)
 pr_knn.h <- performance(pred_knn.h, "prec", "rec")
 plot(pr_knn.h)
 ```
+
+####KNN repeated k-folds cross-validation candidate
 
 ```{r knn-r5kf8-p&r}
 pred_knn.r5kf8_highest_probs <- apply(knn.r5kf8_a_test_prob, 1, "max") 
@@ -137,7 +133,54 @@ plot(pr_knn.r5kf8)
 
 ##Accuracy estimation comparison
 
+###C4.5 Decision Tree candidate
+
+```{r dt-c4_5-acc}
+acc_dt.c4_5 <- performance(pred_dt.c4_5, "acc")
+plot(acc_dt.c4_5)
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-acc}
+acc_dt.rf <- performance(pred_dt.rf, "acc")
+plot(acc_dt.rf)
+```
+###KNN holdout candidate
+
+```{r knn-h-p&r}
+acc_knn.h <- performance(pred_knn.h, "acc")
+plot(acc_knn.h)
+```
+
+###KNN repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-p&r}
+acc_knn.r5kf8 <- performance(pred_knn.r5kf8, "acc")
+plot(acc_knn.r5kf8)
+```
+
 ##ROC comparison
+
+###C4.5 Decision Tree candidate
+
+```{r dt-rf-roc}
+roc_dt.c4_5 = performance(pred_dt.c4_5, measure="tpr", x.measure="fpr")
+plot(roc_dt.c4_5, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+
+auc_dt.rf = performance(pred_dt.rf, "auc")
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-roc}
+roc_dt.rf = performance(pred_dt.rf, measure="tpr", x.measure="fpr")
+plot(roc_dt.rf, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+
+auc_dt.rf = performance(pred_dt.rf, "auc")
+```
 
 ##RAUC matrix comparison
 
