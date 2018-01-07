@@ -53,6 +53,8 @@ nb.h_a <- NaiveBayes(dt.formula, data=holdout_age_groups.training)
 plot(nb.h_a)
 ```
 
+What's interesting about these Naive Bayes plots is that they suggest the merit of using this techniques to select features that could be used when creating a formula for use with another model. Another aspect worth noting is how the height and diameter probability graphs are extremely similar, which could suggest redundancy, where another feature could have been used as a classifier variable.
+
 ####Naive Bayes with holdout, training results
 
 ```{r nb-h_a_test_results}
@@ -62,7 +64,6 @@ nb.h_a_test_prob <- predict(nb.h_a, holdout_age_groups.testing, type = "prob")
 nb.h_a_test_cm <- confusionMatrix(nb.h_a_test$class, holdout_age_groups.testing$age_group)
 nb.h_a_test_cm
 ```
-
 
 ###Naive Bayes with Repeated K-folds Cross-validation
 
@@ -103,8 +104,6 @@ nb.loo_a_test_cm <- confusionMatrix(nb.loo_a_test, holdout_age_groups.testing$ag
 nb.loo_a_test_cm
 ```
 
-
-
 ###Accuracy comparison of NB models
 
 
@@ -113,6 +112,9 @@ nb.h_a_test_cm$overall[1]
 nb.r5kf8_a_test_cm$overall[1]
 nb.loo_a_test_cm$overall[1]
 ```
+##Naive Bayes Conclusion
+
+While this technique doesn't produce the strongest results, it's a useful tool alongside other models which can be used for preparatory work in order to inform further work on modelling a classification problem. It's a fast way to do preliminary analysis, which can benefit somewhat from cross-validation but for the Abalone dataset at least, using the leave-one-out method bore no extra benefit over k-folds.
 
 
 </section>

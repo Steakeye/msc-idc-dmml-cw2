@@ -47,6 +47,8 @@ Additionally, you can try to do the
 
 ##KNN modelling
 
+K-Nearest=Neigbours looks to classify new data based on it's dimensionl proxmimity to an already classified node or group of nodes. This use of dimensional distance allows it to be used for regression but every new classification needs to be computed against the relative distance to the instances within the traninging dataset; this makes it fast to train because a lot of the computation is deferred but then using this method to classify is more expensive because every new classification is calculated at runtime instead of relying on an estaplished ruleset.
+
 ###KNN with holdout
 
 ```{r knn-h_a}

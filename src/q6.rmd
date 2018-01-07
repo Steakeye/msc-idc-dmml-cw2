@@ -51,7 +51,7 @@ A system with high recall but low precision returns many results, but most of it
 }
 ```
 
-###C4.5 Decision Tree candidate
+###C4.5 Decision Tree candidate, 8 folds & 5 repetitions
 
 ```{r dt-c4_5-p&r}
 pred_dt.c4_5_highest_probs <- apply(dt.c4_5_j48_r5kf8_a_test_prob, 1, "max") 
@@ -62,6 +62,20 @@ pred_dt.c4_5 <- prediction(pred_dt.c4_5_highest_probs, pred_dt.c4_5_correct)
 ## precision/recall curve (x-axis: recall, y-axis: precision)
 pr_dt.c4_5 <- performance(pred_dt.c4_5, "prec", "rec")
 plot(pr_dt.c4_5)
+```
+
+
+###C4.5 Decision Tree candidate, 13 folds & 8 repetitions
+
+```{r dt-c4_5-r8kf13-p&r}
+pred_dt.c4_5_r8kf13_highest_probs <- apply(dt.c4_5_j48_r8kf13_a_test_prob, 1, "max") 
+pred_dt.c4_5_r8kf13_correct <- dt.c4_5_j48_r8kf13_a_test == holdout_age_groups.testing$age_group
+
+pred_dt.c4_5_r8kf13 <- prediction(pred_dt.c4_5_r8kf13_highest_probs, pred_dt.c4_5_r8kf13_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.c4_5_r8kf13 <- performance(pred_dt.c4_5_r8kf13, "prec", "rec")
+plot(pr_dt.c4_5_r8kf13)
 ```
 
 ###Random Forest Decision Tree candidate

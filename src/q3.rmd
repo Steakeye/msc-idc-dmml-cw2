@@ -401,6 +401,7 @@ dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
 **K-folds, with 13 folds, 8 repetitions**
 ```{r dt-c4_5_j48_r8kf13_a_test}
 dt.c4_5_j48_r8kf13_a_test <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_r8kf13_a_test_prob <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing, type = "prob")
 dt.c4_5_j48_r8kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r8kf13_a_test, holdout_age_groups.testing$age_group)
 dt.c4_5_j48_r8kf13_a_test_cm$table
 dt.c4_5_j48_r8kf13_a_test_cm$overall[1]
@@ -467,9 +468,8 @@ dt.rf_h_a_test_cm$overall[1]
 The ranger package has a method designed speifically for holdout Random Forests, which is used next to explore if there could be any better performance out of the traditional holdout technique. 
 
 ```{r dt-hrf-h_a}
-#holdoutRF(formula, data, ...)
-
 dt.hrf_h_a <- holdoutRF(dt.formula, holdout_age_groups.training)
+dt.hrf_h_a_prob <- holdoutRF(dt.formula, holdout_age_groups.training, probability = TRUE)
 ```
 
 For some reason, not quite clear from the documentation, this method produces 2 Random Forests.
@@ -484,12 +484,14 @@ dt.hrf_h_a$rf2
 
 ```{r dt-hrf-h_a-test_results}
 dt.hrf1_h_a_test <- predict(dt.hrf_h_a$rf1, holdout_age_groups.testing)
+dt.hrf1_h_a_test_prob <- predict(dt.hrf_h_a_prob$rf1, holdout_age_groups.testing)
 
 dt.hrf1_h_a_test_cm <- confusionMatrix(dt.hrf1_h_a_test$predictions, holdout_age_groups.testing$age_group)
 dt.hrf1_h_a_test_cm$table
 dt.hrf1_h_a_test_cm$overall[1]
 #
 dt.hrf2_h_a_test <- predict(dt.hrf_h_a$rf2, holdout_age_groups.testing)
+dt.hrf2_h_a_test_prob <- predict(dt.hrf_h_a_prob$rf2, holdout_age_groups.testing)
 
 dt.hrf2_h_a_test_cm <- confusionMatrix(dt.hrf2_h_a_test$predictions, holdout_age_groups.testing$age_group)
 dt.hrf2_h_a_test_cm$table
@@ -572,7 +574,7 @@ Random forests are good for avoiding over-fitting, so long as you know what you'
 
 ### Decision Tree Conclusion
 
-Random forests are good for avoiding over-fitting, so long as you know what you're doing, particularly with regard to cross-validation.
+...
 
 
 </section>
