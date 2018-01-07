@@ -169,20 +169,20 @@ plot(acc_nb.h)
 
 ###Naive Bayes repeated k-folds cross-validation candidate
 
-```{r knn-r5kf8-acc}
+```{r nb-r5kf8-acc}
 acc_nb.r5kf8 <- performance(pred_nb.r5kf8, "acc")
 plot(acc_nb.r5kf8)
 ```
 ###KNN holdout candidate
 
-```{r knn-h-p&r}
+```{r knn-h-acc}
 acc_knn.h <- performance(pred_knn.h, "acc")
 plot(acc_knn.h)
 ```
 
 ###KNN repeated k-folds cross-validation candidate
 
-```{r knn-r5kf8-p&r}
+```{r knn-r5kf8-acc}
 acc_knn.r5kf8 <- performance(pred_knn.r5kf8, "acc")
 plot(acc_knn.r5kf8)
 ```
