@@ -498,7 +498,6 @@ plot(dt.rf_cv_r5kf8_a_finalModel)
 ####Random Forest Cross-validation testing
 
 ```{r dt-rf-r5kf8_a-test_results}
-#dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = c("raw"))
 dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing)
 dt.rf_cv_r5kf8_a_test_prob <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 
@@ -507,7 +506,37 @@ dt.rf_cv_r5kf8_a_test_cm$table
 dt.rf_cv_r5kf8_a_test_cm$overall[1]
 ```
 
-While there appears to be little difference between the graps depicting the nature of the two caret Random Forests, this second example using cross-validation has done a near perfect classification of the Abalone dataset by age grouping...
+While there appears to be little difference between the graps depicting the nature of the two caret Random Forests, this second example using cross-validation has done a near perfect classification of the Abalone dataset by age grouping. While this seems like a useful result, it could well be that this is a result of incorrectly using the entire sample set with the random forest and assuming cross-validation would not cause overfitting. With that in mind, yet another Random Forest will be trained using cross-validation but only with the holdout training data.
+
+###Random Forest Cross-validation with Holdout
+
+```{r dt-rf-cv2-r5kf8_a}
+dt.rf_cv2_r5kf8_a <- train(dt.formula, data = holdout_age_groups.training, method = "rf", prox= TRUE, trControl = cv.train_control_8_5)
+```
+
+```{r dt-rf-cv2-r5kf8_a-train_results}
+dt.rf_cv2_r5kf8_a_finalModel <- dt.rf_cv2_r5kf8_a$finalModel
+dt_sum.rf_cv2_r5kf8_a <- summary(dt.rf_cv2_r5kf8_a)
+#
+dt.rf_cv2_r5kf8_a_finalModel$forest[11]
+dt.rf_cv2_r5kf8_a_finalModel$forest[12]
+#
+plot(dt.rf_cv2_r5kf8_a)
+plot(dt.rf_cv2_r5kf8_a_finalModel)
+```
+
+####Random Forest Cross-validation with Holdout testing
+
+```{r dt-rf-cv2-r5kf8_a-test_results}
+dt.rf_cv2_r5kf8_a_test <- predict(dt.rf_cv2_r5kf8_a, newdata = holdout_age_groups.testing)
+dt.rf_cv2_r5kf8_a_test_prob <- predict(dt.rf_cv2_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
+
+dt.rf_cv2_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv2_r5kf8_a_test, holdout_age_groups.testing$age_group)
+dt.rf_cv2_r5kf8_a_test_cm$table
+dt.rf_cv2_r5kf8_a_test_cm$overall[1]
+```
+
+The results of this latest Random Forest model appear near identical to that of the first, which applied boostrapping to the holidout data. Given the similarties between the various Random Forests apart from the one that appears too perfect, it's worth analysiing one of these models later when comparing all models.
 
 ###Random Forest Leave-one-out
 
