@@ -412,6 +412,7 @@ dt.c4_5_j48_r8kf13_a_test_cm$overall[1]
 
 The last C4.5 decision tree to explore is a model using the leave-one-out training method, however research and experimentation suggests this is too computationally expensive for decision trees; when attempting to train a tree with this training control, over an hour passed without any output; it would appear that for trees, not only _p_ but _n_ (the total number of observations) should also be very low, certainly smaller than the Abalone dataset. 
 
+
 ####C4.5 Conclusion
 
 The results were lower than expected, with barely any improvement between the holdout method and the k-folds cross-validation technique; while further experimentation into increasing the number of steps might return higher accuracy rates, the cost of training goes up significantly. It will have to be seen later how well the results compare to all the rest.
@@ -562,7 +563,7 @@ dt.rf_cv2_r5kf8_a_test_cm$table
 dt.rf_cv2_r5kf8_a_test_cm$overall[1]
 ```
 
-The results of this latest Random Forest model appear near identical to that of the first, which applied boostrapping to the holidout data. Given the similarties between the various Random Forests apart from the one that appears too perfect, it's worth analysiing one of these models later when comparing all models.
+The results of this latest Random Forest model appear near identical to that of the first, which applied boostrapping to the holdout data. Given the similarties between the various Random Forests apart from the one that appears too perfect, it's worth analysiing one of these models later when comparing all models.
 
 ###Random Forest Leave-one-out
 
