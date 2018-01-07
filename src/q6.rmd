@@ -24,7 +24,12 @@ library("ROCR")
 
 ##Premise
 
->For each type of classifier calculate and display the following performance related metrics in R. Use the library library(ROCR)
+>>>For each type of classifier calculate and display the following performance related metrics in R. Use the library library(ROCR)
+ 1 Confusion matrix
+ 2 Precision vs. Recall
+ 3 Accuracy estimation
+ 4 ROC (receiver operating characteristic curve)
+ 5 RAUC (receiver under the curve area)
 
 <!--
 • Confusion matrix estimation 6
@@ -36,13 +41,15 @@ library("ROCR")
 
 ##Confusion matrix comparison
 
-... Re-use earlier values
+Every model has had a confusion matrix displayed within its respective section; they are not presented together as the following graphs do a better job of indicating to the human eye which models the most successful. The confusion matrix was instrumental and selecting which models were best in their field but the other metric provide a better way to convey performance at a glance, visualsing with 2 dimensions the nature of the models.
 
 ##Precision & Recall comparison
 
 >>>Precision-Recall is a useful measure of success of prediction when the classes are very imbalanced. In information retrieval, precision is a measure of result relevancy, while recall is a measure of how many truly relevant results are returned.
 The precision-recall curve shows the tradeoff between precision and recall for different threshold. A high area under the curve represents both high recall and high precision, where high precision relates to a low false positive rate, and high recall relates to a low false negative rate. High scores for both show that the classifier is returning accurate results (high precision), as well as returning a majority of all positive results (high recall).
 A system with high recall but low precision returns many results, but most of its predicted labels are incorrect when compared to the training labels. A system with high precision but low recall is just the opposite, returning very few results, but most of its predicted labels are correct when compared to the training labels. An ideal system with high precision and high recall will return many results, with all results labeled correctly.
+
+- [TODO: cite!]
 
 ```{r f-score-func}
  f_score <- function (prec, rec)
@@ -78,18 +85,33 @@ pr_dt.c4_5_r8kf13 <- performance(pred_dt.c4_5_r8kf13, "prec", "rec")
 plot(pr_dt.c4_5_r8kf13)
 ```
 
-###Random Forest Decision Tree candidate
+###Random Forest Decision Tree repeated k-folds candidate (overfit)
 
 ```{r dt-rf-p&r}
-pred_dt.highest_probs <- apply(dt.rf_cv_r5kf8_a_test_prob, 1, "max") 
-pred_dt.correct <- dt.rf_cv_r5kf8_a_test == holdout_age_groups.testing$age_group
+pred_dt.rf_highest_probs <- apply(dt.rf_cv_r5kf8_a_test_prob, 1, "max") 
+pred_dt.rf_correct <- dt.rf_cv_r5kf8_a_test == holdout_age_groups.testing$age_group
 
-pred_dt.rf <- prediction(pred_dt.highest_probs, pred_dt.correct)
+pred_dt.rf <- prediction(pred_dt.rf_highest_probs, pred_dt.correct)
 
 ## precision/recall curve (x-axis: recall, y-axis: precision)
 pr_dt.rf <- performance(pred_dt.rf, "prec", "rec")
 plot(pr_dt.rf)
 ```
+
+###Random Forest Decision Tree holdout candidate 
+
+```{r dt-hrf2_h-p&r}
+#dt.hrf2_h_a_test_prob
+pred_dt.hrf2_h_highest_probs <- apply(dt.hrf2_h_a_test_prob$predictions, 1, "max") 
+pred_dt.hrf2_h_correct <- dt.hrf2_h_a_test$predictions == holdout_age_groups.testing$age_group
+
+pred_dt.hrf2_h <- prediction(pred_dt.hrf2_h_highest_probs, pred_dt.hrf2_h_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.hrf2_h <- performance(pred_dt.hrf2_h, "prec", "rec")
+plot(pr_dt.hrf2_h)
+```
+
 
 ###Naive Bayes holdout candidate
 
@@ -154,12 +176,20 @@ acc_dt.c4_5 <- performance(pred_dt.c4_5, "acc")
 plot(acc_dt.c4_5)
 ```
 
-###Random Forest Decision Tree candidate
+###Random Forest Decision Tree k-folds candidate (overfit)
 
 ```{r dt-rf-acc}
 acc_dt.rf <- performance(pred_dt.rf, "acc")
 plot(acc_dt.rf)
 ```
+
+###Random Forest Decision Tree holdout candidate
+
+```{r dt-hrf2_h-acc}
+acc_dt.hrf2_h <- performance(pred_dt.hrf2_h, "acc")
+plot(acc_dt.hrf2_h)
+```
+
 ###Naive Bayes holdout candidate
 
 ```{r nb-h-acc}
@@ -189,6 +219,10 @@ plot(acc_knn.r5kf8)
 
 ##ROC comparison
 
+The Receiver operating characteristic compares the rate of true positives with false positives; in graph form true positive rate is on the _y_ axis, while _x_ maps the false positive rate. The better the model is at performing classification the larger the area under the line and the more 'rectanglar' in shape, with the best performing results being were the line is closest to the top left corner. The better the model performs the higher the true positive relative to the false positive.
+
+In the follwing ROC grpahs, a red line indicates what model performance would be like were a model only have a 50% change of correctly classifying a data instance. The yellow line is the relationship between true-positive-rate (TPR) and false-positive-rate (FPR).
+
 ###C4.5 Decision Tree candidate
 
 ```{r dt-c4_5-roc}
@@ -197,13 +231,28 @@ plot(roc_dt.c4_5, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-###Random Forest Decision Tree candidate
+This doesn't seem to be a particularly good result, though it is somewhat better than a 50:50 chance of correct classification, with peak performance easily identifiable; the model has the best rate of performance around the middle of the line where there is the best balance between the TPR and the coefficient with FPR, with TPR at over 0.6 and about 50% better than the FPR. After the peak point, the graph suggests accuracy goes down.
+
+###Random Forest Decision Tree k-folds candidate (overfit)
 
 ```{r dt-rf-roc}
 roc_dt.rf = performance(pred_dt.rf, measure="tpr", x.measure="fpr")
 plot(roc_dt.rf, col="orange", lwd=2) 
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
+
+This graph is a near perfect example, which has been included to demonstrate overfitting; this was because the test data was used as part of the training data. The yellow line draws a blocky rectangular shape indicated a high rate of succusful classification; if this was not the result of overfitting it would be an excellent result. 
+
+###Random Forest Decision Tree holdout candidate
+
+```{r dt-hrf2_h-roc}
+roc_dt.hrf2_h = performance(pred_dt.hrf2_h, measure="tpr", x.measure="fpr")
+plot(roc_dt.hrf2_h, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+This is a far more conservative result but it is at least, markedly better than the C4.5 decision tree. What's worth doing is comparing this reulst to the Naive Bayes graphs below, which happen to have similar looking lines.
+
 ###Naive Bayes holdout candidate
 
 ```{r nb-h-roc}
@@ -212,7 +261,6 @@ plot(roc_nb.h, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-
 ###Naive Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-roc}
@@ -220,7 +268,6 @@ roc_nb.r5kf8 = performance(pred_nb.r5kf8, measure="tpr", x.measure="fpr")
 plot(roc_nb.r5kf8, col="orange", lwd=2) 
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
-
 
 ###KNN holdout candidate
 
@@ -241,7 +288,6 @@ lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 
 ##RAUC matrix comparison
 
-
 ###C4.5 Decision Tree candidate
 
 ```{r dt-c4_5-roc}
@@ -249,12 +295,20 @@ auc_dt.c4_5 = performance(pred_dt.c4_5, "auc")
 print(paste(c(auc_dt.c4_5@y.name, auc_dt.c4_5@y.values)), quote=FALSE)
 ```
 
-###Random Forest Decision Tree candidate
+###Random Forest Decision Tree k-folds candidate (overfit)
 
 ```{r dt-rf-roc}
 auc_dt.rf = performance(pred_dt.rf, "auc")
 print(paste(c(auc_dt.rf@y.name, auc_dt.rf@y.values)), quote=FALSE)
 ```
+
+###Random Forest Decision Tree holdout candidate
+
+```{r dt-hrf2_h-roc}
+auc_dt.hrf2_h = performance(pred_dt.hrf2_h, "auc")
+print(paste(c(auc_dt.hrf2_h@y.name, auc_dt.hrf2_h@y.values)), quote=FALSE)
+```
+
 ###Naive Bayes holdout candidate
 
 ```{r nb-h-roc}
@@ -262,14 +316,12 @@ auc_nb.h = performance(pred_nb.h, "auc")
 print(paste(c(auc_nb.h@y.name, auc_nb.h@y.values)), quote=FALSE)
 ```
 
-
 ###Naive Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-roc}
 auc_nb.r5kf8 = performance(pred_nb.r5kf8, "auc")
 print(paste(c(auc_nb.r5kf8@y.name, auc_nb.r5kf8@y.values)), quote=FALSE)
 ```
-
 
 ###KNN holdout candidate
 
@@ -284,7 +336,6 @@ print(paste(c(auc_knn.h@y.name, auc_knn.h@y.values)), quote=FALSE)
 auc_knn.r5kf8 = performance(pred_knn.r5kf8, "auc")
 print(paste(c(auc_knn.r5kf8@y.name, auc_knn.r5kf8@y.values)), quote=FALSE)
 ```
-
 
 ##Conclusion
 
