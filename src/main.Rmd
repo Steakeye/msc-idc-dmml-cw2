@@ -34,7 +34,8 @@ csl: ../build/harvard-university-of-westminster.csl
 ---
 
 ```{r setup, include=FALSE, message=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+#knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 set.seed(4321)
 ```
 
