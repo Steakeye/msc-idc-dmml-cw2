@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q5"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -27,6 +27,96 @@ knitr::opts_chunk$set(echo = TRUE)
 • Testing of K-NN type classifier in R 6
 -->
 
-TBD
+... TODO Describe KNN a bit
+
+<!--
+model_knn &lt;- train(iris.training[, 1:4], iris.training[, 5], method=&#39;knn&#39;)
+Note that making other models is extremely simple when you have gotten this far; You just
+have to change the method argument.
+Now that you have trained your model, it’s time to predict the labels of the test set that you
+have just made and evaluate how the model has done on your data:
+# Predict the labels of the test set
+predictions&lt;-predict.train(object=model_knn,iris.test[,1:4], type=&quot;raw&quot;)
+# Evaluate the predictions
+table(predictions)
+# Confusion matrix
+confusionMatrix(predictions,iris.test[,5])
+
+Additionally, you can try to do the
+-->
+
+##KNN modelling
+
+K-Nearest=Neigbours looks to classify new data based on it's dimensionl proxmimity to an already classified node or group of nodes. This use of dimensional distance allows it to be used for regression but every new classification needs to be computed against the relative distance to the instances within the traninging dataset; this makes it fast to train because a lot of the computation is deferred but then using this method to classify is more expensive because every new classification is calculated at runtime instead of relying on an estaplished ruleset.
+
+###KNN with holdout
+
+```{r knn-h_a}
+knn.h_a <- train(dt.formula, data=holdout_age_groups.training, method = "knn")
+```
+
+```{r knn-h_a-summary}
+plot(knn.h_a)
+```
+
+####KNN with holdout, testing
+
+```{r knn-h_a_test_results}
+knn.h_a_test <- predict(knn.h_a, holdout_age_groups.testing)
+knn.h_a_test_prob <- predict(knn.h_a, holdout_age_groups.testing, type = "prob")
+# summarize results
+knn.h_a_test_cm <- confusionMatrix(knn.h_a_test, holdout_age_groups.testing$age_group)
+knn.h_a_test_cm
+```
+
+###KNN with Repeated K-folds Cross-validation
+
+```{r knn-r5kf8_a}
+knn.r5kf8_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl = cv.train_control_8_5, method = "knn")
+```
+
+```{r knn-r5kf8_a-summary}
+plot(knn.r5kf8_a)
+```
+
+####KNN with Repeated K-folds Cross-validation, testing
+
+```{r knn-r5kf8_a_test_results}
+knn.r5kf8_a_test <- predict(knn.r5kf8_a, holdout_age_groups.testing)
+knn.r5kf8_a_test_prob <- predict(knn.r5kf8_a, holdout_age_groups.testing, type = "prob")
+# summarize results
+knn.r5kf8_a_test_cm <- confusionMatrix(knn.r5kf8_a_test, holdout_age_groups.testing$age_group)
+knn.r5kf8_a_test_cm
+```
+
+###Naive Bayes with Leave-one-out Cross-validation
+
+```{r knn-loo_a}
+knn.loo_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl = loocv.train_control, method="knn")
+```
+
+```{r knn-loo_a-summary}
+plot(knn.loo_a)
+```
+
+####Naive Bayes with Leave-one-out, training results
+
+```{r knn-loo_a_test_results}
+knn.loo_a_test <- predict(knn.loo_a, holdout_age_groups.testing)
+# summarize results
+knn.loo_a_test_cm <- confusionMatrix(knn.loo_a_test, holdout_age_groups.testing$age_group)
+knn.loo_a_test_cm
+```
+
+
+
+###Accuracy comparison of KNN models
+
+```{r knn-comparisons}
+knn.h_a_test_cm$overall[1]
+knn.r5kf8_a_test_cm$overall[1]
+knn.loo_a_test_cm$overall[1]
+```
+
 
 </section>

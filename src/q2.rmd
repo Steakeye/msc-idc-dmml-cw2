@@ -50,7 +50,11 @@ head(holdout.train_indeces, n=20)
 
 holdout.training <- abalone_data_cleansed[holdout.train_indeces,]
 
+save(holdout.training, file="holdout.training.rda")
+
 holdout.testing <- abalone_data_cleansed[-holdout.train_indeces,]
+
+save(holdout.testing, file="holdout.testing.rda")
 ```
 
 ###Evaluating the holdout datasets
@@ -88,12 +92,13 @@ This form of training makes better use of a small sample size and helps even out
 
 Repeated k-fold cross-validation takes the technique yet another step further, by splitting the dataset into k folds, repeatedly such that different fragmentation occurs each time; that is to say that even though the number of divisions are the same, each repetition creates a different set of subsets. By doing so, this sort of shuffling further economically reuses the dataset for training purposes. 
 
-For the sake of evaluating this method more thoroughly, the dataset will be used with k-fold 3 times, using Fibonacci sequence numbers 8 & 13 for k and 5 for the number of iterations of cross-validation. For comparison, a standard k-folds of will also be used
+For the sake of evaluating this method more thoroughly, the dataset will be used with k-fold 3 times, using Fibonacci sequence numbers 8 & 13 for k and 5 & 8 for the number of iterations of cross-validation. For comparison, a standard k-folds of will also be used
 
 ```{r cross-val-k-fold}
 cv.train_control_8 <- trainControl(method="cv", number=8)
 cv.train_control_8_5 <- trainControl(method="repeatedcv", number=8, repeats = 5)
 cv.train_control_13_5 <- trainControl(method="repeatedcv", number=13, repeats = 5)
+cv.train_control_13_8 <- trainControl(method="repeatedcv", number=13, repeats = 8)
 ```
 
 These training controls will be used later on in this study to train the various models for the task of classification but for now they are merely abstract instructions on how to chunk the data.
