@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q6"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -146,6 +146,19 @@ plot(acc_dt.c4_5)
 acc_dt.rf <- performance(pred_dt.rf, "acc")
 plot(acc_dt.rf)
 ```
+###Naive Bayes holdout candidate
+
+```{r nb-h-acc}
+acc_nb.h <- performance(pred_nb.h, "acc")
+plot(acc_nb.h)
+```
+
+###Naive Bayes repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-acc}
+acc_nb.r5kf8 <- performance(pred_nb.r5kf8, "acc")
+plot(acc_nb.r5kf8)
+```
 ###KNN holdout candidate
 
 ```{r knn-h-p&r}
@@ -164,12 +177,10 @@ plot(acc_knn.r5kf8)
 
 ###C4.5 Decision Tree candidate
 
-```{r dt-rf-roc}
+```{r dt-c4_5-roc}
 roc_dt.c4_5 = performance(pred_dt.c4_5, measure="tpr", x.measure="fpr")
 plot(roc_dt.c4_5, col="orange", lwd=2) 
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
-
-auc_dt.rf = performance(pred_dt.rf, "auc")
 ```
 
 ###Random Forest Decision Tree candidate
@@ -178,11 +189,88 @@ auc_dt.rf = performance(pred_dt.rf, "auc")
 roc_dt.rf = performance(pred_dt.rf, measure="tpr", x.measure="fpr")
 plot(roc_dt.rf, col="orange", lwd=2) 
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+###Naive Bayes holdout candidate
 
-auc_dt.rf = performance(pred_dt.rf, "auc")
+```{r nb-h-roc}
+roc_nb.h = performance(pred_nb.h, measure="tpr", x.measure="fpr")
+plot(roc_nb.h, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
+
+###Naive Bayes repeated k-folds cross-validation candidate
+
+```{r nb-r5kf8-roc}
+roc_nb.r5kf8 = performance(pred_nb.r5kf8, measure="tpr", x.measure="fpr")
+plot(roc_nb.r5kf8, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+
+###KNN holdout candidate
+
+```{r knn-h-roc}
+roc_knn.h = performance(pred_knn.h, measure="tpr", x.measure="fpr")
+plot(roc_knn.h, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+###KNN repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-roc}
+roc_knn.r5kf8 = performance(pred_knn.r5kf8, measure="tpr", x.measure="fpr")
+plot(roc_knn.r5kf8, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+
 ##RAUC matrix comparison
+
+
+###C4.5 Decision Tree candidate
+
+```{r dt-c4_5-roc}
+auc_dt.c4_5 = performance(pred_dt.c4_5, "auc")
+print(paste(c(auc_dt.c4_5@y.name, auc_dt.c4_5@y.values)), quote=FALSE)
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-roc}
+auc_dt.rf = performance(pred_dt.rf, "auc")
+print(paste(c(auc_dt.rf@y.name, auc_dt.rf@y.values)), quote=FALSE)
+```
+###Naive Bayes holdout candidate
+
+```{r nb-h-roc}
+auc_nb.h = performance(pred_nb.h, "auc")
+print(paste(c(auc_nb.h@y.name, auc_nb.h@y.values)), quote=FALSE)
+```
+
+
+###Naive Bayes repeated k-folds cross-validation candidate
+
+```{r nb-r5kf8-roc}
+auc_nb.r5kf8 = performance(pred_nb.r5kf8, "auc")
+print(paste(c(auc_nb.r5kf8@y.name, auc_nb.r5kf8@y.values)), quote=FALSE)
+```
+
+
+###KNN holdout candidate
+
+```{r knn-h-roc}
+auc_knn.h = performance(pred_knn.h, "auc")
+print(paste(c(auc_knn.h@y.name, auc_knn.h@y.values)), quote=FALSE)
+```
+
+###KNN repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-roc}
+auc_knn.r5kf8 = performance(pred_knn.r5kf8, "auc")
+print(paste(c(auc_knn.r5kf8@y.name, auc_knn.r5kf8@y.values)), quote=FALSE)
+```
+
 
 ##Conclusion
 

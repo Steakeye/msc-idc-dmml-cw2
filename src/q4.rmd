@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q4"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -41,7 +41,7 @@ Naive Bayes is a relatively quick and simple probabilistic classifier that is of
 
 ###Naive Bayes formula and simpler classification
 
-Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and onwards.
+Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and following sections.
 
 ###Naive Bayes with holdout
 

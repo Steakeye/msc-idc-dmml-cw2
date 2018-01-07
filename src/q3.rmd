@@ -116,7 +116,7 @@ It would appear that the 'final model' we are looking at derived from the train 
 plot(dt.c4_5_h2_finalModel_party)
 ```
 
-Even though the tree is able to be rendered it's not easy to get anything meaningful out of this. Perhaps the most pertinent point is that the not only could the classification levels benefit from being simplified but using fewer dimensions for observation would also force a simpler set of conditional branching.
+Even though the tree is able to be rendered it's not easy to get anything meaningful out of this. Perhaps the most pertinent point is that not only could the classification levels benefit from being simplified but using fewer dimensions for observation would also force a simpler set of conditional branching.
 
 ###Comparing the two C4.5/J48 methods
 
@@ -217,7 +217,7 @@ dt_sum.c4_5_h2_a$details[1]
 
 Interestingly the J48 function has produced an accuracy rating that is only marginally better than the previous version while the train J48 function call seems to have improved significantly so that it's nearly on par with the J48 function result. Looking at the models after validation has happened will hopefully provide even more revealing findings.
 
-####Comparing the rivised C4.5/J48 model after prediction
+####Comparing the revised C4.5/J48 model after prediction
 
 What follows is the output of testing the models against the test subset.
 
@@ -259,7 +259,7 @@ Unfortunately, for the performant J48 method, none of these options seems to all
 
 Three types of k-folds cross-validation configurations were created; at this point it's opportune to examine which, if any, are able to improve the accuracy of training and validation. Each of the three types of k-folds configurations will be used to train the decision tree.
 
-The imporant implementation detail to emphasise here is that while the holdout method required a one-off expicit call to partition the data, with the user assigning which part as training or testing subset, with cross-validation the entire dataset is passed into the traniing call; this is because the training will occur several times using many subsampled testing subsets from the original sample. For the sake of completeness, the holdout testing suset can still be used to further interrogate the model, in order to better compare against other classifiers.
+The important implementation detail to emphasise here is that while the holdout method required a one-off explicit call to partition the data, with the user assigning which part as training or testing subset, with cross-validation the entire dataset is passed into the training call; this is because the training will occur several times using many subsampled testing subsets from the original sample. For the sake of completeness, the holdout testing subset can still be used to further interrogate the model, in order to better compare against other classifiers.
 
 **K-folds, with 8 folds**
 ```{r dt-c4_5_j48-train-rkf_a}
@@ -344,9 +344,9 @@ dt_sum.c4_5_r5kf8_a$details[1]
 dt_sum.c4_5_r5kf13_a$details[1]
 ```
 
-After having run the training, the preliminary results suggest that while repeating the whole k-folds process a number of times can add some more accuracy, increasing the k count doesn't add much more; depending on the size of the real-world dataset and the economic benefit of even the slightest improvement in accuracy, it's arguable that a tradeoff between accuracy and performance can be made and sometimes a quicker less accurate option is the right tool for the job. That being said, prediction is significantly faster than training for decision trees; once the model has been built, new data is just processed into a class. 
+After having run the training, the preliminary results suggest that while repeating the whole k-folds process a number of times can add some more accuracy, increasing the k count doesn't add much more; depending on the size of the real-world dataset and the economic benefit of even the slightest improvement in accuracy, it's arguable that a trade-off between accuracy and performance can be made and sometimes a quicker less accurate option is the right tool for the job. That being said, prediction is significantly faster than training for decision trees; once the model has been built, new data is just processed into a class. 
 
-The fact that for the k-folds with 5 repititions, the \(k = 13\) version took about twice as long to compute as the \(k = 8\) version, the 8 version will be considered the preffered choice, assuming the validation doesn't suggest otherwise.
+The fact that for the k-folds with 5 repetitions, the \(k = 13\) version took about twice as long to compute as the \(k = 8\) version, the 8 version will be considered the preferred choice, assuming the validation doesn't suggest otherwise.
 
 #####Testing results J48 method and k-folds training 
 
@@ -420,7 +420,7 @@ dt.rf_h_a_test_cm$overall[1]
 
 ###Random Forest Cross-validation
 
-TODO: open with premise for fandom forest that includes avoiding over-fitting.
+TODO: open with premise for random forest that includes avoiding over-fitting.
 
 ####Random Forest Cross-validation training
 
@@ -443,7 +443,7 @@ plot(dt.rf_cv_r5kf8_a_finalModel)
 
 ####Random Forest Cross-validation testing
 
-... Based on the previous perfermances for k-folds cross-validation, only one configuarion has been used for the ske of the random forest tree, being the one considered the happy medium of the original 3.
+... Based on the previous performances for k-folds cross-validation, only one configuration has been used for the sake of the random forest tree, being the one considered the happy medium of the original 3.
 
 ```{r dt-rf-r5kf8_a-test_results}
 #dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = c("raw"))
@@ -459,7 +459,7 @@ dt.rf_cv_r5kf8_a_test_cm$overall[1]
 
 ###Random Forest Leave-one-out
 
-As with the C4.5 decisiotn tree, Leave-one-out Cross-validation is not suitable for this type of model.
+As with the C4.5 decision tree, Leave-one-out Cross-validation is not suitable for this type of model.
 
 ### Decision Tree Conclusion
 
