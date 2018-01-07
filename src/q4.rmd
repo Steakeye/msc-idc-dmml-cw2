@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q4"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -11,21 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t4, echo=FALSE, include=FALSE, message=FALSE}
-if(!require(doMC)) install.packages('doMC')
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
 if(!require(klaR)) install.packages("klaR", repos = mirrorUrl)
 if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
 
 #
-library("doMC")
 library("caret")
 library("klaR")
 library("rpart.plot")
-```
-
-
-```{r setup-t4_2, include=FALSE, message=FALSE}
-registerDoMC()
 ```
 
 <section>
@@ -48,7 +41,7 @@ Naive Bayes is a relatively quick and simple probabilistic classifier that is of
 
 ###Naive Bayes formula and simpler classification
 
-Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and onwards.
+Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and following sections.
 
 ###Naive Bayes with holdout
 
@@ -60,15 +53,17 @@ nb.h_a <- NaiveBayes(dt.formula, data=holdout_age_groups.training)
 plot(nb.h_a)
 ```
 
+What's interesting about these Naive Bayes plots is that they suggest the merit of using this techniques to select features that could be used when creating a formula for use with another model. Another aspect worth noting is how the height and diameter probability graphs are extremely similar, which could suggest redundancy, where another feature could have been used as a classifier variable.
+
 ####Naive Bayes with holdout, training results
 
 ```{r nb-h_a_test_results}
 nb.h_a_test <- predict(nb.h_a, holdout_age_groups.testing)
+nb.h_a_test_prob <- predict(nb.h_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 nb.h_a_test_cm <- confusionMatrix(nb.h_a_test$class, holdout_age_groups.testing$age_group)
 nb.h_a_test_cm
 ```
-
 
 ###Naive Bayes with Repeated K-folds Cross-validation
 
@@ -84,6 +79,7 @@ plot(nb.r5kf8_a)
 
 ```{r nb-r5kf8_a_test_results}
 nb.r5kf8_a_test <- predict(nb.r5kf8_a, holdout_age_groups.testing)
+nb.r5kf8_a_test_prob <- predict(nb.r5kf8_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 nb.r5kf8_a_test_cm <- confusionMatrix(nb.r5kf8_a_test, holdout_age_groups.testing$age_group)
 nb.r5kf8_a_test_cm
@@ -108,8 +104,6 @@ nb.loo_a_test_cm <- confusionMatrix(nb.loo_a_test, holdout_age_groups.testing$ag
 nb.loo_a_test_cm
 ```
 
-
-
 ###Accuracy comparison of NB models
 
 
@@ -118,6 +112,10 @@ nb.h_a_test_cm$overall[1]
 nb.r5kf8_a_test_cm$overall[1]
 nb.loo_a_test_cm$overall[1]
 ```
+##Naive Bayes Conclusion
 
+While this technique doesn't produce the strongest results, it's a useful tool alongside other models which can be used for preparatory work in order to inform further work on modelling a classification problem. It's a fast way to do preliminary analysis, which can benefit somewhat from cross-validation but for the Abalone dataset at least, using the leave-one-out method bore no extra benefit over k-folds.
+
+When compared to the decision trees, the Naive Bayes models perform similarly, only marginally worse in some cases; the one classification out of the three agre groups where they underperform by a notable amount is the _'old'_ group; it's not entirely clear why this is but it likely that while the chosen features have a direct correlation to age, the coefficients are not pronounced enough to make classification any better than it is.
 
 </section>
