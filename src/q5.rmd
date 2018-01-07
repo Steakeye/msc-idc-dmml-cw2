@@ -27,8 +27,6 @@ knitr::opts_chunk$set(echo = TRUE)
 • Testing of K-NN type classifier in R 6
 -->
 
-... TODO Describe KNN a bit
-
 <!--
 model_knn &lt;- train(iris.training[, 1:4], iris.training[, 5], method=&#39;knn&#39;)
 Note that making other models is extremely simple when you have gotten this far; You just
@@ -46,6 +44,8 @@ Additionally, you can try to do the
 -->
 
 ##KNN modelling
+
+K-Nearest=Neigbours looks to classify new data based on it's dimensionl proxmimity to an already classified node or group of nodes. This use of dimensional distance allows it to be used for regression but every new classification needs to be computed against the relative distance to the instances within the traninging dataset; this makes it fast to train because a lot of the computation is deferred but then using this method to classify is more expensive because every new classification is calculated at runtime instead of relying on an estaplished ruleset.
 
 ###KNN with holdout
 
@@ -115,6 +115,10 @@ knn.h_a_test_cm$overall[1]
 knn.r5kf8_a_test_cm$overall[1]
 knn.loo_a_test_cm$overall[1]
 ```
+
+###KNN model conclusion
+
+Once again, sufficient cross-validation appears to be about as good as using the leave-one-out technique for improving the accuracy of the model but cheaper to train than leave-one-out. In this case, there's quite a marked jump in improvement between the holdout version and the other two forms of training. The holdout KNN is only marginally more accurate than the Naive Bayes while the k-folds and leave-one-out methods are more than 10% more accurate. The results suggest that KNN could be the most suitable model for age group classification of Abalone.
 
 
 </section>

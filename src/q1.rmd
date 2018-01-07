@@ -349,7 +349,7 @@ print(sorted_correlation_order)
 
 The correlation between ring values and the other attributes, when ordered, actually matches the order of the r-squared values; so much so, that weight.shell should be considered the primary correlate of them all, followed by height. 
 
-##Creating a simpler classifaction value
+##Creating a simpler classification value
 
 Given that the number of rings is actually a range of integers from 1 to 29, to use each individual possible integer presents a problem; firstly as the ring value cannot be considered continuous it's not really sensible to treat it as such, thus converting to a a numeric floating range is not appropriate; in addition to this, the dataset might not have instances that cover every single possible ring value between 1 and 29, which will cause inaccuracy in some of the models.
 

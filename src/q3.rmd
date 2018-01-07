@@ -20,12 +20,16 @@ if(!require(RWeka)) install.packages("RWeka", repos = mirrorUrl)
 if(!require(e1071)) install.packages("e1071", repos = mirrorUrl)
 #libcoin
 if(!require(coin)) install.packages("coin", repos = mirrorUrl)
+#party
+if(!require(party)) install.packages("party", repos = mirrorUrl)
 #partykit
 if(!require(partykit)) install.packages("partykit", repos = mirrorUrl)
 #rpart
 if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
 #randomForest
 if(!require(randomForest)) install.packages("randomForest", repos = mirrorUrl)
+#ranger
+if(!require(ranger)) install.packages("ranger", repos = mirrorUrl)
 #
 # configure multicore
 #library("doMC")
@@ -34,7 +38,9 @@ library("caret")
 library("RWeka")
 library("rpart.plot")
 library("libcoin")
+library("party")
 library("partykit")
+library("ranger")
 library("randomForest")
 ```
 
@@ -208,6 +214,7 @@ depth(dt.c4_5_h2_a_finalModel_party)
 #
 plot(dt.c4_5_h2_a_finalModel_party)
 ```
+
 ####Accuracy comparison of revised C4.5/J48 models
 
 ```{r c4_5-a-accuracy_comparison}
@@ -263,23 +270,22 @@ The important implementation detail to emphasise here is that while the holdout 
 
 **K-folds, with 8 folds**
 ```{r dt-c4_5_j48-train-rkf_a}
-#dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8)
-#abalone_data_cleansed_age_groups
 dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8)
 ```
 
 **K-folds, with 8 folds, 5 repetitions**
 ```{r dt-c4_5_j48-train-r5kf8_a}
-#dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_8_5)
-#abalone_data_cleansed_age_groups
 dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8_5)
 ```
 
 **K-folds, with 13 folds, 5 repetitions**
 ```{r dt-c4_5_j48-train-r5kf13_a}
-#dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", holdout_age_groups.training, tuneLength = 8, trControl = cv.train_control_13_5)
-#abalone_data_cleansed_age_groups
 dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_13_5)
+```
+
+**K-folds, with 13 folds, 8 repetitions**
+```{r dt-c4_5_j48-train-r8kf13_a}
+dt.c4_5_j48_r8kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_13_8)
 ```
 
 #####Training results J48 method and k-folds training 
@@ -337,6 +343,23 @@ depth(dt.c4_5_j48_r5kf13_a_finalModel_party)
 plot(dt.c4_5_j48_r5kf13_a_finalModel_party)
 ```
 
+**K-folds, with 13 folds, 8 repetitions**
+```{r dt-c4_5_train-r8kf13_a_results}
+dt_sum.c4_5_r8kf13_a <- summary(dt.c4_5_j48_r8kf13_a)
+dt.c4_5_j48_r8kf13_a_final <- summary(dt.c4_5_j48_r8kf13_a$finalModel)
+#
+dt_sum.c4_5_r8kf13_a
+#
+dt.c4_5_j48_r8kf13_a_finalModel <- dt.c4_5_j48_r8kf13_a$finalModel
+dt.c4_5_j48_r8kf13_a_finalModel_party <- as.party(dt.c4_5_j48_r8kf13_a_finalModel)
+#
+length(dt.c4_5_j48_r8kf13_a_finalModel_party)
+width(dt.c4_5_j48_r8kf13_a_finalModel_party)
+depth(dt.c4_5_j48_r8kf13_a_finalModel_party)
+#
+plot(dt.c4_5_j48_r8kf13_a_finalModel_party)
+```
+
 
 ```{r c4_5_cv-pcCorrect}
 dt_sum.c4_5_j48_kf_a$details[1]
@@ -375,19 +398,41 @@ dt.c4_5_j48_r5kf13_a_test_cm$table
 dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
 ```
 
+**K-folds, with 13 folds, 8 repetitions**
+```{r dt-c4_5_j48_r8kf13_a_test}
+dt.c4_5_j48_r8kf13_a_test <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing)
+dt.c4_5_j48_r8kf13_a_test_prob <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing, type = "prob")
+dt.c4_5_j48_r8kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r8kf13_a_test, holdout_age_groups.testing$age_group)
+dt.c4_5_j48_r8kf13_a_test_cm$table
+dt.c4_5_j48_r8kf13_a_test_cm$overall[1]
+```
+
 
 ####J48 with leave-one-out training 
 
 The last C4.5 decision tree to explore is a model using the leave-one-out training method, however research and experimentation suggests this is too computationally expensive for decision trees; when attempting to train a tree with this training control, over an hour passed without any output; it would appear that for trees, not only _p_ but _n_ (the total number of observations) should also be very low, certainly smaller than the Abalone dataset. 
 
-####TODO! - conclude this section!
-...
+
+####C4.5 Conclusion
+
+The results were lower than expected, with barely any improvement between the holdout method and the k-folds cross-validation technique; while further experimentation into increasing the number of steps might return higher accuracy rates, the cost of training goes up significantly. It will have to be seen later how well the results compare to all the rest.
+
+With regard to the Abalone dataset in particular, it may not be the most suitable model for classification, even if cross-validation if able to improve training slightly.
 
 ##Random Forest Decision Tree
 
-TODO! ... Add intro here
+The Random Forest Decision Tree is a algorithm that creates multiple internalised decision trees, which are all used when trying to classify new data. Each tree will vote, with a weight as to what the classification will be, with the final classification going to the greates vote value. Random Forests are fast, is less prone to over-fitting and works well with incomplete data. The major disadvantage of Random Forests is that it can't be used for regression, failing extrapolate a result for data that is out-of-bounds of the original training dataset; given the scrope of this particular Abalone age group classification, this shouldn't be too much of an issue.
+
+With the previous Decision Tree (C4.5) training, much experimenting was done as to how the dataset should be prepaared for the purposes of classification and the optimal training controls for Decision Trees; it seems reasonable enough to streamline the analysis of the Random Forest by carrying over into this sub-section the two main lessons learned: 
+
+ - The classification problem should just aim to categorize the Abalone instances into 3 age groups
+ - The k-folds technique benfits from repetition to more throughly train with the data but the number of folds needn't be too high.
+ 
+ For the Random Forest training, only one configuration of repeated k-folds will be used, namely '8 folds 5 times' as provided adequate improvment whereupon '13 folds 5 times' barely improved.
 
 ###Random Forest Holdout
+
+The same holdout values derived in _Task 2_  that were used for C4.5, will be applied for testing and training the Random Forest.
 
 ####Random Forest Holdout training
 
@@ -403,10 +448,11 @@ dt_sum.rf_h_a <- summary(dt.rf_h_a)
 dt.rf_h_a_finalModel$forest[11]
 dt.rf_h_a_finalModel$forest[12]
 #
-print(dt.rf_h_a)
-print(dt.rf_h_a_finalModel)
+plot(dt.rf_h_a)
 plot(dt.rf_h_a_finalModel)
 ```
+
+After training, it's possible to observer there are 500 trees in the forest. Another observation is that even though no control was provided, the default caret control for random forest uses the Bootstrap method, this is effect reuses and recycles the holdout training data to train the forest against more data. As such, another library will be used to attempt to examine the results to a more strict holdout training of a Random Forest.
 
 ####Random Forest Holdout testing
 
@@ -418,16 +464,52 @@ dt.rf_h_a_test_cm$table
 dt.rf_h_a_test_cm$overall[1]
 ```
 
+####Another Random Forest Holdout
+
+The ranger package has a method designed speifically for holdout Random Forests, which is used next to explore if there could be any better performance out of the traditional holdout technique. 
+
+```{r dt-hrf-h_a}
+dt.hrf_h_a <- holdoutRF(dt.formula, holdout_age_groups.training)
+dt.hrf_h_a_prob <- holdoutRF(dt.formula, holdout_age_groups.training, probability = TRUE)
+```
+
+For some reason, not quite clear from the documentation, this method produces 2 Random Forests.
+
+```{r dt-hrf-h_a-train_results}
+#dt.hrf_h_a_finalModel <- dt.hrf_h_a$finalModel
+dt_sum.hrf_h_a <- summary(dt.hrf_h_a)
+#
+dt.hrf_h_a$rf1
+dt.hrf_h_a$rf2
+```
+
+```{r dt-hrf-h_a-test_results}
+dt.hrf1_h_a_test <- predict(dt.hrf_h_a$rf1, holdout_age_groups.testing)
+dt.hrf1_h_a_test_prob <- predict(dt.hrf_h_a_prob$rf1, holdout_age_groups.testing)
+
+dt.hrf1_h_a_test_cm <- confusionMatrix(dt.hrf1_h_a_test$predictions, holdout_age_groups.testing$age_group)
+dt.hrf1_h_a_test_cm$table
+dt.hrf1_h_a_test_cm$overall[1]
+#
+dt.hrf2_h_a_test <- predict(dt.hrf_h_a$rf2, holdout_age_groups.testing)
+dt.hrf2_h_a_test_prob <- predict(dt.hrf_h_a_prob$rf2, holdout_age_groups.testing)
+
+dt.hrf2_h_a_test_cm <- confusionMatrix(dt.hrf2_h_a_test$predictions, holdout_age_groups.testing$age_group)
+dt.hrf2_h_a_test_cm$table
+dt.hrf2_h_a_test_cm$overall[1]
+```
+
+These results are comparable to the caret bootstrap results, to the extent that while the caret package Random Forest call has a lower accurac value, the fact it correctly classifies more old Abalone instances needs to be considered in its favour when compared to the first _(rf1)_ Random Forest returns a slightly better accuracy rate.
+
 ###Random Forest Cross-validation
 
-TODO: open with premise for random forest that includes avoiding over-fitting.
+Even though opinion in the Data Science community is that a Random Forest uses techniques that effectively provide internal solutions for cross-validation while training, setting an explcit control will ensure a complete rotation of data for testing and training.
 
 ####Random Forest Cross-validation training
 
 ```{r dt-rf-cv-r5kf8_a}
 dt.rf_cv_r5kf8_a <- train(dt.formula, data = abalone_data_cleansed_age_groups, method = "rf", prox= TRUE, trControl = cv.train_control_8_5)
 ```
-
 
 ```{r dt-rf-cv-r5kf8_a-train_results}
 dt.rf_cv_r5kf8_a_finalModel <- dt.rf_cv_r5kf8_a$finalModel
@@ -436,17 +518,13 @@ dt_sum.rf_cv_r5kf8_a <- summary(dt.rf_cv_r5kf8_a)
 dt.rf_cv_r5kf8_a_finalModel$forest[11]
 dt.rf_cv_r5kf8_a_finalModel$forest[12]
 #
-print(dt.rf_cv_r5kf8_a)
-print(dt.rf_cv_r5kf8_a_finalModel)
+plot(dt.rf_cv_r5kf8_a)
 plot(dt.rf_cv_r5kf8_a_finalModel)
 ```
 
 ####Random Forest Cross-validation testing
 
-... Based on the previous performances for k-folds cross-validation, only one configuration has been used for the sake of the random forest tree, being the one considered the happy medium of the original 3.
-
 ```{r dt-rf-r5kf8_a-test_results}
-#dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = c("raw"))
 dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing)
 dt.rf_cv_r5kf8_a_test_prob <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 
@@ -455,15 +533,49 @@ dt.rf_cv_r5kf8_a_test_cm$table
 dt.rf_cv_r5kf8_a_test_cm$overall[1]
 ```
 
-... TODO: write up about the performance
+While there appears to be little difference between the graps depicting the nature of the two caret Random Forests, this second example using cross-validation has done a near perfect classification of the Abalone dataset by age grouping. While this seems like a useful result, it could well be that this is a result of incorrectly using the entire sample set with the random forest and assuming cross-validation would not cause overfitting. With that in mind, yet another Random Forest will be trained using cross-validation but only with the holdout training data.
+
+###Random Forest Cross-validation with Holdout
+
+```{r dt-rf-cv2-r5kf8_a}
+dt.rf_cv2_r5kf8_a <- train(dt.formula, data = holdout_age_groups.training, method = "rf", prox= TRUE, trControl = cv.train_control_8_5)
+```
+
+```{r dt-rf-cv2-r5kf8_a-train_results}
+dt.rf_cv2_r5kf8_a_finalModel <- dt.rf_cv2_r5kf8_a$finalModel
+dt_sum.rf_cv2_r5kf8_a <- summary(dt.rf_cv2_r5kf8_a)
+#
+dt.rf_cv2_r5kf8_a_finalModel$forest[11]
+dt.rf_cv2_r5kf8_a_finalModel$forest[12]
+#
+plot(dt.rf_cv2_r5kf8_a)
+plot(dt.rf_cv2_r5kf8_a_finalModel)
+```
+
+####Random Forest Cross-validation with Holdout testing
+
+```{r dt-rf-cv2-r5kf8_a-test_results}
+dt.rf_cv2_r5kf8_a_test <- predict(dt.rf_cv2_r5kf8_a, newdata = holdout_age_groups.testing)
+dt.rf_cv2_r5kf8_a_test_prob <- predict(dt.rf_cv2_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
+
+dt.rf_cv2_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv2_r5kf8_a_test, holdout_age_groups.testing$age_group)
+dt.rf_cv2_r5kf8_a_test_cm$table
+dt.rf_cv2_r5kf8_a_test_cm$overall[1]
+```
+
+The results of this latest Random Forest model appear near identical to that of the first, which applied boostrapping to the holdout data. Given the similarties between the various Random Forests apart from the one that appears too perfect, it's worth analysiing one of these models later when comparing all models.
 
 ###Random Forest Leave-one-out
 
 As with the C4.5 decision tree, Leave-one-out Cross-validation is not suitable for this type of model.
 
+###Random Forest  Decision Tree Conclusion
+
+Random forests are good for avoiding over-fitting, so long as you know what you're doing, particularly with regard to cross-validation.
+
 ### Decision Tree Conclusion
 
-Random forests are really good for avoiding over-fitting and can improve real world accuracy
+Given all the data processing and feature selection work, the results from the decision tree have not been a fruitful as one might have hoped. Perhaps further investigation into more fine tuning could help yield better results.
 
 
 </section>
