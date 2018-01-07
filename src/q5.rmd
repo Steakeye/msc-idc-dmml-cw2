@@ -27,24 +27,6 @@ knitr::opts_chunk$set(echo = TRUE)
 • Testing of K-NN type classifier in R 6
 -->
 
-... TODO Describe KNN a bit
-
-<!--
-model_knn &lt;- train(iris.training[, 1:4], iris.training[, 5], method=&#39;knn&#39;)
-Note that making other models is extremely simple when you have gotten this far; You just
-have to change the method argument.
-Now that you have trained your model, it’s time to predict the labels of the test set that you
-have just made and evaluate how the model has done on your data:
-# Predict the labels of the test set
-predictions&lt;-predict.train(object=model_knn,iris.test[,1:4], type=&quot;raw&quot;)
-# Evaluate the predictions
-table(predictions)
-# Confusion matrix
-confusionMatrix(predictions,iris.test[,5])
-
-Additionally, you can try to do the
--->
-
 ##KNN modelling
 
 K-Nearest=Neigbours looks to classify new data based on it's dimensionl proxmimity to an already classified node or group of nodes. This use of dimensional distance allows it to be used for regression but every new classification needs to be computed against the relative distance to the instances within the traninging dataset; this makes it fast to train because a lot of the computation is deferred but then using this method to classify is more expensive because every new classification is calculated at runtime instead of relying on an estaplished ruleset.
@@ -66,7 +48,7 @@ knn.h_a_test <- predict(knn.h_a, holdout_age_groups.testing)
 knn.h_a_test_prob <- predict(knn.h_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 knn.h_a_test_cm <- confusionMatrix(knn.h_a_test, holdout_age_groups.testing$age_group)
-knn.h_a_test_cm
+knn.h_a_test_cm$table
 ```
 
 ###KNN with Repeated K-folds Cross-validation
@@ -86,7 +68,7 @@ knn.r5kf8_a_test <- predict(knn.r5kf8_a, holdout_age_groups.testing)
 knn.r5kf8_a_test_prob <- predict(knn.r5kf8_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 knn.r5kf8_a_test_cm <- confusionMatrix(knn.r5kf8_a_test, holdout_age_groups.testing$age_group)
-knn.r5kf8_a_test_cm
+knn.r5kf8_a_test_cm$table
 ```
 
 ###Naive Bayes with Leave-one-out Cross-validation
@@ -105,7 +87,7 @@ plot(knn.loo_a)
 knn.loo_a_test <- predict(knn.loo_a, holdout_age_groups.testing)
 # summarize results
 knn.loo_a_test_cm <- confusionMatrix(knn.loo_a_test, holdout_age_groups.testing$age_group)
-knn.loo_a_test_cm
+knn.loo_a_test_cm$table
 ```
 
 
@@ -117,6 +99,10 @@ knn.h_a_test_cm$overall[1]
 knn.r5kf8_a_test_cm$overall[1]
 knn.loo_a_test_cm$overall[1]
 ```
+
+###KNN model conclusion
+
+Once again, sufficient cross-validation appears to be about as good as using the leave-one-out technique for improving the accuracy of the model but cheaper to train than leave-one-out. In this case, there's quite a marked jump in improvement between the holdout version and the other two forms of training. The holdout KNN is only marginally more accurate than the Naive Bayes while the k-folds and leave-one-out methods are more than 10% more accurate. The results suggest that KNN could be the most suitable model for age group classification of Abalone.
 
 
 </section>
