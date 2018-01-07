@@ -71,6 +71,7 @@ pr_dt.c4_5 <- performance(pred_dt.c4_5, "prec", "rec")
 plot(pr_dt.c4_5)
 ```
 
+This is a strange line but appears to suggest that the precision of this model drops off dramatically as there's a lot of overlap between false and true positives.
 
 ###C4.5 Decision Tree candidate, 13 folds & 8 repetitions
 
@@ -85,6 +86,8 @@ pr_dt.c4_5_r8kf13 <- performance(pred_dt.c4_5_r8kf13, "prec", "rec")
 plot(pr_dt.c4_5_r8kf13)
 ```
 
+This line suggests is prettier linear relationship between pecision & recall, which is at least better than the previous graph but a better line would remain higher on the _y_ only dropping off towards _1.0_ on the _y_.
+
 ###Random Forest Decision Tree repeated k-folds candidate (overfit)
 
 ```{r dt-rf-p&r}
@@ -97,6 +100,8 @@ pred_dt.rf <- prediction(pred_dt.rf_highest_probs, pred_dt.correct)
 pr_dt.rf <- performance(pred_dt.rf, "prec", "rec")
 plot(pr_dt.rf)
 ```
+
+This is the overfit example which show an example of what the line should be like if precision of classification stayed more or less constant as recall scales.
 
 ###Random Forest Decision Tree holdout candidate 
 
@@ -112,6 +117,7 @@ pr_dt.hrf2_h <- performance(pred_dt.hrf2_h, "prec", "rec")
 plot(pr_dt.hrf2_h)
 ```
 
+This line show a saw-tooth pattern that is apparently common in this sort of graph; the slope is approximately the same as the better C4.5 line though the area under the line might well be higher, indicating slightly better performance.
 
 ###Naive Bayes holdout candidate
 
@@ -126,6 +132,8 @@ pr_nb.h <- performance(pred_nb.h, "prec", "rec")
 plot(pr_nb.h)
 ```
 
+This grapghi is insteresting as it suggests an initially good rate of success which literally tails off. 
+
 ###Naive Bayes repeat k-folds cross-validation candidate
 
 ```{r dt-nb_r5kf8-p&r}
@@ -138,6 +146,8 @@ pred_nb.r5kf8 <- prediction(pred_nb.r5kf8_highest_probs, pred_nb.r5kf8_correct)
 pr_nb.r5kf8 <- performance(pred_dt.nb_r5kf8, "prec", "rec")
 plot(pr_nb.r5kf8)
 ```
+
+When comparing this line to the line onf the previous graph, it's possible to see how cross validation manages to improve the line, increasing the area below the line ever so slightly.
 
 ###KNN candidates
 
@@ -154,6 +164,8 @@ pr_knn.h <- performance(pred_knn.h, "prec", "rec")
 plot(pr_knn.h)
 ```
 
+This line would appear to suggest slightly worse than a linear, negative coefficient; the highest precision value is only about _0.75_, so this doesn't suggest good results where precision is concerned.
+
 ####KNN repeated k-folds cross-validation candidate
 
 ```{r knn-r5kf8-p&r}
@@ -167,7 +179,11 @@ pr_knn.r5kf8 <- performance(pred_knn.r5kf8, "prec", "rec")
 plot(pr_knn.r5kf8)
 ```
 
+When compared to the previous KNN PRC, this supports the recommendation of cross-validation to improve precision; this also manifests in an increase of the area under the line.
+
 ##Accuracy estimation comparison
+
+The following graphs represent the overall accuracy of the model; like with all thse graphs, the area under the line is important with the larger volume being preferred.
 
 ###C4.5 Decision Tree candidate
 
@@ -286,7 +302,9 @@ lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
 
-##RAUC matrix comparison
+##RAUC comparison
+
+The following values essentially represent the volume under the lines for the corresponding ROC curves, thus distiling the performance into one number between _0_ and _1_, where _1_ would indicate perfect classification, _0_ would represent incorrect clasification 100% of the time and the red line on the ROC graphs above would essentially resolve to a value of _0.5_. It can be considered another form of accuracy indicator in this way.
 
 ###C4.5 Decision Tree candidate
 
@@ -338,5 +356,9 @@ print(paste(c(auc_knn.r5kf8@y.name, auc_knn.r5kf8@y.values)), quote=FALSE)
 ```
 
 ##Conclusion
+
+If the overfit Random Forest wasn't considered overfit, then it would be the recommended model; further experimentation would probably demonstrate how it has been too tightly shaped to the test dataset to deliver similar results for fresh Abalone data.
+
+If one metric were to be used to generally determine the which were the better performing models then it would be the RAUC, in which case the cross-validated KNN model comes out on top _(ROAC: 0.722)_ while the Random Forest with holdout training comes in second _(ROAC: 0.701)_; both of these values outperform the best Naive Bayes model _(ROAC: 0.695)_ though not by much, so further investigation into tuning would probably be a good idea. The good thing about these models, Random Forest and KNN is that in their own way they are fast, so while the classification performance could be improved, these two type of models would be recommendedover the C4.5 decision tree.
 
 </section>
