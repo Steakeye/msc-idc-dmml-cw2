@@ -574,7 +574,7 @@ Random forests are good for avoiding over-fitting, so long as you know what you'
 
 ### Decision Tree Conclusion
 
-...
+Given all the data processing and feature selection work, the results from the decision tree have not been a fruitful as one might have hoped. Perhaps further investigation into more fine tuning could help yield better results.
 
 
 </section>

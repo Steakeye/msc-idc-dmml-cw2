@@ -116,5 +116,6 @@ nb.loo_a_test_cm$overall[1]
 
 While this technique doesn't produce the strongest results, it's a useful tool alongside other models which can be used for preparatory work in order to inform further work on modelling a classification problem. It's a fast way to do preliminary analysis, which can benefit somewhat from cross-validation but for the Abalone dataset at least, using the leave-one-out method bore no extra benefit over k-folds.
 
+When compared to the decision trees, the Naive Bayes models perform similarly, only marginally worse in some cases; the one classification out of the three agre groups where they underperform by a notable amount is the _'old'_ group; it's not entirely clear why this is but it likely that while the chosen features have a direct correlation to age, the coefficients are not pronounced enough to make classification any better than it is.
 
 </section>
