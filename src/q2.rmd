@@ -50,7 +50,11 @@ head(holdout.train_indeces, n=20)
 
 holdout.training <- abalone_data_cleansed[holdout.train_indeces,]
 
+save(holdout.training, file="holdout.training.rda")
+
 holdout.testing <- abalone_data_cleansed[-holdout.train_indeces,]
+
+save(holdout.testing, file="holdout.testing.rda")
 ```
 
 ###Evaluating the holdout datasets

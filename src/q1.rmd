@@ -65,7 +65,7 @@ The Abalone dataset has a little over 4,000 instances compared to 30,000 for the
 
 ###How to classify this data
 
-The typical way to classify this data, is to determine approximate age based on the ring value, according to the UCI page for this dataset, the rings roughly suggest age such that \(y = r + 2.5\), where y is number of years and r is number of rings. The simplest approach is to attempt to guess the correct number of rings for a test instance based on other attributes.
+The typical way to classify this data, is to determine approximate age based on the ring value, according to the UCI page for this dataset, the rings roughly suggest age such that \(y = r + 2.5\), where _y_ is number of years and _r_ is number of rings. The simplest approach is to attempt to guess the correct number of rings for a test instance based on other attributes.
 
 ###Getting the data
 
@@ -91,6 +91,7 @@ grid.table(abalone_summary)
 kable(abalone_summary)
 
 ```
+
 ### The attributes explained
 
 The Abalone is a type of shellfish and each attribute describes a characteristic of the animal. Not being an expert on this animal, I've had to research a little bit about the Abalone in order to get an idea of what these traits are. Knowing a bit more about these properties, should hopefully lead to a better understanding of the data. What follows is a list of definitions for each column.
@@ -321,7 +322,7 @@ sorted_attributes_by_r_squared
 
 After looking at these results it may be wiser to consider using the shell weight alone if necessary; the r-squared value isn't a perfect predictor of the fitness but perhaps in this case, it could make more sense to use a weight value that could fluctuate less in nature. Selection of the attributes relating to size appear to be validated.
 
-####Substatiating the selection 
+####Substantiating the selection 
 
 With the use of a correlation matrix, it's possible to further validate which attributes could be worth focusing on:
 
@@ -352,7 +353,7 @@ The correlation between ring values and the other attributes, when ordered, actu
 
 Given that the number of rings is actually a range of integers from 1 to 29, to use each individual possible integer presents a problem; firstly as the ring value cannot be considered continuous it's not really sensible to treat it as such, thus converting to a a numeric floating range is not appropriate; in addition to this, the dataset might not have instances that cover every single possible ring value between 1 and 29, which will cause inaccuracy in some of the models.
 
-An alternative dataset can be created that mitigates this issue by creating an approximate age factor; classification of the Abalone can be more loosely done against age ranges, like _young, middle, old_ with the test instances still being compared by other attributes and mapped to one of these age group factor values. The split will be detmined by the ring/age spread of the sampled population of Abalones, such that about a 1/3 of the sample size is in each age_group. This is because the number of Abalones with rings above 12 starts to drop off quite accutely and as a percentage those above 15 even are a small minority, despite the highest values nearing 30 rings.
+An alternative dataset can be created that mitigates this issue by creating an approximate age factor; classification of the Abalone can be more loosely done against age ranges, like _young, middle, old_ with the test instances still being compared by other attributes and mapped to one of these age group factor values. The split will be determined by the ring/age spread of the sampled population of Abalones, such that about a 1/3 of the sample size is in each age_group. This is because the number of Abalones with rings above 12 starts to drop off quite acutely and as a percentage those above 15 even are a small minority, despite the highest values nearing 30 rings.
 
 ```{r abalone-age-granges}
 summary(abalone_data_cleansed$rings)

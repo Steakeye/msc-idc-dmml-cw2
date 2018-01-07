@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q5"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -61,6 +61,7 @@ plot(knn.h_a)
 
 ```{r knn-h_a_test_results}
 knn.h_a_test <- predict(knn.h_a, holdout_age_groups.testing)
+knn.h_a_test_prob <- predict(knn.h_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 knn.h_a_test_cm <- confusionMatrix(knn.h_a_test, holdout_age_groups.testing$age_group)
 knn.h_a_test_cm
@@ -80,6 +81,7 @@ plot(knn.r5kf8_a)
 
 ```{r knn-r5kf8_a_test_results}
 knn.r5kf8_a_test <- predict(knn.r5kf8_a, holdout_age_groups.testing)
+knn.r5kf8_a_test_prob <- predict(knn.r5kf8_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 knn.r5kf8_a_test_cm <- confusionMatrix(knn.r5kf8_a_test, holdout_age_groups.testing$age_group)
 knn.r5kf8_a_test_cm
@@ -91,13 +93,13 @@ knn.r5kf8_a_test_cm
 knn.loo_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl = loocv.train_control, method="knn")
 ```
 
-```{r nb-loo_a-summary}
+```{r knn-loo_a-summary}
 plot(knn.loo_a)
 ```
 
 ####Naive Bayes with Leave-one-out, training results
 
-```{r nb-loo_a_test_results}
+```{r knn-loo_a_test_results}
 knn.loo_a_test <- predict(knn.loo_a, holdout_age_groups.testing)
 # summarize results
 knn.loo_a_test_cm <- confusionMatrix(knn.loo_a_test, holdout_age_groups.testing$age_group)
@@ -108,7 +110,7 @@ knn.loo_a_test_cm
 
 ###Accuracy comparison of KNN models
 
-```{r}
+```{r knn-comparisons}
 knn.h_a_test_cm$overall[1]
 knn.r5kf8_a_test_cm$overall[1]
 knn.loo_a_test_cm$overall[1]

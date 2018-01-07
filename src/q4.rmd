@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q4"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -11,21 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t4, echo=FALSE, include=FALSE, message=FALSE}
-if(!require(doMC)) install.packages('doMC')
 if(!require(caret)) install.packages("caret", repos = mirrorUrl)
 if(!require(klaR)) install.packages("klaR", repos = mirrorUrl)
 if(!require(rpart.plot)) install.packages("rpart.plot", repos = mirrorUrl)
 
 #
-library("doMC")
 library("caret")
 library("klaR")
 library("rpart.plot")
-```
-
-
-```{r setup-t4_2, include=FALSE, message=FALSE}
-registerDoMC()
 ```
 
 <section>
@@ -48,7 +41,7 @@ Naive Bayes is a relatively quick and simple probabilistic classifier that is of
 
 ###Naive Bayes formula and simpler classification
 
-Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and onwards.
+Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and following sections.
 
 ###Naive Bayes with holdout
 
@@ -64,6 +57,7 @@ plot(nb.h_a)
 
 ```{r nb-h_a_test_results}
 nb.h_a_test <- predict(nb.h_a, holdout_age_groups.testing)
+nb.h_a_test_prob <- predict(nb.h_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 nb.h_a_test_cm <- confusionMatrix(nb.h_a_test$class, holdout_age_groups.testing$age_group)
 nb.h_a_test_cm
@@ -84,6 +78,7 @@ plot(nb.r5kf8_a)
 
 ```{r nb-r5kf8_a_test_results}
 nb.r5kf8_a_test <- predict(nb.r5kf8_a, holdout_age_groups.testing)
+nb.r5kf8_a_test_prob <- predict(nb.r5kf8_a, holdout_age_groups.testing, type = "prob")
 # summarize results
 nb.r5kf8_a_test_cm <- confusionMatrix(nb.r5kf8_a_test, holdout_age_groups.testing$age_group)
 nb.r5kf8_a_test_cm

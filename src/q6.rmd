@@ -1,5 +1,5 @@
 ---
-title: "q1"
+title: "q6"
 output: html_document
 bibliography: bibliography.ris
 ---
@@ -11,6 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r deps-t6, echo=FALSE, include=FALSE, message=FALSE}
+if(!require(caret)) install.packages("caret", repos = mirrorUrl)
+if(!require(ROCR)) install.packages("ROCR", repos = mirrorUrl)
+#
+library("caret")
+library("ROCR")
 ```
 
 <section>
@@ -29,6 +34,244 @@ knitr::opts_chunk$set(echo = TRUE)
 • RAUC (receiver under the curve area) plot 3
 -->
 
-TBD
+##Confusion matrix comparison
+
+... Re-use earlier values
+
+##Precision & Recall comparison
+
+>>>Precision-Recall is a useful measure of success of prediction when the classes are very imbalanced. In information retrieval, precision is a measure of result relevancy, while recall is a measure of how many truly relevant results are returned.
+The precision-recall curve shows the tradeoff between precision and recall for different threshold. A high area under the curve represents both high recall and high precision, where high precision relates to a low false positive rate, and high recall relates to a low false negative rate. High scores for both show that the classifier is returning accurate results (high precision), as well as returning a majority of all positive results (high recall).
+A system with high recall but low precision returns many results, but most of its predicted labels are incorrect when compared to the training labels. A system with high precision but low recall is just the opposite, returning very few results, but most of its predicted labels are correct when compared to the training labels. An ideal system with high precision and high recall will return many results, with all results labeled correctly.
+
+```{r f-score-func}
+ f_score <- function (prec, rec)
+{
+  return(2 * prec * rec / (prec + rec))
+}
+```
+
+###C4.5 Decision Tree candidate
+
+```{r dt-c4_5-p&r}
+pred_dt.c4_5_highest_probs <- apply(dt.c4_5_j48_r5kf8_a_test_prob, 1, "max") 
+pred_dt.c4_5_correct <- dt.c4_5_j48_r5kf8_a_test == holdout_age_groups.testing$age_group
+
+pred_dt.c4_5 <- prediction(pred_dt.c4_5_highest_probs, pred_dt.c4_5_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.c4_5 <- performance(pred_dt.c4_5, "prec", "rec")
+plot(pr_dt.c4_5)
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-p&r}
+pred_dt.highest_probs <- apply(dt.rf_cv_r5kf8_a_test_prob, 1, "max") 
+pred_dt.correct <- dt.rf_cv_r5kf8_a_test == holdout_age_groups.testing$age_group
+
+pred_dt.rf <- prediction(pred_dt.highest_probs, pred_dt.correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_dt.rf <- performance(pred_dt.rf, "prec", "rec")
+plot(pr_dt.rf)
+```
+
+###Naive Bayes holdout candidate
+
+```{r dt-nb_h-p&r}
+pred_nb.h_highest_probs <- apply(nb.h_a_test_prob$posterior, 1, "max") 
+pred_nb.h_correct <- nb.h_a_test_prob$class == holdout_age_groups.testing$age_group
+
+pred_nb.h <- prediction(pred_nb.h_highest_probs, pred_nb.h_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_nb.h <- performance(pred_nb.h, "prec", "rec")
+plot(pr_nb.h)
+```
+
+###Naive Bayes repeat k-folds cross-validation candidate
+
+```{r dt-nb_r5kf8-p&r}
+pred_nb.r5kf8_highest_probs <- apply(nb.r5kf8_a_test_prob, 1, "max") 
+pred_nb.r5kf8_correct <- nb.r5kf8_a_test == holdout_age_groups.testing$age_group
+
+pred_nb.r5kf8 <- prediction(pred_nb.r5kf8_highest_probs, pred_nb.r5kf8_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_nb.r5kf8 <- performance(pred_dt.nb_r5kf8, "prec", "rec")
+plot(pr_nb.r5kf8)
+```
+
+###KNN candidates
+
+####KNN holdout candidate
+
+```{r knn-h-p&r}
+pred_knn.h_highest_probs <- apply(knn.h_a_test_prob, 1, "max") 
+pred_knn.h_correct <- knn.h_a_test == holdout_age_groups.testing$age_group
+
+pred_knn.h <- prediction(pred_knn.h_highest_probs, pred_knn.h_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_knn.h <- performance(pred_knn.h, "prec", "rec")
+plot(pr_knn.h)
+```
+
+####KNN repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-p&r}
+pred_knn.r5kf8_highest_probs <- apply(knn.r5kf8_a_test_prob, 1, "max") 
+pred_knn.r5kf8_correct <- knn.r5kf8_a_test == holdout_age_groups.testing$age_group
+
+pred_knn.r5kf8 <- prediction(pred_knn.r5kf8_highest_probs, pred_knn.r5kf8_correct)
+
+## precision/recall curve (x-axis: recall, y-axis: precision)
+pr_knn.r5kf8 <- performance(pred_knn.r5kf8, "prec", "rec")
+plot(pr_knn.r5kf8)
+```
+
+##Accuracy estimation comparison
+
+###C4.5 Decision Tree candidate
+
+```{r dt-c4_5-acc}
+acc_dt.c4_5 <- performance(pred_dt.c4_5, "acc")
+plot(acc_dt.c4_5)
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-acc}
+acc_dt.rf <- performance(pred_dt.rf, "acc")
+plot(acc_dt.rf)
+```
+###Naive Bayes holdout candidate
+
+```{r nb-h-acc}
+acc_nb.h <- performance(pred_nb.h, "acc")
+plot(acc_nb.h)
+```
+
+###Naive Bayes repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-acc}
+acc_nb.r5kf8 <- performance(pred_nb.r5kf8, "acc")
+plot(acc_nb.r5kf8)
+```
+###KNN holdout candidate
+
+```{r knn-h-p&r}
+acc_knn.h <- performance(pred_knn.h, "acc")
+plot(acc_knn.h)
+```
+
+###KNN repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-p&r}
+acc_knn.r5kf8 <- performance(pred_knn.r5kf8, "acc")
+plot(acc_knn.r5kf8)
+```
+
+##ROC comparison
+
+###C4.5 Decision Tree candidate
+
+```{r dt-c4_5-roc}
+roc_dt.c4_5 = performance(pred_dt.c4_5, measure="tpr", x.measure="fpr")
+plot(roc_dt.c4_5, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-roc}
+roc_dt.rf = performance(pred_dt.rf, measure="tpr", x.measure="fpr")
+plot(roc_dt.rf, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+###Naive Bayes holdout candidate
+
+```{r nb-h-roc}
+roc_nb.h = performance(pred_nb.h, measure="tpr", x.measure="fpr")
+plot(roc_nb.h, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+
+###Naive Bayes repeated k-folds cross-validation candidate
+
+```{r nb-r5kf8-roc}
+roc_nb.r5kf8 = performance(pred_nb.r5kf8, measure="tpr", x.measure="fpr")
+plot(roc_nb.r5kf8, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+
+###KNN holdout candidate
+
+```{r knn-h-roc}
+roc_knn.h = performance(pred_knn.h, measure="tpr", x.measure="fpr")
+plot(roc_knn.h, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+###KNN repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-roc}
+roc_knn.r5kf8 = performance(pred_knn.r5kf8, measure="tpr", x.measure="fpr")
+plot(roc_knn.r5kf8, col="orange", lwd=2) 
+lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
+```
+
+
+##RAUC matrix comparison
+
+
+###C4.5 Decision Tree candidate
+
+```{r dt-c4_5-roc}
+auc_dt.c4_5 = performance(pred_dt.c4_5, "auc")
+print(paste(c(auc_dt.c4_5@y.name, auc_dt.c4_5@y.values)), quote=FALSE)
+```
+
+###Random Forest Decision Tree candidate
+
+```{r dt-rf-roc}
+auc_dt.rf = performance(pred_dt.rf, "auc")
+print(paste(c(auc_dt.rf@y.name, auc_dt.rf@y.values)), quote=FALSE)
+```
+###Naive Bayes holdout candidate
+
+```{r nb-h-roc}
+auc_nb.h = performance(pred_nb.h, "auc")
+print(paste(c(auc_nb.h@y.name, auc_nb.h@y.values)), quote=FALSE)
+```
+
+
+###Naive Bayes repeated k-folds cross-validation candidate
+
+```{r nb-r5kf8-roc}
+auc_nb.r5kf8 = performance(pred_nb.r5kf8, "auc")
+print(paste(c(auc_nb.r5kf8@y.name, auc_nb.r5kf8@y.values)), quote=FALSE)
+```
+
+
+###KNN holdout candidate
+
+```{r knn-h-roc}
+auc_knn.h = performance(pred_knn.h, "auc")
+print(paste(c(auc_knn.h@y.name, auc_knn.h@y.values)), quote=FALSE)
+```
+
+###KNN repeated k-folds cross-validation candidate
+
+```{r knn-r5kf8-roc}
+auc_knn.r5kf8 = performance(pred_knn.r5kf8, "auc")
+print(paste(c(auc_knn.r5kf8@y.name, auc_knn.r5kf8@y.values)), quote=FALSE)
+```
+
+
+##Conclusion
 
 </section>
