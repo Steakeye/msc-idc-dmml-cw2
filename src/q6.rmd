@@ -47,18 +47,9 @@ Every model has had a confusion matrix displayed within its respective section; 
 
 ##Precision & Recall comparison
 
->>>Precision-Recall is a useful measure of success of prediction when the classes are very imbalanced. In information retrieval, precision is a measure of result relevancy, while recall is a measure of how many truly relevant results are returned.
-The precision-recall curve shows the tradeoff between precision and recall for different threshold. A high area under the curve represents both high recall and high precision, where high precision relates to a low false positive rate, and high recall relates to a low false negative rate. High scores for both show that the classifier is returning accurate results (high precision), as well as returning a majority of all positive results (high recall).
-A system with high recall but low precision returns many results, but most of its predicted labels are incorrect when compared to the training labels. A system with high precision but low recall is just the opposite, returning very few results, but most of its predicted labels are correct when compared to the training labels. An ideal system with high precision and high recall will return many results, with all results labeled correctly.
+>>>The precision-recall plot is a model-wide evaluation measure that is based on two basic evaluation measures – recall and precision. Recall is a performance measure of the whole positive part of a dataset, whereas precision is a performance measure of positive predictions. [@doc:5a52ebfbe4b01d3dd55667a6]
 
-- [TODO: cite!]
-
-```{r f-score-func}
- f_score <- function (prec, rec)
-{
-  return(2 * prec * rec / (prec + rec))
-}
-```
+Precision is the measure of result confidence, while recall the measure true positive results are returned. The precision-recall curve shows the tradeoff between precision and recall at different thresholds. 
 
 ###C4.5 Decision Tree candidate, 8 folds & 5 repetitions
 
@@ -237,7 +228,7 @@ plot(acc_knn.r5kf8)
 
 ##ROC comparison
 
-The Receiver operating characteristic compares the rate of true positives with false positives; in graph form true positive rate is on the _y_ axis, while _x_ maps the false positive rate. The better the model is at performing classification the larger the area under the line and the more 'rectangular' in shape, with the best performing results being were the line is closest to the top left corner. The better the model performs the higher the true positive relative to the false positive.
+The Receiver operating characteristic compares the rate of true positives with false positives; in graph form true positive rate is on the _y_ axis, while _x_ maps the false positive rate. The better the model is at performing classification the larger the area under the line and the more 'rectangular' in shape, with the best performing results being were the line is closest to the top left corner [@doc:5a52ed11e4b0e3e5a6364700]. The better the model performs, the higher the true positive relative to the false positive.
 
 In the following ROC graphs, a red line indicates what model performance would be like were a model only have a 50% change of correctly classifying a data instance. The yellow line is the relationship between true-positive-rate (TPR) and false-positive-rate (FPR).
 
@@ -306,7 +297,7 @@ lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 
 ##RAUC comparison
 
-The following values essentially represent the volume under the lines for the corresponding ROC curves, thus reducing the performance into one number between _0_ and _1_, where _1_ would indicate perfect classification, _0_ would represent incorrect classification 100% of the time and the red line on the ROC graphs above would essentially resolve to a value of _0.5_. It can be considered another form of accuracy indicator in this way.
+The following values essentially represent the volume under the lines for the corresponding ROC curves, thus reducing the performance into one number between _0_ and _1_, where _1_ would indicate perfect classification, _0_ would represent incorrect classification 100% of the time and the red line on the ROC graphs above would essentially resolve to a value of _0.5_. It can be considered another form of accuracy indicator in this way [@doc:5a52ed04e4b0e3e5a63646ff].
 
 ###C4.5 Decision Tree candidate
 
