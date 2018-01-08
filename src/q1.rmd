@@ -74,7 +74,7 @@ The typical way to classify this data, is to determine approximate age based on 
 
 ###Getting the data
 
-Having downloaded the data from the UCI repository [@doc:5a458258e4b022cc4f773fdd] we need convert the data into a table and check it's usable.
+Having downloaded the data from the UCI repository [@doc:5a458258e4b022cc4f773fdd, @doc:5a458724e4b000cfec287c20] we need convert the data into a table and check it's usable.
 
 ```{r read-abalone-1}
 abalone_data = data.frame(read.table("../assets/data/abalone.data", sep = ","))
@@ -124,7 +124,7 @@ The Abalone is a type of shellfish and each attribute describes a characteristic
 
 ### A little bit of basic data cleansing
 
-The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entries that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data.
+The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entries that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data [@doc:5a52ca43e4b02942103f7d57].
 
 ```{r basic-data-sanity}
 abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
@@ -161,6 +161,7 @@ print(paste(c("Number of instances where total weight is less than constiuent we
 ```
 
 It would appear that the data isn't completely sanitized, with this sort of erroneous data entry needing to be handled as well. The simplest option is to rule out these instances as well.
+
 <!--Given that the mean value for the whole weight is 0.8287g, -->
 ```{r cleanse-crazy-weight}
 abalone_data <- abalone_data[!(abalone_data$weight.whole - (abalone_data$weight.shucked + abalone_data$weight.viscera + abalone_data$weight.shell)) < 0,]
@@ -219,7 +220,6 @@ sorted_attributes_by_neighbour_d
 ```
 
 While rings is at the top of the leader-board regarding the delta, it's important to take into account that this data isn't scaled; it's very likely that this outlier is the results of a particularly lucky Abalone that managed to live longer than the rest of the long tail through some luck. Given that the other values are meant to be in grams and millimetres, it's reasonable to compare values like for like in this instance. As such the weight deltas as comparable and can be excluded from outlier cleansing, with the same applying to diameter and length; height seems to be anomalous though and will need further attention.
-
 
 It's easier to see on a box-plot that one value is way out far from any neighbours, with its nearest neighbour also having no nearby neighbour; we could probably benefit just from removing the two farthest outliers.
 
@@ -289,7 +289,7 @@ With our cleansed data we can see that there is an evident correlation  between 
  - height
  - weight.whole
 
-Given that the all attributes appear to display a fairly linear relationship to the ring count we can use r-squared, otherwise known as the Coefficient of Determination to verify how well the data matches the line of best fit
+Given that the all attributes appear to display a fairly linear relationship to the ring count we can use r-squared, otherwise known as the Coefficient of Determination to verify how well the data matches the line of best fit [@doc:5a4b8c54e4b09d5cea020a62, @doc:5a4b8c05e4b0c2a8b20c5456].
 
 ```{r}
 abalone.lm_length <- lm(data = abalone_data_cleansed, formula = rings ~ length)
