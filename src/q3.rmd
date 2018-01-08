@@ -429,7 +429,7 @@ dt.c4_5_j48_r8kf13_a_test_cm$overall[1]
 
 ####J48 with leave-one-out training 
 
-The last C4.5 decision tree to explore is a model using the leave-one-out training method, however research and experimentation suggests this is too computationally expensive for decision trees; when attempting to train a tree with this training control, over an hour passed without any output; it would appear that for trees, not only _p_ but _n_ (the total number of observations) should also be very low, certainly smaller than the Abalone dataset. 
+The last C4.5 decision tree to explore is a model using the leave-one-out training method, however research [@doc:5a4eba0ee4b020410252c08d] and experimentation suggests this is too computationally expensive for decision trees; when attempting to train a tree with this training control, over an hour passed without any output; it would appear that for trees, not only _p_ but _n_ (the total number of observations) should also be very low, certainly smaller than the Abalone dataset. 
 
 
 ####C4.5 Conclusion
@@ -440,7 +440,7 @@ With regard to the Abalone dataset in particular, it may not be the most suitabl
 
 ##Random Forest Decision Tree
 
-The Random Forest Decision Tree is a algorithm that creates multiple internalised decision trees, which are all used when trying to classify new data. Each tree will vote, with a weight as to what the classification will be, with the final classification going to the greates vote value. Random Forests are fast, is less prone to over-fitting and works well with incomplete data. The major disadvantage of Random Forests is that it can't be used for regression, failing extrapolate a result for data that is out-of-bounds of the original training dataset; given the scrope of this particular Abalone age group classification, this shouldn't be too much of an issue.
+The Random Forest Decision Tree is a algorithm that creates multiple internalised decision trees [@doc:5a4ec56ae4b0062b162abbf0], which are all used when trying to classify new data. Each tree will vote, with a weight as to what the classification will be, with the final classification going to the greates vote value. Random Forests are fast, is less prone to over-fitting and works well with incomplete data. The major disadvantage of Random Forests is that it can't be used for regression, failing extrapolate a result for data that is out-of-bounds of the original training dataset; given the scrope of this particular Abalone age group classification, this shouldn't be too much of an issue.
 
 With the previous Decision Tree (C4.5) training, much experimenting was done as to how the dataset should be prepaared for the purposes of classification and the optimal training controls for Decision Trees; it seems reasonable enough to streamline the analysis of the Random Forest by carrying over into this sub-section the two main lessons learned: 
 

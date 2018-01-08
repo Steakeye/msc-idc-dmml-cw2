@@ -37,7 +37,7 @@ library("rpart.plot")
 • Testing of Naïve Bayes type classifier in R 6
 -->
 
-Naive Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth sharing. If a proposed algorithm cannot improve on Naive Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
+Naive Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark [@doc:5a4f0c37e4b09d5cea02c23b] for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth sharing. If a proposed algorithm cannot improve on Naive Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
 
 ##Naive Bayes training
 
@@ -114,6 +114,7 @@ nb.h_a_test_cm$overall[1]
 nb.r5kf8_a_test_cm$overall[1]
 nb.loo_a_test_cm$overall[1]
 ```
+
 ##Naive Bayes Conclusion
 
 While this technique doesn't produce the strongest results, it's a useful tool alongside other models which can be used for preparatory work in order to inform further work on modelling a classification problem. It's a fast way to do preliminary analysis, which can benefit somewhat from cross-validation but for the Abalone dataset at least, using the leave-one-out method bore no extra benefit over k-folds.
