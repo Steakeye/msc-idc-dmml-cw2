@@ -29,7 +29,7 @@ library("rpart.plot")
 
 ##Premise
 
->You need to construct, train and test Naïve Bayes type classifier in R. Train and test your Naïve Byes classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
+>You need to construct, train and test Naïve Bayes type classifier in R. Train and test your Naïve Bayes classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
 
 <!--
 • Building of Naïve Bayes type classifier in R 4
@@ -37,7 +37,7 @@ library("rpart.plot")
 • Testing of Naïve Bayes type classifier in R 6
 -->
 
-Naïve Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark [@doc:5a4f0c37e4b09d5cea02c23b] for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth sharing. If a proposed algorithm cannot improve on Naïve Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
+Naïve Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark [@doc:5a4f0c37e4b09d5cea02c23b] for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth using or sharing. If a proposed algorithm cannot improve on Naïve Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
 
 ##Naïve Bayes training
 
@@ -55,7 +55,7 @@ nb.h_a <- NaïveBayes(dt.formula, data=holdout_age_groups.training)
 plot(nb.h_a)
 ```
 
-What's interesting about these Naïve Bayes plots is that they suggest the merit of using this techniques to select features that could be used when creating a formula for use with another model. Another aspect worth noting is how the height and diameter probability graphs are extremely similar, which could suggest redundancy, where another feature could have been used as a classifier variable.
+What is interesting about these Naïve Bayes plots is that they suggest the merit of using this technique to select features that could be used when creating a formula for use with another model. Another aspect worth noting is how the _height_ and _diameter_ probability graphs are extremely similar, which could suggest redundancy, where another feature could have been used as a classifier variable; in addition to this, the location of the curves for _middle_ and _old_ on these graphs share a similar range on the x axis, highlighting how difficult it is to differentiate between the _middle_ and _old_ age groups based on these features. Searching for another feature that has bell curves located more discretely (not occupying the same space) on the graphs, would probably suggest a feature that could provide more succussful classification.
 
 ####Naïve Bayes with holdout, training results
 
