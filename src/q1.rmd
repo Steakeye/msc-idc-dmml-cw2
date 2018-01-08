@@ -89,12 +89,9 @@ print(c("Number of missing values:", missing_vals), quote = FALSE)
 Here's a glance at the dataset.
 
 ```{r show-abalone-1}
-head(abalone_data)
+kable(head(abalone_data))
 abalone_summary = summary(abalone_data)
-
-grid.table(abalone_summary)
 kable(abalone_summary)
-
 ```
 
 ### The attributes explained
@@ -124,7 +121,7 @@ The Abalone is a type of shellfish and each attribute describes a characteristic
 
 ### A little bit of basic data cleansing
 
-The data was checked to see if there were any missing values but it's also worth checking of some values are technically impossible and therefore belonging to incorrect entries that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data [@doc:5a52ca43e4b02942103f7d57].
+The data was checked to see if there were any missing values but it's also worth checking if some values are technically impossible and therefore belonging to incorrect entries that need to be removed; to do this, all values are iterated over to check for assignments of 0, indicating bad data [@doc:5a52ca43e4b02942103f7d57].
 
 ```{r basic-data-sanity}
 abalone_numeric_attr <- abalone_attr_names[which(abalone_attr_names!="sex")] 
@@ -189,8 +186,7 @@ rm(col_data)
 
 ```
 
-
-In order to work out which attributes should be considered to have valid outliers, I've gone with a heuristic approach, choosing to look at the distance between the uppermost outliers for each attribute and it's nearest neighbour.
+In order to work out which attributes should be considered to have valid outliers, a heuristic approach has been used to look at the distance between the uppermost outliers for each attribute and its nearest neighbour.
 
 ```{r find-sparse-tails-abalone}
 #Create a list to populate with our tail neighbour distances
@@ -219,7 +215,7 @@ sorted_attributes_by_neighbour_d <- dataframe[ neighbour_order, ]
 sorted_attributes_by_neighbour_d
 ```
 
-While rings is at the top of the leader-board regarding the delta, it's important to take into account that this data isn't scaled; it's very likely that this outlier is the results of a particularly lucky Abalone that managed to live longer than the rest of the long tail through some luck. Given that the other values are meant to be in grams and millimetres, it's reasonable to compare values like for like in this instance. As such the weight deltas as comparable and can be excluded from outlier cleansing, with the same applying to diameter and length; height seems to be anomalous though and will need further attention.
+While rings is at the top of the leader-board regarding the delta, it's important to take into account that this data isn't scaled; it's very likely that this outlier is the results of a particularly lucky Abalone that managed to live longer than the rest of the long tail through some luck. Given that the other values are meant to be in grams and millimetres, it's reasonable to compare values like for like in this instance. As such the weight deltas are comparable and can be excluded from outlier cleansing, with the same applying to diameter and length; height seems to be anomalous though and will need further attention.
 
 It's easier to see on a box-plot that one value is way out far from any neighbours, with its nearest neighbour also having no nearby neighbour; we could probably benefit just from removing the two farthest outliers.
 
@@ -356,9 +352,9 @@ The correlation between ring values and the other attributes, when ordered, actu
 
 ##Creating a simpler classification value
 
-Given that the number of rings is actually a range of integers from 1 to 29, to use each individual possible integer presents a problem; firstly as the ring value cannot be considered continuous it's not really sensible to treat it as such, thus converting to a a numeric floating range is not appropriate; in addition to this, the dataset might not have instances that cover every single possible ring value between 1 and 29, which will cause inaccuracy in some of the models.
+Given that the number of rings is actually a range of integers from 1 to 29, to use each individual possible integer presents a problem; firstly as the ring value cannot be considered continuous it's not really sensible to treat it as such, thus converting to a numeric floating range is not appropriate; in addition to this, the dataset might not have instances that cover every single possible ring value between 1 and 29, which will cause inaccuracy in some of the models.
 
-An alternative dataset can be created that mitigates this issue by creating an approximate age factor; classification of the Abalone can be more loosely done against age ranges, like _young, middle, old_ with the test instances still being compared by other attributes and mapped to one of these age group factor values. The split will be determined by the ring/age spread of the sampled population of Abalones, such that about a 1/3 of the sample size is in each age_group. This is because the number of Abalones with rings above 12 starts to drop off quite acutely and as a percentage those above 15 even are a small minority, despite the highest values nearing 30 rings.
+An alternative dataset can be created that mitigates this issue by creating an approximate age factor; classification of the Abalone can be more loosely done against age ranges, like _young, middle, old_ with the test instances still being compared by other attributes and mapped to one of these age group factor values. The split will be determined by the ring/age spread of the sampled population of Abalones, such that about a 1/3 of the sample size is in each age_group. This is because the number of Abalones with rings above 12 starts to drop off quite acutely and as a percentage even those above 15, are a small minority despite the highest values nearing 30 rings.
 
 ```{r abalone-age-granges}
 summary(abalone_data_cleansed$rings)

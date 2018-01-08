@@ -112,7 +112,7 @@ plot(pr_dt.hrf2_h)
 
 This line show a saw-tooth pattern that is apparently common in this sort of graph; the slope is approximately the same as the better C4.5 line though the area under the line might well be higher, indicating slightly better performance.
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r dt-nb_h-p&r}
 pred_nb.h_highest_probs <- apply(nb.h_a_test_prob$posterior, 1, "max") 
@@ -127,7 +127,7 @@ plot(pr_nb.h)
 
 This graph is interesting as it suggests an initially good rate of success which literally tails off. 
 
-###Naive Bayes repeat k-folds cross-validation candidate
+###Naïve Bayes repeat k-folds cross-validation candidate
 
 ```{r dt-nb_r5kf8-p&r}
 pred_nb.r5kf8_highest_probs <- apply(nb.r5kf8_a_test_prob, 1, "max") 
@@ -199,14 +199,14 @@ acc_dt.hrf2_h <- performance(pred_dt.hrf2_h, "acc")
 plot(acc_dt.hrf2_h)
 ```
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r nb-h-acc}
 acc_nb.h <- performance(pred_nb.h, "acc")
 plot(acc_nb.h)
 ```
 
-###Naive Bayes repeated k-folds cross-validation candidate
+###Naïve Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-acc}
 acc_nb.r5kf8 <- performance(pred_nb.r5kf8, "acc")
@@ -260,9 +260,9 @@ plot(roc_dt.hrf2_h, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-This is a far more conservative result but it is at least, markedly better than the C4.5 decision tree. What's worth doing is comparing this result to the Naive Bayes graphs below, which happen to have similar looking lines.
+This is a far more conservative result but it is at least, markedly better than the C4.5 decision tree. What's worth doing is comparing this result to the Naïve Bayes graphs below, which happen to have similar looking lines.
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r nb-h-roc}
 roc_nb.h = performance(pred_nb.h, measure="tpr", x.measure="fpr")
@@ -270,7 +270,7 @@ plot(roc_nb.h, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-###Naive Bayes repeated k-folds cross-validation candidate
+###Naïve Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-roc}
 roc_nb.r5kf8 = performance(pred_nb.r5kf8, measure="tpr", x.measure="fpr")
@@ -320,14 +320,14 @@ auc_dt.hrf2_h = performance(pred_dt.hrf2_h, "auc")
 print(paste(c(auc_dt.hrf2_h@y.name, auc_dt.hrf2_h@y.values)), quote=FALSE)
 ```
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r nb-h-auc}
 auc_nb.h = performance(pred_nb.h, "auc")
 print(paste(c(auc_nb.h@y.name, auc_nb.h@y.values)), quote=FALSE)
 ```
 
-###Naive Bayes repeated k-folds cross-validation candidate
+###Naïve Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-auc}
 auc_nb.r5kf8 = performance(pred_nb.r5kf8, "auc")
@@ -352,7 +352,7 @@ print(paste(c(auc_knn.r5kf8@y.name, auc_knn.r5kf8@y.values)), quote=FALSE)
 
 If the over-fit Random Forest wasn't considered over-fit, then it would be the recommended model; further experimentation would probably demonstrate how it has been too tightly shaped to the test dataset to deliver similar results for fresh Abalone data.
 
-If one metric were to be used to generally determine the which were the better performing models then it would be the RAUC, in which case the cross-validated KNN model comes out on top _(ROAC: 0.722)_ while the Random Forest with holdout training comes in second _(ROAC: 0.701)_; both of these values outperform the best Naive Bayes model _(ROAC: 0.695)_ though not by much, so further investigation into tuning would probably be a good idea. The good thing about these models, Random Forest and KNN is that in their own way they are fast, so while the classification performance could be improved, these two type of models would be recommended over the C4.5 decision tree.
+If one metric were to be used to generally determine the which were the better performing models then it would be the RAUC, in which case the cross-validated KNN model comes out on top _(ROAC: 0.722)_ while the Random Forest with holdout training comes in second _(ROAC: 0.701)_; both of these values outperform the best Naïve Bayes model _(ROAC: 0.695)_ though not by much, so further investigation into tuning would probably be a good idea. The good thing about these models, Random Forest and KNN is that in their own way they are fast, so while the classification performance could be improved, these two type of models would be recommended over the C4.5 decision tree.
 
 Whichever model is used, repeated cross-validation has benefit, and the leave-one-out method doesn't seem worth the effort.
 

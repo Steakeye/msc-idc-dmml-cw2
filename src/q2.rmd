@@ -44,7 +44,7 @@ The holdout method is the most basic separation of the dataset into training and
 
 ```{r holdout-create}
 set.seed(4321)
-head(abalone_data_cleansed)
+kable(head(abalone_data_cleansed))
 
 holdout.train_indeces <- createDataPartition(y = abalone_data_cleansed$weight.shell, p= 2/3, list = FALSE)
 head(holdout.train_indeces, n=20)
@@ -73,7 +73,7 @@ dim(holdout.testing)
 As an addition, the dataset modified to have an age_group factor attribute instead of rings attribute of integers, will also be partitioned for use with the holdout method.
 
 ```{r holdout-agre-group-create}
-head(abalone_data_cleansed_age_groups)
+kable(head(abalone_data_cleansed_age_groups))
 
 holdout_age_groups.train_indeces <- createDataPartition(y = abalone_data_cleansed_age_groups$weight.shell, p= 2/3, list = FALSE)
 head(holdout_age_groups.train_indeces, n=20)
