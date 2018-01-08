@@ -25,6 +25,7 @@ fontsize: 12pt
 css: null
 papersize: A4
 abstract: Show evidence of understanding of the clustering and modelling concepts, through the implementation of requested algorithms using real datasets. Implementation is performed in R environment, while students need to perform some critical evaluation of their results.
+subtitle: \"Show evidence of understanding of the clustering and modelling concepts, through the implementation of requested algorithms using real datasets. Implementation is performed in R environment, while students need to perform some critical evaluation of their results.\"
 toc-depth: 2
 toc-title: Table of Contents
 bibliography: bibliography.ris
@@ -46,17 +47,17 @@ set.seed(4321)
 ```{r q2, child = 'q2.rmd'}
 ```
 
-<!--```{r q3, child = 'q3.rmd'}
-```-->
+```{r q3, child = 'q3.rmd'}
+```
 
-<!--```{r q4, child = 'q4.rmd'}
-```-->
+```{r q4, child = 'q4.rmd'}
+```
 
-<!--```{r q5, child = 'q5.rmd'}
-```-->
+```{r q5, child = 'q5.rmd'}
+```
 
-<!--```{r q6, child = 'q6.rmd'}
-```-->
+```{r q6, child = 'q6.rmd'}
+```
 
 
 <section>
