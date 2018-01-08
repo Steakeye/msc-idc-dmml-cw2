@@ -1,0 +1,548 @@
+
+TY  - ICOMM
+ID  - doc:5a52ed11e4b0e3e5a6364700
+A1  - Schoonjans, Frank
+T1  - ROC curve analysis with MedCalc
+VL  - 2018
+IS  - Jan 8,
+AB  - ROC curve analysis in MedCalc includes calculation of area under the curve (AUC), Youden index, optimal criterion and predictive values. The program generates a full listing of criterion values and coordinates of the ROC curve.
+UR  - https://www.medcalc.org/manual/roc-curves.php
+UR  - https://www.medcalc.org/manual/roc-curves.php
+UR  - https://www.medcalc.org/manual/roc-curves.php
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a52ed04e4b0e3e5a63646ff
+T1  - ROC curves and Area Under the Curve explained (video)
+Y1  - 2014
+Y2  - -11-20T03:25:28.000Z
+VL  - 2018
+IS  - Jan 8,
+AB  - While competing in a Kaggle competition this summer, I came across a simple visualization (created by a fellow competitor) that helped me to gain a better intuitive understanding of ROC curves and Area Under the Curve (AUC). I created a video explaining this visualization to serve as a learning aid...
+UR  - http://www.dataschool.io/roc-curves-and-auc-explained/
+UR  - http://www.dataschool.io/roc-curves-and-auc-explained/
+UR  - http://www.dataschool.io/roc-curves-and-auc-explained/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52ebfbe4b01d3dd55667a6
+A1  - Saito, Takaya
+A1  - Rehmsmeier, Marc
+T1  - Introduction to the precision-recall plot
+Y1  - 2015
+Y2  - -06-09T16:27:18+00:00
+AB  - The precision-recall plot is a model-wide measure for evaluating binary classifiers and closely related to the ROC plot. We’ll cover the basic concept and several important aspects of the pre…
+T2  - Classifier evaluation with imbalanced datasets
+UR  - https://classeval.wordpress.com/introduction/introduction-to-the-precision-recall-plot/
+UR  - https://classeval.wordpress.com/introduction/introduction-to-the-precision-recall-plot/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52e013e4b02942103f7fc1
+A1  - Gu, Shixin
+A1  - Wu, Qingtong
+T1  - How Random Forest Algorithm Works in Machine Learning
+Y1  - 2017
+Y2  - -10-24T21:37:44.200Z
+AB  - This is one of the best introductions to Random Forest algorithm. The author introduces the algorithm with a real-life story and then…
+T2  - Medium
+UR  - https://medium.com/@Synced/how-random-forest-algorithm-works-in-machine-learning-3c0fe15b6674
+UR  - https://medium.com/@Synced/how-random-forest-algorithm-works-in-machine-learning-3c0fe15b6674
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52de2be4b01d3dd55666a1
+A1  - Thirumuruganathan, Saravanan
+T1  - A Detailed Introduction to K-Nearest Neighbor (KNN) Algorithm
+Y1  - 2010
+Y2  - -05-18T03:26:29+00:00
+AB  - K Nearest Neighbor (KNN from now on) is one of those algorithms that are very simple to understand but works incredibly well in practice. Also it is surprisingly versatile and its applications rang…
+T2  - God, Your Book Is Great !!
+UR  - https://saravananthirumuruganathan.wordpress.com/2010/05/17/a-detailed-introduction-to-k-nearest-neighbor-knn-algorithm/
+UR  - https://saravananthirumuruganathan.wordpress.com/2010/05/17/a-detailed-introduction-to-k-nearest-neighbor-knn-algorithm/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52ddf0e4b0e3e5a63645e4
+A1  - Raut, Ankush
+T1  - k Nearest Neighbors. Explained.
+Y1  - 2017
+Y2  - -03-21T07:49:03.951Z
+AB  - After getting set with the Tree algorithms, here’s another popular machine learning algorithm, which is pretty simple and intuitive. This…
+T2  - Data Science Group, IITR
+UR  - https://medium.com/data-science-group-iitr/k-nearest-neighbors-knn-500f0d17c8f1
+UR  - https://medium.com/data-science-group-iitr/k-nearest-neighbors-knn-500f0d17c8f1
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52ddd8e4b02942103f7f9c
+A1  - Srivastava, Tavish
+T1  - Introduction to KNN, K-Nearest Neighbors : Simplified
+Y1  - 2014
+Y2  - -10-10T03:18:09+05:30
+AB  - This article explains k nearest neighbor (KNN),one of the popular machine learning algorithms, working of kNN algorithm and how to choose factor k in simple terms.
+T2  - Analytics Vidhya
+UR  - https://www.analyticsvidhya.com/blog/2014/10/introduction-k-neighbours-algorithm-clustering/
+UR  - https://www.analyticsvidhya.com/blog/2014/10/introduction-k-neighbours-algorithm-clustering/
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a52dd8ce4b0eeb35a4a1e8c
+T1  - J48 decision tree - Mining at UOC
+VL  - 2018
+IS  - Jan 8,
+UR  - http://data-mining.business-intelligence.uoc.edu/home/j48-decision-tree
+UR  - http://data-mining.business-intelligence.uoc.edu/home/j48-decision-tree
+UR  - http://data-mining.business-intelligence.uoc.edu/home/j48-decision-tree
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a52dd7be4b08e15c00cdc97
+T1  - Predictive Analytics made easy | ClearPredictions.com
+VL  - 2018
+IS  - Jan 8,
+UR  - https://clearpredictions.com/Home/DecisionTree
+UR  - https://clearpredictions.com/Home/DecisionTree
+UR  - https://clearpredictions.com/Home/DecisionTree
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52dc89e4b02942103f7f82
+A1  - Brownlee, Jason
+T1  - An Introduction to Feature Selection
+Y1  - 2014
+Y2  - -10-06T05:00:41+11:00
+AB  - Which features should you use to create a predictive model? This is a difficult question that may require deep knowledge of the problem domain. It is possible to automatically select those features in your data that are most useful or most relevant for the problem you are working on. This is a process called feature …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/an-introduction-to-feature-selection/
+UR  - https://machinelearningmastery.com/an-introduction-to-feature-selection/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52dc77e4b02942103f7f81
+A1  - Brownlee, Jason
+T1  - Feature Selection with the Caret R Package
+Y1  - 2014
+Y2  - -09-22T05:00:17+11:00
+AB  - Selecting the right features in your data can mean the difference between mediocre performance with long training times and great performance with short training times. The caret R package provides tools automatically report on the relevance and importance of attributes in your data and even select the most important features for you. In this post …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/
+UR  - https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52ca43e4b02942103f7d57
+A1  - Jolly, Kevin
+T1  - The ultimate guide to cleaning data in R
+Y1  - 2017
+Y2  - -07-01T06:02:10+00:00
+AB  - Underestimating the power of R compared to that of Python when it comes to cleaning data would be a fatal mistake. R has a set of comprehensive tools that are specifically designed to clean data in…
+T2  - LinearData
+UR  - http://lineardata.net/the-ultimate-guide-to-cleaning-data-in-r/
+UR  - http://lineardata.net/the-ultimate-guide-to-cleaning-data-in-r/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52c93ce4b02942103f7d43
+T1  - Linear Regression in R: Abalone Dataset | Statistical Consulting Group
+UR  - http://scg.sdsu.edu/linear-regression-in-r-abalone-dataset/
+UR  - http://scg.sdsu.edu/linear-regression-in-r-abalone-dataset/
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a5192fbe4b02942103f2d47
+A1  - Kuhn, Max
+T1  - Comparing the Bootstrap and Cross-Validation
+Y1  - 2014
+Y2  - /11/27
+VL  - 2018
+IS  - Jan 7,
+AB  - This is the second of two posts about the performance characteristics of resampling methods. The first post focused on the cross-validation techniques and this post mostly concerns the bootstrap. Recall from the last post: we have some simulations to evaluate the precision and bias of these methods.
+UR  - http://appliedpredictivemodeling.com/blog/2014/11/27/08ks7leh0zof45zpf5vqe56d1sahb0
+UR  - http://appliedpredictivemodeling.com/blog/2014/11/27/08ks7leh0zof45zpf5vqe56d1sahb0
+UR  - http://appliedpredictivemodeling.com/blog/2014/11/27/08ks7leh0zof45zpf5vqe56d1sahb0
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4f0c37e4b09d5cea02c23b
+A1  - Brownlee, Jason
+T1  - How To Get Baseline Results And Why They Matter
+Y1  - 2014
+Y2  - -11-05T05:00:06+11:00
+AB  - In my courses and guides, I teach the preparation of a baseline result before diving into spot checking algorithms. A student of mine recently asked: If a baseline is not calculated for a problem, will it make the results of other algorithms questionable? He went on to ask: If other algorithms do not give better accuracy …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/how-to-get-baseline-results-and-why-they-matter/
+UR  - https://machinelearningmastery.com/how-to-get-baseline-results-and-why-they-matter/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4edbf5e4b0ac315a55bfc7
+A1  - Venturini, Sergio
+T1  - Cross-Validation for Predictive Analytics Using R
+Y1  - 2016
+Y2  - -05-03T18:39:12+00:00
+AB  - Cross-validation is a widely used model selection method. We show how to implement it in R using both raw code and the functions in the caret package.
+T2  - MilanoR
+UR  - http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r/
+UR  - http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4ec6f3e4b020410252c182
+A1  - Srivastava, Tavish
+T1  - Introduction To Random Forest - Simplified | Business Case Study
+Y1  - 2014
+Y2  - -06-10T00:16:59+05:30
+AB  - This article explains how does a Random forest work? And is explained using a simple case study.
+T2  - Analytics Vidhya
+UR  - https://www.analyticsvidhya.com/blog/2014/06/introduction-random-forest-simplified/
+UR  - https://www.analyticsvidhya.com/blog/2014/06/introduction-random-forest-simplified/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4ec56ae4b0062b162abbf0
+A1  - Polamuri, Saimadhu
+T1  - How the random forest algorithm works in machine learning
+Y1  - 2017
+Y2  - -05-22T19:08:23+00:00
+AB  - Learn how the random forest algorithm works with real life examples along with the application of random forest algorithm.
+T2  - Dataaspirant
+UR  - http://dataaspirant.com/2017/05/22/random-forest-algorithm-machine-learing/
+UR  - http://dataaspirant.com/2017/05/22/random-forest-algorithm-machine-learing/
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a4ec538e4b0ac315a55beae
+A1  - Benyamin, Dan
+T1  - A Gentle Introduction to Random Forests, Ensembles, and Performance Metrics in a Commercial System
+Y1  - 2012
+Y2  - November 9,
+VL  - 2018
+IS  - Jan 5,
+AB  - One of the components of the prediction system is a classifier, which is a currently an ensemble of both Neural Networks and Random Forest classifiers.
+UR  - http://blog.citizennet.com/blog/2012/11/10/random-forests-ensembles-and-performance-metrics
+UR  - http://blog.citizennet.com/blog/2012/11/10/random-forests-ensembles-and-performance-metrics
+UR  - http://blog.citizennet.com/blog/2012/11/10/random-forests-ensembles-and-performance-metrics
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4eba0ee4b020410252c08d
+A1  - Steinberg, Dan
+T1  - Why Leave-One-Out (LOO) Cross-Validation Does Not Work For Trees
+Y1  - 2013
+Y2  - Wed, Aug 28,
+AB  - The leave-one-out cross validation or jackknife testing method is known for regression models and could be useed for CART models
+PB  - Salford Systems
+UR  - https://info.salford-systems.com/blog/bid/312328/Why-Leave-One-Out-LOO-Cross-Validation-Does-Not-Work-For-Trees
+UR  - https://info.salford-systems.com/blog/bid/312328/Why-Leave-One-Out-LOO-Cross-Validation-Does-Not-Work-For-Trees
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4e5a3ae4b09d5cea02a9a9
+T1  - About J48 Decision Tree Pruning In Weka
+AB  - I think I finally have my head around how j48 works, and the various interactions of the switches. Sorry if this is all obvious to everyone else on the list, but maybe this might help some newbie like...
+T2  - Learning Big Data Analytics
+UR  - http://bigdatalearn.tumblr.com/post/55854866580/about-j48-decision-tree-pruning-in-weka
+UR  - http://bigdatalearn.tumblr.com/post/55854866580/about-j48-decision-tree-pruning-in-weka
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a4db356e4b0ac315a5583fc
+A1  - Joshi, Renuka
+T1  - Accuracy, Precision, Recall & F1 Score: Interpretation of Performance Measures
+Y1  - 2016
+Y2  - -09-09T08:00:22+00:00
+VL  - 2018
+IS  - Jan 4,
+AB  - How to evaluate the performance of a model in Azure ML and understanding “Confusion Metrics”
+UR  - http://blog.exsilio.com/all/accuracy-precision-recall-f1-score-interpretation-of-performance-measures/
+UR  - http://blog.exsilio.com/all/accuracy-precision-recall-f1-score-interpretation-of-performance-measures/
+UR  - http://blog.exsilio.com/all/accuracy-precision-recall-f1-score-interpretation-of-performance-measures/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4db301e4b0c2a8b20cd934
+A1  - Mourya, Shobha
+T1  - Accuracy Vs Precision – NoSimpler
+UR  - http://www.nosimpler.me/accuracy-precision/
+UR  - http://www.nosimpler.me/accuracy-precision/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4db27ee4b0c2a8b20cd927
+A1  - Brownlee, Jason
+T1  - Classification Accuracy is Not Enough: More Performance Measures You Can Use
+Y1  - 2014
+Y2  - -03-21T05:00:04+11:00
+AB  - When you build a model for a classification problem you almost always want to look at the accuracy of that model as the number of correct predictions from all predictions made. This is the classification accuracy. In a previous post, we have looked at evaluating the robustness of a model for making predictions on unseen …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/classification-accuracy-is-not-enough-more-performance-measures-you-can-use/
+UR  - https://machinelearningmastery.com/classification-accuracy-is-not-enough-more-performance-measures-you-can-use/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4da870e4b0c2a8b20cd807
+A1  - Brownlee, Jason
+T1  - What is a Confusion Matrix in Machine Learning
+Y1  - 2016
+Y2  - -11-18T05:00:28+11:00
+AB  - Make the Confusion Matrix Less Confusing. A confusion matrix is a technique for summarizing the performance of a classification algorithm. Classification accuracy alone can be misleading if you have an unequal number of observations in each class or if you have more than two classes in your dataset. Calculating a confusion matrix can give you …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/confusion-matrix-machine-learning/
+UR  - https://machinelearningmastery.com/confusion-matrix-machine-learning/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4c434ae4b0204102524624
+A1  - Hamel, Greg
+T1  - Introduction to R Part 29: Decision Trees
+Y1  - 2015
+Y2  - 10th September
+AB  - In the last lesson  we introduced logistic regression as a predictive modeling technique for classification tasks. While logistic regr...
+UR  - http://hamelg.blogspot.com/2015/09/introduction-to-r-part-29-decision-trees.html
+UR  - http://hamelg.blogspot.com/2015/09/introduction-to-r-part-29-decision-trees.html
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4c3ba6e4b0ac315a552aac
+A1  - Brownlee, Jason
+T1  - Tuning Machine Learning Models Using the Caret R Package
+Y1  - 2014
+Y2  - -09-19T05:00:16+11:00
+AB  - Machine learning algorithms are parameterized so that they can be best adapted for a given problem. A difficulty is that configuring an algorithm for a given problem can be a project in and of itself. Like selecting ‘the best’ algorithm for a problem you cannot know before hand which algorithm parameters will be best for …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/tuning-machine-learning-models-using-the-caret-r-package/
+UR  - https://machinelearningmastery.com/tuning-machine-learning-models-using-the-caret-r-package/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4c3b69e4b0ac315a552aa8
+A1  - Anh, Vu
+T1  - Using C4.5 to predict Diabetes in Pima Indian Women
+Y1  - 2015
+Y2  - -05-13T03:55:32+00:00
+AB  - C4.5 is an algorithm used to generate a decision tree developed by Ross Quinlan in 1993. C4.5 is an extension of Quinlan&apos;s earlier ID3 algorithm. The decision trees generated by C4.5 can be us…
+T2  - datayo
+UR  - https://datayo.wordpress.com/2015/05/13/using-c4-5/
+UR  - https://datayo.wordpress.com/2015/05/13/using-c4-5/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4c395ce4b0c2a8b20c9406
+A1  - Brownlee, Jason
+T1  - Tune Machine Learning Algorithms in R (random forest case study)
+Y1  - 2016
+Y2  - -02-05T05:00:17+11:00
+AB  - It is difficult to find a good machine learning algorithm for your problem. But once you do, how do you get the best performance out of it. In this post you will discover three ways that you can tune the parameters of a machine learning algorithm in R. Walk through a real example step-by-step with …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/tune-machine-learning-algorithms-in-r/
+UR  - https://machinelearningmastery.com/tune-machine-learning-algorithms-in-r/
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a4c2612e4b01d3b9773f835
+T1  - Cross-validation (statistics)
+Y1  - 2018
+Y2  - -01-01T21:46:41Z
+VL  - 2018
+IS  - Jan 3,
+AB  - Cross-validation, sometimes called rotation estimation, is a model validation technique for assessing how the results of a statistical analysis will generalize to an independent data set. It is mainly used in settings where the goal is prediction, and one wants to estimate how accurately a predictive model will perform in practice. In a prediction problem, a model is usually given a dataset of known data on which training is run (training dataset), and a dataset of unknown data (or first seen data) against which the model is tested (called the validation dataset or testing set). The goal of cross validation is to define a dataset to "test" the model in the training phase (i.e., the validation set), in order to limit problems like overfitting, give an insight on how the model will generalize to an independent dataset (i.e., an unknown dataset, for instance from a real problem), etc.
+One round of cross-validation involves partitioning a sample of data into complementary subsets, performing the analysis on one subset (called the training set), and validating the analysis on the other subset (called the validation set or testing set). To reduce variability, in most methods multiple rounds of cross-validation are performed using different partitions, and the validation results are combined (e.g. averaged) over the rounds to estimate a final predictive model.
+One of the main reasons for using cross-validation instead of using the conventional validation (e.g. partitioning the data set into two sets of 70% for training and 30% for test) is that there is not enough data available to partition it into separate training and test sets without losing significant modelling or testing capability. In these cases, a fair way to properly estimate model prediction performance is to use cross-validation as a powerful general technique.
+In summary, cross-validation combines (averages) measures of fit (prediction error) to derive a more accurate estimate of model prediction performance.
+UR  - https://en.wikipedia.org/w/index.php?title=Cross-validation_(statistics)&oldid=818145919
+UR  - https://en.wikipedia.org/w/index.php?title=Cross-validation_(statistics)&oldid=818145919
+UR  - https://en.wikipedia.org/w/index.php?title=Cross-validation_(statistics)&oldid=818145919
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a4c1f06e4b0c2a8b20c917c
+A1  - Gupta, Prashant
+T1  - Cross-Validation in Machine Learning
+Y1  - 2017
+Y2  - -06-05T16:53:14.186Z
+VL  - 2018
+IS  - Jan 3,
+AB  - There is always a need to validate the stability of your machine learning model. I mean you just can’t fit the model to your training data…
+UR  - https://towardsdatascience.com/cross-validation-in-machine-learning-72924a69872f
+UR  - https://towardsdatascience.com/cross-validation-in-machine-learning-72924a69872f
+UR  - https://towardsdatascience.com/cross-validation-in-machine-learning-72924a69872f
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4bd8d3e4b09d5cea022500
+A1  - Brownlee, Jason
+T1  - How To Estimate Model Accuracy in R Using The Caret Package
+Y1  - 2014
+Y2  - -09-03T05:00:17+11:00
+AB  - When you are building a predictive model, you need a way to evaluate the capability of the model on unseen data. This is typically done by estimating accuracy using data that was not used to train the model such as a test set, or using cross validation. The caret package in R provides a number …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
+UR  - https://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a4bd7bbe4b0062b162a30a0
+A1  - Strong, Eric
+T1  - Predicting Abalone Rings, Part 1- Multiple Regression – Eric Strong
+Y1  - 2016
+Y2  - -12-07
+UR  - http://ericstrong.org/predicting-abalone-rings-part-1/
+UR  - http://ericstrong.org/predicting-abalone-rings-part-1/
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a4b8c54e4b09d5cea020a62
+A1  - Frost, Jim
+T1  - Regression Analysis: How Do I Interpret R-squared and Assess the Goodness-of-Fit?
+VL  - 2018
+IS  - Jan 2,
+AB  - After you have fit a linear model using regression analysis, ANOVA, or design of experiments (DOE), you need to determine how well the model fits the data. To help you out, Minitab statistical software presents a variety of goodness-of-fit statistics. In this post, we’ll explore the R-squared (R2 ) statistic, some of its limitations, and uncover some surprises along the way. For instance, low R-squared values are not always bad and high R-squared values are not always good!
+UR  - http://blog.minitab.com/blog/adventures-in-statistics-2/regression-analysis-how-do-i-interpret-r-squared-and-assess-the-goodness-of-fit
+UR  - http://blog.minitab.com/blog/adventures-in-statistics-2/regression-analysis-how-do-i-interpret-r-squared-and-assess-the-goodness-of-fit
+UR  - http://blog.minitab.com/blog/adventures-in-statistics-2/regression-analysis-how-do-i-interpret-r-squared-and-assess-the-goodness-of-fit
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a4b8c05e4b0c2a8b20c5456
+A1  - Frost, Jim
+T1  - How to Interpret a Regression Model with Low R-squared and Low P values
+VL  - 2018
+IS  - Jan 2,
+AB  - In regression analysis, you'd like your model to have significant variables and to produce a high R-squared value. This low P value / high R2 combination indicates that changes in the predictors are related to changes in the response variable and that your model explains a lot of the response variability. But what if your regression model has significant variables but explains little of the variability? It has low P values and a low R-squared. At first glance, this combination doesn’t make sense. Are the significant predictors still meaningful?
+UR  - http://blog.minitab.com/blog/adventures-in-statistics-2/how-to-interpret-a-regression-model-with-low-r-squared-and-low-p-values
+UR  - http://blog.minitab.com/blog/adventures-in-statistics-2/how-to-interpret-a-regression-model-with-low-r-squared-and-low-p-values
+UR  - http://blog.minitab.com/blog/adventures-in-statistics-2/how-to-interpret-a-regression-model-with-low-r-squared-and-low-p-values
+M1  - 
+ER  - 
+
+TY  - PCOMM
+ID  - doc:5a4b82e4e4b0062b162a126c
+A1  - Hiemstra, Paul
+T1  - [R] Extract R-squared from summary of lm
+Y1  - 2010
+Y2  - Fri Jan 22 16:17:51 CET
+UR  - https://stat.ethz.ch/pipermail/r-help/2010-January/225345.html
+UR  - https://stat.ethz.ch/pipermail/r-help/2010-January/225345.html
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a458a17e4b022cc4f774122
+A1  - Devlin, Josh
+T1  - The first step in a machine learning project
+Y1  - 2016
+Y2  - -12-28T00:00:00.000Z
+VL  - 2017
+IS  - Dec 29,
+AB  - Learn how to prepare data—including feature selection, and converting ordinal and nominal features.
+UR  - http://www.dataquest.io/blog/machine-learning-preparing-data/
+UR  - http://www.dataquest.io/blog/machine-learning-preparing-data/
+UR  - http://www.dataquest.io/blog/machine-learning-preparing-data/
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a458724e4b000cfec287c20
+A1  - Brownlee, Jason
+T1  - Machine Learning Datasets in R (10 datasets you can use right now)
+Y1  - 2016
+Y2  - -02-12T05:00:55+11:00
+VL  - 2017
+IS  - Dec 29,
+AB  - You need standard datasets to practice machine learning. In this short post you will discover how you can load standard classification and regression datasets in R. This post will show you 3 R libraries that you can use to load standard datasets and 10 specific datasets that you can use for machine learning in R. …
+UR  - https://machinelearningmastery.com/machine-learning-datasets-in-r/
+UR  - https://machinelearningmastery.com/machine-learning-datasets-in-r/
+UR  - https://machinelearningmastery.com/machine-learning-datasets-in-r/
+M1  - 
+ER  - 
+
+TY  - CONF
+ID  - doc:5a4582c4e4b02eb8a444a227
+A1  - Esuli, Andrea
+A1  - Sebastiani, Fabrizio
+T1  - Training Data Cleaning for Text Classification
+Y1  - 2009/9/10
+SP  - 29
+EP  - 41
+AB  - In text classification (TC) and other tasks involving supervised learning, labelled data may be scarce or expensive to obtain; strategies are thus needed for maximizing the effectiveness of the resulting classifiers while minimizing the required amount of training effort. Training data cleaning (TDC) consists in devising ranking functions that sort the original training examples in terms of how likely it is that the human annotator has misclassified them, thereby providing a convenient means for the human annotator to revise the training set so as to improve its quality. Working in the context of boosting-based learning methods we present three different techniques for performing TDC and, on two widely used TC benchmarks, evaluate them by their capability of spotting misclassified texts purposefully inserted in the training set.
+PB  - Springer, Berlin, Heidelberg
+JF  - Advances in Information Retrieval Theory
+UR  - https://link.springer.com/chapter/10.1007/978-3-642-04417-5_4
+UR  - https://link.springer.com/chapter/10.1007/978-3-642-04417-5_4
+DO  - 10.1007/978-3-642-04417-5_4
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a458258e4b022cc4f773fdd
+A1  - Hussain, Syed Fawad
+T1  - Datasets - Syed Fawad Hussain
+VL  - 2017
+IS  - Dec 28,
+UR  - https://sites.google.com/site/fawadsyed/datasets
+UR  - https://sites.google.com/site/fawadsyed/datasets
+UR  - https://sites.google.com/site/fawadsyed/datasets
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a457f22e4b022cc4f773f51
+T1  - Datasets for Data Science and Machine Learning
+Y1  - 2017
+Y2  - -08-22T07:46:26-05:00
+VL  - 2017
+IS  - Dec 28,
+AB  - Curated list of free, high-quality datasets for data science and machine learning. Organized into 11 of the most popular use cases.
+UR  - https://elitedatascience.com/datasets
+UR  - https://elitedatascience.com/datasets
+UR  - https://elitedatascience.com/datasets
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a457cf1e4b06a7ca331608d
+A1  - Brownlee, Jason
+T1  - How To Use Classification Machine Learning Algorithms in Weka
+Y1  - 2016
+Y2  - -07-25T05:00:57+11:00
+AB  - Weka makes a large number of classification algorithms available. The large number of machine learning algorithms available is one of the benefits of using the Weka platform to work through your machine learning problems. In this post you will discover how to use 5 top machine learning algorithms in Weka. After reading this post you will …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/use-classification-machine-learning-algorithms-weka/
+UR  - https://machinelearningmastery.com/use-classification-machine-learning-algorithms-weka/
+M1  - 
+ER  - 

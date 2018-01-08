@@ -2,8 +2,10 @@
 title: "q2"
 output: html_document
 bibliography: bibliography.ris
+csl: ../build/harvard-university-of-westminster.csl
+nocite: | 
+  @doc:5a52ed11e4b0e3e5a6364700, @doc:5a52ed04e4b0e3e5a63646ff, @doc:5a52ebfbe4b01d3dd55667a6, @doc:5a52e013e4b02942103f7fc1, @doc:5a52de2be4b01d3dd55666a1, @doc:5a52ddf0e4b0e3e5a63645e4, @doc:5a52ddd8e4b02942103f7f9c, @doc:5a52dd8ce4b0eeb35a4a1e8c, @doc:5a52dd7be4b08e15c00cdc97, @doc:5a52dc89e4b02942103f7f82, @doc:5a52dc77e4b02942103f7f81, @doc:5a52ca43e4b02942103f7d57, @doc:5a52c93ce4b02942103f7d43, @doc:5a5192fbe4b02942103f2d47, @doc:5a4f0c37e4b09d5cea02c23b, @doc:5a4edbf5e4b0ac315a55bfc7, @doc:5a4ec6f3e4b020410252c182, @doc:5a4ec56ae4b0062b162abbf0, @doc:5a4ec538e4b0ac315a55beae, @doc:5a4eba0ee4b020410252c08d, @doc:5a4e5a3ae4b09d5cea02a9a9, @doc:5a4db356e4b0ac315a5583fc, @doc:5a4db301e4b0c2a8b20cd934, @doc:5a4db27ee4b0c2a8b20cd927, @doc:5a4da870e4b0c2a8b20cd807, @doc:5a4c434ae4b0204102524624, @doc:5a4c3ba6e4b0ac315a552aac, @doc:5a4c3b69e4b0ac315a552aa8, @doc:5a4c395ce4b0c2a8b20c9406, @doc:5a4c2612e4b01d3b9773f835, @doc:5a4c1f06e4b0c2a8b20c917c, @doc:5a4bd8d3e4b09d5cea022500, @doc:5a4bd7bbe4b0062b162a30a0, @doc:5a4b8c54e4b09d5cea020a62, @doc:5a4b8c05e4b0c2a8b20c5456, @doc:5a4b82e4e4b0062b162a126c, @doc:5a458a17e4b022cc4f774122, @doc:5a458724e4b000cfec287c20, @doc:5a4582c4e4b02eb8a444a227, @doc:5a458258e4b022cc4f773fdd, @doc:5a457f22e4b022cc4f773f51, @doc:5a457cf1e4b06a7ca331608d
 ---
-
 
 ```{r setup-t2, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -27,7 +29,7 @@ library(caret)
 of forming training and test sets from this single dataset in R as described below.
 >• The holdout method
 >• Cross-validation
->• Leave-one-out cross-validation (Jack Knife)
+>• Leave-one-out cross-validation
 
 <!--
 Formation of training and test sets from in R using the methods below.
@@ -35,7 +37,6 @@ Formation of training and test sets from in R using the methods below.
 • Cross-validation 5
 • Leave-one-out cross-validation (Jack Knife) 5
 -->
-
 
 ##Holdout datasets
 
@@ -84,7 +85,7 @@ holdout_age_groups.testing <- abalone_data_cleansed_age_groups[-holdout.train_in
 
 ##Cross-validation datasets 
 
-Cross-validation methods are a variations on the holdout method. The k-folds cross-validation in particular is an extended holdout method whereby the dataset is chunked into smaller fragments (where the value of k is the fragment count), called 'folds' which are each in turn used as the test subset while the remaining folds make up the training subset; in this way, the training is carried out several times over the same dataset, rotating the role of the 'folds' such that every instance will be used several times as training data and once as test data.
+Cross-validation methods are a variations on the holdout method [@doc:5a4bd8d3e4b09d5cea022500, @doc:5a4c1f06e4b0c2a8b20c917c]. The k-folds cross-validation in particular is an extended holdout method whereby the dataset is chunked into smaller fragments (where the value of k is the fragment count), called 'folds' which are each in turn used as the test subset while the remaining folds make up the training subset; in this way, the training is carried out several times over the same dataset, rotating the role of the 'folds' such that every instance will be used several times as training data and once as test data.
 
 This form of training makes better use of a small sample size and helps even out any biases that might occur from just taking one partition for training and another for testing. This averaging out of the training and testing, also happens to benefit larger datasets too, so it is generally considered superior to the basic holdout method.
 
@@ -112,7 +113,7 @@ These training controls will be used later on in this study to train the various
 
 ##Leave-one-out cross-validation
 
-Leave-one-out cross-validation is a form of exhaustive cross-validation. Exhaustive cross-validation methods are said to _"learn and test on all possible ways to divide the original sample into a training and a validation set"_ [CITE HERE!]. The leave-one-out method is a specific form of the leave-p-out technique, where instead of determine the test dataset as a fraction of the whole, as is the case with k-fold, p is the absolute count of instances to be used in the test subset. What makes this technique exhaustive is how the p subset is iterated such that every instance will be included in at least one test subset.
+Leave-one-out cross-validation is a form of exhaustive cross-validation. Exhaustive cross-validation methods are said to _"learn and test on all possible ways to divide the original sample into a training and a validation set"_ [@doc:5a4c2612e4b01d3b9773f835]. The leave-one-out method is a specific form of the leave-p-out technique, where instead of determine the test dataset as a fraction of the whole, as is the case with k-fold, p is the absolute count of instances to be used in the test subset. What makes this technique exhaustive is how the p subset is iterated such that every instance will be included in at least one test subset.
 
 Leave-p-out can be computationally expensive because the larger p is, the greater coefficient is for testing and training with the subsets, bearing in mind that for a given size of p, as many possible permutations as can be created for the test subset of this size, from the original sample set, need to be created; this is why leave-one-out might be preferred since a set of one means that there need only be as many test and training sets as the sample size value.
 
@@ -122,11 +123,5 @@ loocv.train_control <- trainControl(method="LOOCV")
 ```
 
 As with the k-folds training controls, the leave-one-out control will be used later on but for now remains an abstract set of instructions on how to chunk the data.
-
-<!--# train the model
-model <- train(Species~., data=iris, trControl=train_control, method="nb")
-# summarize results
-print(model)
-```-->
 
 </section>
