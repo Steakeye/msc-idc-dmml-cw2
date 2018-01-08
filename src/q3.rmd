@@ -63,6 +63,10 @@ library("randomForest")
 • Testing of Decision Tree type classifier (C4.5, Random Forest) 9
 -->
 
+##Decision trees
+
+Decision Trees are human-friendly models because they are able to expose their logic easily in a visual way [@doc:5a4c434ae4b0204102524624, @doc:5a4c3b69e4b0ac315a552aa8], instead of being considered 'black boxes'; in addition to this, onece trained that are quick to process new data as the rules of classification have already been definitively realised.
+
 ##C4.5 Decision Tree
 
 Finding the C4.5 method as an existing library within R, brought up more than one option, both appear to use a an open-source equivalent of C4.5 rather than an official C4.5 implementation; other options we to use C5.0 which apparently supersedes C4.5; seeing as the task was to investigate C4.5, J48 has been chosen as a more faithful example of the algorithm.
@@ -93,7 +97,6 @@ depth(dt.c4_5_j48_h_party)
 
 The complexity of this tree is sufficiently complex to render a graphical representation useless. In fact the tree is complex it's time intensive as well as being of no value.
 
-
 ###The caret train J48 argument
 
 ```{r dt-c4_5_train-h}
@@ -117,6 +120,7 @@ length(dt.c4_5_h2_finalModel_party)
 width(dt.c4_5_h2_finalModel_party)
 depth(dt.c4_5_h2_finalModel_party)
 ```
+
 It would appear that the 'final model' we are looking at derived from the train function has already been pruned, making for a simpler decision tree; this tree is actually able to be represented graphically within a reasonable amount of time (under 10 seconds).
 
 ```{r c4_5-plot_tree}
@@ -165,6 +169,7 @@ dt.c4_5_h2_test_cm <- confusionMatrix(factor(dt.c4_5_h2_test, levels=holdout.tes
 dt.c4_5_h2_test_cm$table
 dt.c4_5_h2_test_cm$overall[1]
 ```
+
 It would appear that despite the J48 function derived model claiming a higher accuracy, the resulting confusion matrix data suggests otherwise. Neither 23.6% or 20.9 is particularly encouraging, however for the improvement in speed, the loss of about 12.% in accuracy (approximately 3% from 24%), might be reasonable is the overall accuracy can be improved. To investigate this further, the next steps are to look at reducing the number of attributes observed based on the earlier analysis of data, and  training the models to achieve simpler classification goals.
 
 ###C4.5 with refined dataset
@@ -271,21 +276,25 @@ Three types of k-folds cross-validation configurations were created; at this poi
 The important implementation detail to emphasise here is that while the holdout method required a one-off explicit call to partition the data, with the user assigning which part as training or testing subset, with cross-validation the entire dataset is passed into the training call; this is because the training will occur several times using many subsampled testing subsets from the original sample. For the sake of completeness, the holdout testing subset can still be used to further interrogate the model, in order to better compare against other classifiers.
 
 **K-folds, with 8 folds**
+
 ```{r dt-c4_5_j48-train-rkf_a}
 dt.c4_5_j48_kf_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8)
 ```
 
 **K-folds, with 8 folds, 5 repetitions**
+
 ```{r dt-c4_5_j48-train-r5kf8_a}
 dt.c4_5_j48_r5kf8_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_8_5)
 ```
 
 **K-folds, with 13 folds, 5 repetitions**
+
 ```{r dt-c4_5_j48-train-r5kf13_a}
 dt.c4_5_j48_r5kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_13_5)
 ```
 
 **K-folds, with 13 folds, 8 repetitions**
+
 ```{r dt-c4_5_j48-train-r8kf13_a}
 dt.c4_5_j48_r8kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_age_groups, tuneLength = 8, trControl = cv.train_control_13_8)
 ```
@@ -295,6 +304,7 @@ dt.c4_5_j48_r8kf13_a <- train(dt.formula, method="J48", abalone_data_cleansed_ag
 Below is a comparison of the different training results for k-folds; ultimately, the best one will be picked as the preferred use of k-folds going forward; obviously should this preferred configuration turn out to be too time intensive with other types of classifier, falling back to another configuration will be considered.
 
 **K-folds, with 8 folds**
+
 ```{r dt-c4_5_train-fk_a_results}
 dt_sum.c4_5_j48_kf_a <- summary(dt.c4_5_j48_kf_a)
 dt.c4_5_j48_kf_a_final <- summary(dt.c4_5_j48_kf_a$finalModel)
@@ -312,6 +322,7 @@ plot(dt.c4_5_j48_kf_a_finalModel_party)
 ```
 
 **K-folds, with 8 folds, 5 repetitions**
+
 ```{r dt-c4_5_train-r5kf8_a_results}
 dt_sum.c4_5_r5kf8_a <- summary(dt.c4_5_j48_r5kf8_a)
 dt.c4_5_j48_r5kf8_a_final <- summary(dt.c4_5_j48_r5kf8_a$finalModel)
@@ -329,6 +340,7 @@ plot(dt.c4_5_j48_r5kf8_a_finalModel_party)
 ```
 
 **K-folds, with 13 folds, 5 repetitions**
+
 ```{r dt-c4_5_train-r5kf13_a_results}
 dt_sum.c4_5_r5kf13_a <- summary(dt.c4_5_j48_r5kf13_a)
 dt.c4_5_j48_r5kf13_a_final <- summary(dt.c4_5_j48_r5kf13_a$finalModel)
@@ -346,6 +358,7 @@ plot(dt.c4_5_j48_r5kf13_a_finalModel_party)
 ```
 
 **K-folds, with 13 folds, 8 repetitions**
+
 ```{r dt-c4_5_train-r8kf13_a_results}
 dt_sum.c4_5_r8kf13_a <- summary(dt.c4_5_j48_r8kf13_a)
 dt.c4_5_j48_r8kf13_a_final <- summary(dt.c4_5_j48_r8kf13_a$finalModel)
@@ -376,6 +389,7 @@ The fact that for the k-folds with 5 repetitions, the \(k = 13\) version took ab
 #####Testing results J48 method and k-folds training 
 
 **K-folds, with 8 folds**
+
 ```{r dt-c4_5_j48_kf_a_test}
 dt.c4_5_j48_kf_a_test <- predict(dt.c4_5_j48_kf_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_kf_a_test_cm <- confusionMatrix(dt.c4_5_j48_kf_a_test, holdout_age_groups.testing$age_group)
@@ -384,6 +398,7 @@ dt.c4_5_j48_kf_a_test_cm$overall[1]
 ```
 
 **K-folds, with 8 folds, 5 repetitions**
+
 ```{r dt-c4_5_j48_r5kf8_a_test}
 dt.c4_5_j48_r5kf8_a_test <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r5kf8_a_test_prob <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
@@ -393,6 +408,7 @@ dt.c4_5_j48_r5kf8_a_test_cm$overall[1]
 ```
 
 **K-folds, with 13 folds, 5 repetitions**
+
 ```{r dt-c4_5_j48_r5kf13_a_test}
 dt.c4_5_j48_r5kf13_a_test <- predict(dt.c4_5_j48_r5kf13_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r5kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf13_a_test, holdout_age_groups.testing$age_group)
@@ -401,6 +417,7 @@ dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
 ```
 
 **K-folds, with 13 folds, 8 repetitions**
+
 ```{r dt-c4_5_j48_r8kf13_a_test}
 dt.c4_5_j48_r8kf13_a_test <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r8kf13_a_test_prob <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing, type = "prob")
