@@ -153,7 +153,7 @@ It's also worth examining the weight data, to ensure that the total data is not 
 ```{r crazy-weight}
 abalone_data_bad_weight = abalone_data[(abalone_data$weight.whole - (abalone_data$weight.shucked + abalone_data$weight.viscera + abalone_data$weight.shell)) < 0,]
 
-head(abalone_data_bad_weight)
+kable(head(abalone_data_bad_weight))
 print(paste(c("Number of instances where total weight is less than constiuent weights:", nrow(abalone_data_bad_weight)), sep = ""), quote = FALSE)
 ```
 

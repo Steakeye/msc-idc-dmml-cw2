@@ -158,7 +158,7 @@ holdout.test_rings <- holdout.testing$rings
 dt.c4_5_j48_h_test <- predict(dt.c4_5_j48_h, newdata = holdout.testing)
 holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
 dt.c4_5_j48_h_test_cm <- confusionMatrix(factor(dt.c4_5_j48_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
-dt.c4_5_j48_h_test_cm$table
+kable(dt.c4_5_j48_h_test_cm$table)
 dt.c4_5_j48_h_test_cm$overall[1]
 ```
 
@@ -166,7 +166,7 @@ dt.c4_5_j48_h_test_cm$overall[1]
 #dt.c4_5_h2
 dt.c4_5_h2_test <- predict(dt.c4_5_h2, newdata = holdout.testing)
 dt.c4_5_h2_test_cm <- confusionMatrix(factor(dt.c4_5_h2_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
-dt.c4_5_h2_test_cm$table
+kable(dt.c4_5_h2_test_cm$table)
 dt.c4_5_h2_test_cm$overall[1]
 ```
 
@@ -241,7 +241,7 @@ dt.c4_5_j48_h_a_test <- predict(dt.c4_5_j48_h_a, newdata = holdout_age_groups.te
 #holdout.test_levels <- min(holdout.test_rings):max(holdout.test_rings)
 #dt.c4_5_j48_h_a_test_cm <- confusionMatrix(factor(dt.c4_5_j48_h_test, levels=holdout.test_levels), factor(holdout.test_rings, levels = holdout.test_levels))
 dt.c4_5_j48_h_a_test_cm <- confusionMatrix(dt.c4_5_j48_h_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_j48_h_a_test_cm$table
+kable(dt.c4_5_j48_h_a_test_cm$table)
 dt.c4_5_j48_h_a_test_cm$overall[1]
 ```
 
@@ -249,7 +249,7 @@ dt.c4_5_j48_h_a_test_cm$overall[1]
 #dt.c4_5_h2
 dt.c4_5_h2_a_test <- predict(dt.c4_5_h2_a, newdata = holdout_age_groups.testing)
 dt.c4_5_h2_a_test_cm <- confusionMatrix(dt.c4_5_h2_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_h2_a_test_cm$table
+kable(dt.c4_5_h2_a_test_cm$table)
 dt.c4_5_h2_a_test_cm$overall[1]
 ```
 
@@ -393,7 +393,7 @@ The fact that for the k-folds with 5 repetitions, the \(k = 13\) version took ab
 ```{r dt-c4_5_j48_kf_a_test}
 dt.c4_5_j48_kf_a_test <- predict(dt.c4_5_j48_kf_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_kf_a_test_cm <- confusionMatrix(dt.c4_5_j48_kf_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_j48_kf_a_test_cm$table
+kable(dt.c4_5_j48_kf_a_test_cm$table)
 dt.c4_5_j48_kf_a_test_cm$overall[1]
 ```
 
@@ -403,7 +403,7 @@ dt.c4_5_j48_kf_a_test_cm$overall[1]
 dt.c4_5_j48_r5kf8_a_test <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r5kf8_a_test_prob <- predict(dt.c4_5_j48_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 dt.c4_5_j48_r5kf8_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf8_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_j48_r5kf8_a_test_cm$table
+kable(dt.c4_5_j48_r5kf8_a_test_cm$table)
 dt.c4_5_j48_r5kf8_a_test_cm$overall[1]
 ```
 
@@ -412,7 +412,7 @@ dt.c4_5_j48_r5kf8_a_test_cm$overall[1]
 ```{r dt-c4_5_j48_r5kf13_a_test}
 dt.c4_5_j48_r5kf13_a_test <- predict(dt.c4_5_j48_r5kf13_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r5kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r5kf13_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_j48_r5kf13_a_test_cm$table
+kable(dt.c4_5_j48_r5kf13_a_test_cm$table)
 dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
 ```
 
@@ -422,7 +422,7 @@ dt.c4_5_j48_r5kf13_a_test_cm$overall[1]
 dt.c4_5_j48_r8kf13_a_test <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing)
 dt.c4_5_j48_r8kf13_a_test_prob <- predict(dt.c4_5_j48_r8kf13_a, newdata = holdout_age_groups.testing, type = "prob")
 dt.c4_5_j48_r8kf13_a_test_cm <- confusionMatrix(dt.c4_5_j48_r8kf13_a_test, holdout_age_groups.testing$age_group)
-dt.c4_5_j48_r8kf13_a_test_cm$table
+kable(dt.c4_5_j48_r8kf13_a_test_cm$table)
 dt.c4_5_j48_r8kf13_a_test_cm$overall[1]
 ```
 
@@ -479,7 +479,7 @@ After training, it's possible to observe there are 500 trees in the forest. Anot
 dt.rf_h_a_test <- predict(dt.rf_h_a, newdata = holdout_age_groups.testing)
 
 dt.rf_h_a_test_cm <- confusionMatrix(dt.rf_h_a_test, holdout_age_groups.testing$age_group)
-dt.rf_h_a_test_cm$table
+kable(dt.rf_h_a_test_cm$table)
 dt.rf_h_a_test_cm$overall[1]
 ```
 
@@ -507,14 +507,14 @@ dt.hrf1_h_a_test <- predict(dt.hrf_h_a$rf1, holdout_age_groups.testing)
 dt.hrf1_h_a_test_prob <- predict(dt.hrf_h_a_prob$rf1, holdout_age_groups.testing)
 
 dt.hrf1_h_a_test_cm <- confusionMatrix(dt.hrf1_h_a_test$predictions, holdout_age_groups.testing$age_group)
-dt.hrf1_h_a_test_cm$table
+kable(dt.hrf1_h_a_test_cm$table)
 dt.hrf1_h_a_test_cm$overall[1]
 #
 dt.hrf2_h_a_test <- predict(dt.hrf_h_a$rf2, holdout_age_groups.testing)
 dt.hrf2_h_a_test_prob <- predict(dt.hrf_h_a_prob$rf2, holdout_age_groups.testing)
 
 dt.hrf2_h_a_test_cm <- confusionMatrix(dt.hrf2_h_a_test$predictions, holdout_age_groups.testing$age_group)
-dt.hrf2_h_a_test_cm$table
+kable(dt.hrf2_h_a_test_cm$table)
 dt.hrf2_h_a_test_cm$overall[1]
 ```
 
@@ -548,7 +548,7 @@ dt.rf_cv_r5kf8_a_test <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.
 dt.rf_cv_r5kf8_a_test_prob <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 
 dt.rf_cv_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv_r5kf8_a_test, holdout_age_groups.testing$age_group)
-dt.rf_cv_r5kf8_a_test_cm$table
+kable(dt.rf_cv_r5kf8_a_test_cm$table)
 dt.rf_cv_r5kf8_a_test_cm$overall[1]
 ```
 
@@ -559,7 +559,7 @@ dt.rf_cv_r5kf8_a_test2 <- predict(dt.rf_cv_r5kf8_a)
 dt.rf_cv_r5kf8_a_test2_prob <- predict(dt.rf_cv_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 
 dt.rf_cv_r5kf8_a_test2_cm <- confusionMatrix(dt.rf_cv_r5kf8_a_test2, abalone_data_cleansed_age_groups$age_group)
-dt.rf_cv_r5kf8_a_test2_cm$table
+kable(dt.rf_cv_r5kf8_a_test2_cm$table)
 dt.rf_cv_r5kf8_a_test2_cm$overall[1]
 ```
 
@@ -589,7 +589,7 @@ dt.rf_cv2_r5kf8_a_test <- predict(dt.rf_cv2_r5kf8_a, newdata = holdout_age_group
 dt.rf_cv2_r5kf8_a_test_prob <- predict(dt.rf_cv2_r5kf8_a, newdata = holdout_age_groups.testing, type = "prob")
 
 dt.rf_cv2_r5kf8_a_test_cm <- confusionMatrix(dt.rf_cv2_r5kf8_a_test, holdout_age_groups.testing$age_group)
-dt.rf_cv2_r5kf8_a_test_cm$table
+kable(dt.rf_cv2_r5kf8_a_test_cm$table)
 dt.rf_cv2_r5kf8_a_test_cm$overall[1]
 ```
 

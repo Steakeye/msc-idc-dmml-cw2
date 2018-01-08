@@ -47,6 +47,15 @@
     .third-page-height {
         height: 10cm;
     }
+    
+    table {
+        table-layout: fixed;
+        max-width: 18cm;
+    }
+
+    th, td {
+        max-width: 2cm;
+    }
 }
 
 h1, h2, h3 {
