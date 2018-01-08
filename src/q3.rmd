@@ -382,7 +382,7 @@ dt_sum.c4_5_r5kf8_a$details[1]
 dt_sum.c4_5_r5kf13_a$details[1]
 ```
 
-After having run the training, the preliminary results suggest that while repeating the whole k-folds process a number of times can add some more accuracy, increasing the k count doesn't add much more; depending on the size of the real-world dataset and the economic benefit of even the slightest improvement in accuracy, it's arguable that a trade-off between accuracy and performance can be made and sometimes a quicker less accurate option is the right tool for the job. That being said, prediction is significantly faster than training for decision trees; once the model has been built, new data is just processed into a class. 
+After having run the training, the preliminary results suggest that while repeating the whole k-folds process a number of times can add some more accuracy, increasing the _k_ count doesn't add much more; depending on the size of the real-world dataset and the economic benefit of even the slightest improvement in accuracy, it's arguable that a trade-off between accuracy and performance can be made and sometimes a quicker less accurate option is the right tool for the job. That being said, prediction is significantly faster than training for decision trees; once the model has been built, new data is just processed into a class. 
 
 The fact that for the k-folds with 5 repetitions, the \(k = 13\) version took about twice as long to compute as the \(k = 8\) version, the 8 version will be considered the preferred choice, assuming the validation doesn't suggest otherwise.
 
@@ -440,14 +440,14 @@ With regard to the Abalone dataset in particular, it may not be the most suitabl
 
 ##Random Forest Decision Tree
 
-The Random Forest Decision Tree is a algorithm that creates multiple internalised decision trees [@doc:5a4ec56ae4b0062b162abbf0], which are all used when trying to classify new data. Each tree will vote, with a weight as to what the classification will be, with the final classification going to the greates vote value. Random Forests are fast, is less prone to over-fitting and works well with incomplete data. The major disadvantage of Random Forests is that it can't be used for regression, failing extrapolate a result for data that is out-of-bounds of the original training dataset; given the scrope of this particular Abalone age group classification, this shouldn't be too much of an issue.
+The Random Forest Decision Tree is an algorithm that creates multiple internalised decision trees [@doc:5a4ec56ae4b0062b162abbf0], which are all used when trying to classify new data. Each tree will vote, with a weight as to what the classification will be, with the final classification going to the greatest vote value. Random Forests are fast, less prone to over-fitting and work well with incomplete data. The major disadvantage of Random Forests is that they can't be used for regression, failing to extrapolate a result for data that is out-of-bounds of the original training dataset; given the scope of this particular Abalone age group classification, this shouldn't be too much of an issue.
 
-With the previous Decision Tree (C4.5) training, much experimenting was done as to how the dataset should be prepaared for the purposes of classification and the optimal training controls for Decision Trees; it seems reasonable enough to streamline the analysis of the Random Forest by carrying over into this sub-section the two main lessons learned: 
+With the previous Decision Tree (C4.5) training, much experimenting was done as to how the dataset should be prepared for the purpose of classification and the optimal training controls for Decision Trees; it seems reasonable enough to streamline the analysis of the Random Forest by carrying over into this sub-section the two main lessons learned: 
 
- - The classification problem should just aim to categorize the Abalone instances into 3 age groups
- - The k-folds technique benfits from repetition to more throughly train with the data but the number of folds needn't be too high.
+ - The classification problem should just aim to categorise the Abalone instances into 3 age groups
+ - The k-folds technique benefits from repetition to more thoroughly train with the data but the number of folds needn't be too high.
  
- For the Random Forest training, only one configuration of repeated k-folds will be used, namely '8 folds 5 times' as provided adequate improvment whereupon '13 folds 5 times' barely improved.
+For the Random Forest training, only one configuration of repeated k-folds will be used, namely '8 folds, 5 times' as it provided adequate improvement whereupon '13 folds, 5 times' barely improved.
 
 ###Random Forest Holdout
 
@@ -471,7 +471,7 @@ plot(dt.rf_h_a)
 plot(dt.rf_h_a_finalModel)
 ```
 
-After training, it's possible to observer there are 500 trees in the forest. Another observation is that even though no control was provided, the default caret control for random forest uses the Bootstrap method, this is effect reuses and recycles the holdout training data to train the forest against more data. As such, another library will be used to attempt to examine the results to a more strict holdout training of a Random Forest.
+After training, it's possible to observe there are 500 trees in the forest. Another observation is that even though no control was provided, the default caret control for random forest uses the Bootstrap method, this in effect reuses and recycles the holdout training data to train the forest against more data. As such, another library will be used to attempt to examine the results with a more strict holdout training of a Random Forest.
 
 ####Random Forest Holdout testing
 
@@ -485,7 +485,7 @@ dt.rf_h_a_test_cm$overall[1]
 
 ####Another Random Forest Holdout
 
-The ranger package has a method designed speifically for holdout Random Forests, which is used next to explore if there could be any better performance out of the traditional holdout technique. 
+The `ranger` package has a method designed specifically for holdout Random Forests, which is used next to explore if there could be any better performance out of the traditional holdout technique. 
 
 ```{r dt-hrf-h_a}
 dt.hrf_h_a <- holdoutRF(dt.formula, holdout_age_groups.training)
@@ -518,7 +518,7 @@ dt.hrf2_h_a_test_cm$table
 dt.hrf2_h_a_test_cm$overall[1]
 ```
 
-These results are comparable to the caret bootstrap results, to the extent that while the caret package Random Forest call has a lower accurac value, the fact it correctly classifies more old Abalone instances needs to be considered in its favour when compared to the first _(rf1)_ Random Forest returns a slightly better accuracy rate.
+These results are comparable to the caret bootstrap results, to the extent that while the caret package Random Forest call has a lower accuracy value, the fact it correctly classifies more old Abalone instances needs to be considered in its favour when compared to the first _(rf1)_ Random Forest returns a slightly better accuracy rate.
 
 ###Random Forest Cross-validation
 
@@ -563,7 +563,7 @@ dt.rf_cv_r5kf8_a_test2_cm$table
 dt.rf_cv_r5kf8_a_test2_cm$overall[1]
 ```
 
-While there appears to be little difference between the graps depicting the nature of the two caret Random Forests, this second example using cross-validation has done a near perfect classification of the Abalone dataset by age grouping. While this seems like a useful result, it could well be that this is a result of incorrectly using the entire sample set with the random forest and assuming cross-validation would not cause overfitting. With that in mind, yet another Random Forest will be trained using cross-validation but only with the holdout training data.
+While there appears to be little difference between the graphs depicting the nature of the two caret Random Forests, this second example using cross-validation has done a near perfect classification of the Abalone dataset by age grouping. While this seems like a useful result, it could well be that this is a result of incorrectly using the entire sample set with the Random Forest and assuming cross-validation would not cause overfitting. Consultation with a reliable source will be required to confirm this one way or another. With that in mind, yet another Random Forest will be trained using cross-validation but only with the holdout training data.
 
 ###Random Forest Cross-validation with Holdout
 
@@ -593,7 +593,7 @@ dt.rf_cv2_r5kf8_a_test_cm$table
 dt.rf_cv2_r5kf8_a_test_cm$overall[1]
 ```
 
-The results of this latest Random Forest model appear near identical to that of the first, which applied boostrapping to the holdout data. Given the similarties between the various Random Forests apart from the one that appears too perfect, it's worth analysiing one of these models later when comparing all models.
+The results of this latest Random Forest model appear near identical to that of the first, which applied bootstrapping to the holdout data. Given the similarities between the various Random Forests apart from the one that appears too perfect, it's worth analysing one of these models later when comparing all models.
 
 ###Random Forest Leave-one-out
 
