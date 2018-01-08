@@ -1,4 +1,45 @@
 
+TY  - ICOMM
+ID  - doc:5a52ed11e4b0e3e5a6364700
+A1  - Schoonjans, Frank
+T1  - ROC curve analysis with MedCalc
+VL  - 2018
+IS  - Jan 8,
+AB  - ROC curve analysis in MedCalc includes calculation of area under the curve (AUC), Youden index, optimal criterion and predictive values. The program generates a full listing of criterion values and coordinates of the ROC curve.
+UR  - https://www.medcalc.org/manual/roc-curves.php
+UR  - https://www.medcalc.org/manual/roc-curves.php
+UR  - https://www.medcalc.org/manual/roc-curves.php
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a52ed04e4b0e3e5a63646ff
+T1  - ROC curves and Area Under the Curve explained (video)
+Y1  - 2014
+Y2  - -11-20T03:25:28.000Z
+VL  - 2018
+IS  - Jan 8,
+AB  - While competing in a Kaggle competition this summer, I came across a simple visualization (created by a fellow competitor) that helped me to gain a better intuitive understanding of ROC curves and Area Under the Curve (AUC). I created a video explaining this visualization to serve as a learning aid...
+UR  - http://www.dataschool.io/roc-curves-and-auc-explained/
+UR  - http://www.dataschool.io/roc-curves-and-auc-explained/
+UR  - http://www.dataschool.io/roc-curves-and-auc-explained/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52ebfbe4b01d3dd55667a6
+A1  - Saito, Takaya
+A1  - Rehmsmeier, Marc
+T1  - Introduction to the precision-recall plot
+Y1  - 2015
+Y2  - -06-09T16:27:18+00:00
+AB  - The precision-recall plot is a model-wide measure for evaluating binary classifiers and closely related to the ROC plot. We’ll cover the basic concept and several important aspects of the pre…
+T2  - Classifier evaluation with imbalanced datasets
+UR  - https://classeval.wordpress.com/introduction/introduction-to-the-precision-recall-plot/
+UR  - https://classeval.wordpress.com/introduction/introduction-to-the-precision-recall-plot/
+M1  - 
+ER  - 
+
 TY  - GEN
 ID  - doc:5a52e013e4b02942103f7fc1
 A1  - Gu, Shixin

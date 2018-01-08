@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##KNN modelling
 
-K-Nearest=Neigbours looks to classify new data based on it's dimensionl proxmimity to an already classified node or group of nodes. This use of dimensional distance allows it to be used for regression but every new classification needs to be computed against the relative distance to the instances within the traninging dataset; this makes it fast to train because a lot of the computation is deferred but then using this method to classify is more expensive because every new classification is calculated at runtime instead of relying on an estaplished ruleset.
+K-Nearest=Neigbours looks to classify new data based on it's dimensional proximity to an already classified node or group of nodes [@doc:5a52ddd8e4b02942103f7f9c, @doc:5a52ddf0e4b0e3e5a63645e4]. This use of dimensional distance allows it to be used for regression but every new classification needs to be computed against the relative distance to the instances within the training dataset; this makes it fast to train because a lot of the computation is deferred but then using this method to classify is more expensive because every new classification is calculated at run-time instead of relying on an established rule-set.
 
 ###KNN with holdout
 
