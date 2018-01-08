@@ -1,4 +1,25 @@
 
+TY  - GEN
+ID  - doc:5a52ca43e4b02942103f7d57
+A1  - Jolly, Kevin
+T1  - The ultimate guide to cleaning data in R
+Y1  - 2017
+Y2  - -07-01T06:02:10+00:00
+AB  - Underestimating the power of R compared to that of Python when it comes to cleaning data would be a fatal mistake. R has a set of comprehensive tools that are specifically designed to clean data in…
+T2  - LinearData
+UR  - http://lineardata.net/the-ultimate-guide-to-cleaning-data-in-r/
+UR  - http://lineardata.net/the-ultimate-guide-to-cleaning-data-in-r/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52c93ce4b02942103f7d43
+T1  - Linear Regression in R: Abalone Dataset | Statistical Consulting Group
+UR  - http://scg.sdsu.edu/linear-regression-in-r-abalone-dataset/
+UR  - http://scg.sdsu.edu/linear-regression-in-r-abalone-dataset/
+M1  - 
+ER  - 
+
 TY  - ICOMM
 ID  - doc:5a5192fbe4b02942103f2d47
 A1  - Kuhn, Max
