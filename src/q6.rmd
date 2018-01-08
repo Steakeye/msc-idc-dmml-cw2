@@ -87,7 +87,7 @@ This line suggests is prettier linear relationship between precision & recall, w
 pred_dt.rf_highest_probs <- apply(dt.rf_cv_r5kf8_a_test_prob, 1, "max") 
 pred_dt.rf_correct <- dt.rf_cv_r5kf8_a_test == holdout_age_groups.testing$age_group
 
-pred_dt.rf <- prediction(pred_dt.rf_highest_probs, pred_dt.correct)
+pred_dt.rf <- prediction(pred_dt.rf_highest_probs, pred_dt.rf_correct)
 
 ## precision/recall curve (x-axis: recall, y-axis: precision)
 pr_dt.rf <- performance(pred_dt.rf, "prec", "rec")
@@ -136,7 +136,7 @@ pred_nb.r5kf8_correct <- nb.r5kf8_a_test == holdout_age_groups.testing$age_group
 pred_nb.r5kf8 <- prediction(pred_nb.r5kf8_highest_probs, pred_nb.r5kf8_correct)
 
 ## precision/recall curve (x-axis: recall, y-axis: precision)
-pr_nb.r5kf8 <- performance(pred_dt.nb_r5kf8, "prec", "rec")
+pr_nb.r5kf8 <- performance(pred_nb.r5kf8, "prec", "rec")
 plot(pr_nb.r5kf8)
 ```
 
