@@ -1,5 +1,106 @@
 
 TY  - GEN
+ID  - doc:5a52e013e4b02942103f7fc1
+A1  - Gu, Shixin
+A1  - Wu, Qingtong
+T1  - How Random Forest Algorithm Works in Machine Learning
+Y1  - 2017
+Y2  - -10-24T21:37:44.200Z
+AB  - This is one of the best introductions to Random Forest algorithm. The author introduces the algorithm with a real-life story and then…
+T2  - Medium
+UR  - https://medium.com/@Synced/how-random-forest-algorithm-works-in-machine-learning-3c0fe15b6674
+UR  - https://medium.com/@Synced/how-random-forest-algorithm-works-in-machine-learning-3c0fe15b6674
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52de2be4b01d3dd55666a1
+A1  - Thirumuruganathan, Saravanan
+T1  - A Detailed Introduction to K-Nearest Neighbor (KNN) Algorithm
+Y1  - 2010
+Y2  - -05-18T03:26:29+00:00
+AB  - K Nearest Neighbor (KNN from now on) is one of those algorithms that are very simple to understand but works incredibly well in practice. Also it is surprisingly versatile and its applications rang…
+T2  - God, Your Book Is Great !!
+UR  - https://saravananthirumuruganathan.wordpress.com/2010/05/17/a-detailed-introduction-to-k-nearest-neighbor-knn-algorithm/
+UR  - https://saravananthirumuruganathan.wordpress.com/2010/05/17/a-detailed-introduction-to-k-nearest-neighbor-knn-algorithm/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52ddf0e4b0e3e5a63645e4
+A1  - Raut, Ankush
+T1  - k Nearest Neighbors. Explained.
+Y1  - 2017
+Y2  - -03-21T07:49:03.951Z
+AB  - After getting set with the Tree algorithms, here’s another popular machine learning algorithm, which is pretty simple and intuitive. This…
+T2  - Data Science Group, IITR
+UR  - https://medium.com/data-science-group-iitr/k-nearest-neighbors-knn-500f0d17c8f1
+UR  - https://medium.com/data-science-group-iitr/k-nearest-neighbors-knn-500f0d17c8f1
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52ddd8e4b02942103f7f9c
+A1  - Srivastava, Tavish
+T1  - Introduction to KNN, K-Nearest Neighbors : Simplified
+Y1  - 2014
+Y2  - -10-10T03:18:09+05:30
+AB  - This article explains k nearest neighbor (KNN),one of the popular machine learning algorithms, working of kNN algorithm and how to choose factor k in simple terms.
+T2  - Analytics Vidhya
+UR  - https://www.analyticsvidhya.com/blog/2014/10/introduction-k-neighbours-algorithm-clustering/
+UR  - https://www.analyticsvidhya.com/blog/2014/10/introduction-k-neighbours-algorithm-clustering/
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a52dd8ce4b0eeb35a4a1e8c
+T1  - J48 decision tree - Mining at UOC
+VL  - 2018
+IS  - Jan 8,
+UR  - http://data-mining.business-intelligence.uoc.edu/home/j48-decision-tree
+UR  - http://data-mining.business-intelligence.uoc.edu/home/j48-decision-tree
+UR  - http://data-mining.business-intelligence.uoc.edu/home/j48-decision-tree
+M1  - 
+ER  - 
+
+TY  - ICOMM
+ID  - doc:5a52dd7be4b08e15c00cdc97
+T1  - Predictive Analytics made easy | ClearPredictions.com
+VL  - 2018
+IS  - Jan 8,
+UR  - https://clearpredictions.com/Home/DecisionTree
+UR  - https://clearpredictions.com/Home/DecisionTree
+UR  - https://clearpredictions.com/Home/DecisionTree
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52dc89e4b02942103f7f82
+A1  - Brownlee, Jason
+T1  - An Introduction to Feature Selection
+Y1  - 2014
+Y2  - -10-06T05:00:41+11:00
+AB  - Which features should you use to create a predictive model? This is a difficult question that may require deep knowledge of the problem domain. It is possible to automatically select those features in your data that are most useful or most relevant for the problem you are working on. This is a process called feature …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/an-introduction-to-feature-selection/
+UR  - https://machinelearningmastery.com/an-introduction-to-feature-selection/
+M1  - 
+ER  - 
+
+TY  - GEN
+ID  - doc:5a52dc77e4b02942103f7f81
+A1  - Brownlee, Jason
+T1  - Feature Selection with the Caret R Package
+Y1  - 2014
+Y2  - -09-22T05:00:17+11:00
+AB  - Selecting the right features in your data can mean the difference between mediocre performance with long training times and great performance with short training times. The caret R package provides tools automatically report on the relevance and importance of attributes in your data and even select the most important features for you. In this post …
+T2  - Machine Learning Mastery
+UR  - https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/
+UR  - https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/
+M1  - 
+ER  - 
+
+TY  - GEN
 ID  - doc:5a52ca43e4b02942103f7d57
 A1  - Jolly, Kevin
 T1  - The ultimate guide to cleaning data in R
@@ -99,18 +200,6 @@ AB  - One of the components of the prediction system is a classifier, which is a
 UR  - http://blog.citizennet.com/blog/2012/11/10/random-forests-ensembles-and-performance-metrics
 UR  - http://blog.citizennet.com/blog/2012/11/10/random-forests-ensembles-and-performance-metrics
 UR  - http://blog.citizennet.com/blog/2012/11/10/random-forests-ensembles-and-performance-metrics
-M1  - 
-ER  - 
-
-TY  - GEN
-ID  - doc:5a4ec430e4b09d5cea02bd9c
-T1  - How Random Forest Algorithm Works in Machine Learning
-Y1  - 2017
-Y2  - -10-24T21:37:44.200Z
-AB  - This is one of the best introductions to Random Forest algorithm. The author introduces the algorithm with a real-life story and then…
-T2  - Medium
-UR  - https://medium.com/@Synced/how-random-forest-algorithm-works-in-machine-learning-3c0fe15b6674
-UR  - https://medium.com/@Synced/how-random-forest-algorithm-works-in-machine-learning-3c0fe15b6674
 M1  - 
 ER  - 
 
