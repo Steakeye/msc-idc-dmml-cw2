@@ -301,49 +301,49 @@ The following values essentially represent the volume under the lines for the co
 
 ###C4.5 Decision Tree candidate
 
-```{r dt-c4_5-roc}
+```{r dt-c4_5-auc}
 auc_dt.c4_5 = performance(pred_dt.c4_5, "auc")
 print(paste(c(auc_dt.c4_5@y.name, auc_dt.c4_5@y.values)), quote=FALSE)
 ```
 
 ###Random Forest Decision Tree k-folds candidate (overfit)
 
-```{r dt-rf-roc}
+```{r dt-rf-auc}
 auc_dt.rf = performance(pred_dt.rf, "auc")
 print(paste(c(auc_dt.rf@y.name, auc_dt.rf@y.values)), quote=FALSE)
 ```
 
 ###Random Forest Decision Tree holdout candidate
 
-```{r dt-hrf2_h-roc}
+```{r dt-hrf2_h-auc}
 auc_dt.hrf2_h = performance(pred_dt.hrf2_h, "auc")
 print(paste(c(auc_dt.hrf2_h@y.name, auc_dt.hrf2_h@y.values)), quote=FALSE)
 ```
 
 ###Naive Bayes holdout candidate
 
-```{r nb-h-roc}
+```{r nb-h-auc}
 auc_nb.h = performance(pred_nb.h, "auc")
 print(paste(c(auc_nb.h@y.name, auc_nb.h@y.values)), quote=FALSE)
 ```
 
 ###Naive Bayes repeated k-folds cross-validation candidate
 
-```{r nb-r5kf8-roc}
+```{r nb-r5kf8-auc}
 auc_nb.r5kf8 = performance(pred_nb.r5kf8, "auc")
 print(paste(c(auc_nb.r5kf8@y.name, auc_nb.r5kf8@y.values)), quote=FALSE)
 ```
 
 ###KNN holdout candidate
 
-```{r knn-h-roc}
+```{r knn-h-auc}
 auc_knn.h = performance(pred_knn.h, "auc")
 print(paste(c(auc_knn.h@y.name, auc_knn.h@y.values)), quote=FALSE)
 ```
 
 ###KNN repeated k-folds cross-validation candidate
 
-```{r knn-r5kf8-roc}
+```{r knn-r5kf8-auc}
 auc_knn.r5kf8 = performance(pred_knn.r5kf8, "auc")
 print(paste(c(auc_knn.r5kf8@y.name, auc_knn.r5kf8@y.values)), quote=FALSE)
 ```
