@@ -29,7 +29,7 @@ library("rpart.plot")
 
 ##Premise
 
->You need to construct, train and test Naïve Bayes type classifier in R. Train and test your Naïve Byes classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
+>You need to construct, train and test Naïve Bayes type classifier in R. Train and test your Naïve Bayes classifier using the training and test sets generated based on the methods tried as part of the 2nd Task.
 
 <!--
 • Building of Naïve Bayes type classifier in R 4
@@ -37,27 +37,27 @@ library("rpart.plot")
 • Testing of Naïve Bayes type classifier in R 6
 -->
 
-Naive Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark [@doc:5a4f0c37e4b09d5cea02c23b] for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth sharing. If a proposed algorithm cannot improve on Naive Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
+Naïve Bayes is a relatively quick and simple probabilistic classifier that is often used as a benchmark [@doc:5a4f0c37e4b09d5cea02c23b] for other forms of classification; if another technique is in some way superior, be that in terms of speed or accuracy, then it's worth using or sharing. If a proposed algorithm cannot improve on Naïve Bayes, then it needs further work, or consigned to only be of use to a very niche problem or set aside completely.
 
-##Naive Bayes training
+##Naïve Bayes training
 
-###Naive Bayes formula and simpler classification
+###Naïve Bayes formula and simpler classification
 
 Precedent was set in the previous task to use a specific formula to target key predictors _(weight.shell, height, diameter)_ and classify data instances based on a factor representing simplified age grouping; that precedent applies to the modelling in this chapter and following sections.
 
-###Naive Bayes with holdout
+###Naïve Bayes with holdout
 
 ```{r nb-h_a}
-nb.h_a <- NaiveBayes(dt.formula, data=holdout_age_groups.training)
+nb.h_a <- NaïveBayes(dt.formula, data=holdout_age_groups.training)
 ```
 
 ```{r nb-h_a-summary}
 plot(nb.h_a)
 ```
 
-What's interesting about these Naive Bayes plots is that they suggest the merit of using this techniques to select features that could be used when creating a formula for use with another model. Another aspect worth noting is how the height and diameter probability graphs are extremely similar, which could suggest redundancy, where another feature could have been used as a classifier variable.
+What is interesting about these Naïve Bayes plots is that they suggest the merit of using this technique to select features that could be used when creating a formula for use with another model. Another aspect worth noting is how the _height_ and _diameter_ probability graphs are extremely similar, which could suggest redundancy, where another feature could have been used as a classifier variable; in addition to this, the location of the curves for _middle_ and _old_ on these graphs share a similar range on the x axis, highlighting how difficult it is to differentiate between the _middle_ and _old_ age groups based on these features. Searching for another feature that has bell curves located more discretely (not occupying the same space) on the graphs, would probably suggest a feature that could provide more succussful classification.
 
-####Naive Bayes with holdout, training results
+####Naïve Bayes with holdout, training results
 
 ```{r nb-h_a_test_results}
 nb.h_a_test <- predict(nb.h_a, holdout_age_groups.testing)
@@ -67,7 +67,7 @@ nb.h_a_test_cm <- confusionMatrix(nb.h_a_test$class, holdout_age_groups.testing$
 nb.h_a_test_cm
 ```
 
-###Naive Bayes with Repeated K-folds Cross-validation
+###Naïve Bayes with Repeated K-folds Cross-validation
 
 ```{r nb-r5kf8_a}
 nb.r5kf8_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl = cv.train_control_8_5, method="nb")
@@ -77,7 +77,7 @@ nb.r5kf8_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl
 plot(nb.r5kf8_a)
 ```
 
-####Naive Bayes with Repeated K-folds, training results
+####Naïve Bayes with Repeated K-folds, training results
 
 ```{r nb-r5kf8_a_test_results}
 nb.r5kf8_a_test <- predict(nb.r5kf8_a, holdout_age_groups.testing)
@@ -87,7 +87,7 @@ nb.r5kf8_a_test_cm <- confusionMatrix(nb.r5kf8_a_test, holdout_age_groups.testin
 nb.r5kf8_a_test_cm
 ```
 
-###Naive Bayes with Leave-one-out Cross-validation
+###Naïve Bayes with Leave-one-out Cross-validation
 
 ```{r nb-loo_a}
 nb.loo_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl = loocv.train_control, method="nb")
@@ -97,7 +97,7 @@ nb.loo_a <- train(dt.formula, data=abalone_data_cleansed_age_groups, trControl =
 plot(nb.loo_a)
 ```
 
-####Naive Bayes with Leave-one-out, training results
+####Naïve Bayes with Leave-one-out, training results
 
 ```{r nb-loo_a_test_results}
 nb.loo_a_test <- predict(nb.loo_a, holdout_age_groups.testing)
@@ -115,10 +115,10 @@ nb.r5kf8_a_test_cm$overall[1]
 nb.loo_a_test_cm$overall[1]
 ```
 
-##Naive Bayes Conclusion
+##Naïve Bayes Conclusion
 
 While this technique doesn't produce the strongest results, it's a useful tool alongside other models which can be used for preparatory work in order to inform further work on modelling a classification problem. It's a fast way to do preliminary analysis, which can benefit somewhat from cross-validation but for the Abalone dataset at least, using the leave-one-out method bore no extra benefit over k-folds.
 
-When compared to the decision trees, the Naive Bayes models perform similarly, only marginally worse in some cases; the one classification out of the three agre groups where they underperform by a notable amount is the _'old'_ group; it's not entirely clear why this is but it likely that while the chosen features have a direct correlation to age, the coefficients are not pronounced enough to make classification any better than it is.
+When compared to the decision trees, the Naïve Bayes models perform similarly, only marginally worse in some cases; the one classification out of the three age groups where they underperform by a notable amount is the _'old'_ group; it's not entirely clear why this is but it is likely that while the chosen features have a direct correlation to age, the coefficients are not pronounced enough to make classification any better than it is.
 
 </section>

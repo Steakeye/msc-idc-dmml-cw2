@@ -26,7 +26,7 @@ library("ROCR")
 
 ##Premise
 
->>>For each type of classifier calculate and display the following performance related metrics in R. Use the library library(ROCR)
+>>>For each type of classifier calculate and display the following performance related metrics in R. Use the library ROCR
  1 Confusion matrix
  2 Precision vs. Recall
  3 Accuracy estimation
@@ -43,13 +43,13 @@ library("ROCR")
 
 ##Confusion matrix comparison
 
-Every model has had a confusion matrix displayed within its respective section; they are not presented together as the following graphs do a better job of indicating to the human eye which models the most successful. The confusion matrix was instrumental and selecting which models were best in their field but the other metric provide a better way to convey performance at a glance, visualising with 2 dimensions the nature of the models.
+Every model has had a confusion matrix displayed within its respective section; they are not presented here together, as the following graphs do a better job of indicating to the human eye which models are the most successful. The confusion matrix was instrumental in selecting which models were best in their field but the other metrics provide a better way to convey performance at a glance, visualising with 2 dimensions the nature of the models.
 
 ##Precision & Recall comparison
 
 >>>The precision-recall plot is a model-wide evaluation measure that is based on two basic evaluation measures – recall and precision. Recall is a performance measure of the whole positive part of a dataset, whereas precision is a performance measure of positive predictions. [@doc:5a52ebfbe4b01d3dd55667a6]
 
-Precision is the measure of result confidence, while recall the measure true positive results are returned. The precision-recall curve shows the tradeoff between precision and recall at different thresholds. 
+Precision is the measure of result confidence, while recall is the measure true positive results returned. The precision-recall curve shows the tradeoff between precision and recall at different thresholds. 
 
 ###C4.5 Decision Tree candidate, 8 folds & 5 repetitions
 
@@ -79,9 +79,9 @@ pr_dt.c4_5_r8kf13 <- performance(pred_dt.c4_5_r8kf13, "prec", "rec")
 plot(pr_dt.c4_5_r8kf13)
 ```
 
-This line suggests is prettier linear relationship between precision & recall, which is at least better than the previous graph but a better line would remain higher on the _y_ only dropping off towards _1.0_ on the _y_.
+This line suggests a pretty linear relationship between precision & recall, which is at least better than the previous graph but a better line would remain higher on the _y_ only dropping off towards _1.0_ on the _x_.
 
-###Random Forest Decision Tree repeated k-folds candidate (overfit)
+###Random Forest Decision Tree repeated k-folds candidate (possibly overfit)
 
 ```{r dt-rf-p&r}
 pred_dt.rf_highest_probs <- apply(dt.rf_cv_r5kf8_a_test_prob, 1, "max") 
@@ -94,7 +94,7 @@ pr_dt.rf <- performance(pred_dt.rf, "prec", "rec")
 plot(pr_dt.rf)
 ```
 
-This is the over-fit example which show an example of what the line should be like if precision of classification stayed more or less constant as recall scales.
+This is the (possibly) over-fit example which shows an example of what the line should be like if precision of classification stayed more or less constant as recall scales.
 
 ###Random Forest Decision Tree holdout candidate 
 
@@ -110,9 +110,9 @@ pr_dt.hrf2_h <- performance(pred_dt.hrf2_h, "prec", "rec")
 plot(pr_dt.hrf2_h)
 ```
 
-This line show a saw-tooth pattern that is apparently common in this sort of graph; the slope is approximately the same as the better C4.5 line though the area under the line might well be higher, indicating slightly better performance.
+This line shows a saw-tooth pattern that is apparently common in this sort of graph; the slope is approximately the same as the better C4.5 line though the area under the line might well be a little greater, indicating slightly better performance.
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r dt-nb_h-p&r}
 pred_nb.h_highest_probs <- apply(nb.h_a_test_prob$posterior, 1, "max") 
@@ -127,7 +127,7 @@ plot(pr_nb.h)
 
 This graph is interesting as it suggests an initially good rate of success which literally tails off. 
 
-###Naive Bayes repeat k-folds cross-validation candidate
+###Naïve Bayes repeat k-folds cross-validation candidate
 
 ```{r dt-nb_r5kf8-p&r}
 pred_nb.r5kf8_highest_probs <- apply(nb.r5kf8_a_test_prob, 1, "max") 
@@ -185,7 +185,7 @@ acc_dt.c4_5 <- performance(pred_dt.c4_5, "acc")
 plot(acc_dt.c4_5)
 ```
 
-###Random Forest Decision Tree k-folds candidate (overfit)
+###Random Forest Decision Tree k-folds candidate (possibly overfit)
 
 ```{r dt-rf-acc}
 acc_dt.rf <- performance(pred_dt.rf, "acc")
@@ -199,19 +199,20 @@ acc_dt.hrf2_h <- performance(pred_dt.hrf2_h, "acc")
 plot(acc_dt.hrf2_h)
 ```
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r nb-h-acc}
 acc_nb.h <- performance(pred_nb.h, "acc")
 plot(acc_nb.h)
 ```
 
-###Naive Bayes repeated k-folds cross-validation candidate
+###Naïve Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-acc}
 acc_nb.r5kf8 <- performance(pred_nb.r5kf8, "acc")
 plot(acc_nb.r5kf8)
 ```
+
 ###KNN holdout candidate
 
 ```{r knn-h-acc}
@@ -228,9 +229,9 @@ plot(acc_knn.r5kf8)
 
 ##ROC comparison
 
-The Receiver operating characteristic compares the rate of true positives with false positives; in graph form true positive rate is on the _y_ axis, while _x_ maps the false positive rate. The better the model is at performing classification the larger the area under the line and the more 'rectangular' in shape, with the best performing results being were the line is closest to the top left corner [@doc:5a52ed11e4b0e3e5a6364700]. The better the model performs, the higher the true positive relative to the false positive.
+The Receiver-operating-characteristic compares the rate of true positives with false positives; in graph form true positive rate is on the _y_ axis, while _x_ maps the false positive rate. The better the model is at performing classification the larger the area under the line and the more 'rectangular' in shape, with the best performing results being where the line is closest to the top left corner [@doc:5a52ed11e4b0e3e5a6364700]. The better the model performs, the higher the true positive relative to the false positive.
 
-In the following ROC graphs, a red line indicates what model performance would be like were a model only have a 50% change of correctly classifying a data instance. The yellow line is the relationship between true-positive-rate (TPR) and false-positive-rate (FPR).
+In the following ROC graphs, a red line indicates what model performance would be like were a model to have a 50% change of correctly classifying a data instance. The yellow line is the relationship between true-positive-rate (TPR) and false-positive-rate (FPR).
 
 ###C4.5 Decision Tree candidate
 
@@ -242,7 +243,7 @@ lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 
 This doesn't seem to be a particularly good result, though it is somewhat better than a 50:50 chance of correct classification, with peak performance easily identifiable; the model has the best rate of performance around the middle of the line where there is the best balance between the TPR and the coefficient with FPR, with TPR at over 0.6 and about 50% better than the FPR. After the peak point, the graph suggests accuracy goes down.
 
-###Random Forest Decision Tree k-folds candidate (overfit)
+###Random Forest Decision Tree k-folds candidate (possibly overfit)
 
 ```{r dt-rf-roc}
 roc_dt.rf = performance(pred_dt.rf, measure="tpr", x.measure="fpr")
@@ -250,7 +251,7 @@ plot(roc_dt.rf, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-This graph is a near perfect example, which has been included to demonstrate overfitting; this was because the test data was used as part of the training data. The yellow line draws a blocky, rectangular shape indicated a high rate of successful classification; if this was not the result of overfitting it would be an excellent result. 
+This graph is a near perfect example, which has been included even though it may demonstrate overfitting; this was because the test data was used as part of the training data. The yellow line draws a blocky, rectangular shape indicating a high rate of successful classification; if this was not the result of overfitting it would be an excellent result; Further testing with new data would help determine this.
 
 ###Random Forest Decision Tree holdout candidate
 
@@ -260,9 +261,9 @@ plot(roc_dt.hrf2_h, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-This is a far more conservative result but it is at least, markedly better than the C4.5 decision tree. What's worth doing is comparing this result to the Naive Bayes graphs below, which happen to have similar looking lines.
+This is a far more conservative result but it is at least, markedly better than the C4.5 decision tree. What's worth doing is comparing this result to the Naïve Bayes graphs below, which happen to have similar looking lines.
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r nb-h-roc}
 roc_nb.h = performance(pred_nb.h, measure="tpr", x.measure="fpr")
@@ -270,7 +271,7 @@ plot(roc_nb.h, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-###Naive Bayes repeated k-folds cross-validation candidate
+###Naïve Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-roc}
 roc_nb.r5kf8 = performance(pred_nb.r5kf8, measure="tpr", x.measure="fpr")
@@ -294,7 +295,6 @@ plot(roc_knn.r5kf8, col="orange", lwd=2)
 lines(x=c(0, 1), y=c(0, 1), col="red", lwd=2)
 ```
 
-
 ##RAUC comparison
 
 The following values essentially represent the volume under the lines for the corresponding ROC curves, thus reducing the performance into one number between _0_ and _1_, where _1_ would indicate perfect classification, _0_ would represent incorrect classification 100% of the time and the red line on the ROC graphs above would essentially resolve to a value of _0.5_. It can be considered another form of accuracy indicator in this way [@doc:5a52ed04e4b0e3e5a63646ff].
@@ -306,7 +306,7 @@ auc_dt.c4_5 = performance(pred_dt.c4_5, "auc")
 print(paste(c(auc_dt.c4_5@y.name, auc_dt.c4_5@y.values)), quote=FALSE)
 ```
 
-###Random Forest Decision Tree k-folds candidate (overfit)
+###Random Forest Decision Tree k-folds candidate (possibly overfit)
 
 ```{r dt-rf-auc}
 auc_dt.rf = performance(pred_dt.rf, "auc")
@@ -320,14 +320,14 @@ auc_dt.hrf2_h = performance(pred_dt.hrf2_h, "auc")
 print(paste(c(auc_dt.hrf2_h@y.name, auc_dt.hrf2_h@y.values)), quote=FALSE)
 ```
 
-###Naive Bayes holdout candidate
+###Naïve Bayes holdout candidate
 
 ```{r nb-h-auc}
 auc_nb.h = performance(pred_nb.h, "auc")
 print(paste(c(auc_nb.h@y.name, auc_nb.h@y.values)), quote=FALSE)
 ```
 
-###Naive Bayes repeated k-folds cross-validation candidate
+###Naïve Bayes repeated k-folds cross-validation candidate
 
 ```{r nb-r5kf8-auc}
 auc_nb.r5kf8 = performance(pred_nb.r5kf8, "auc")
@@ -352,7 +352,7 @@ print(paste(c(auc_knn.r5kf8@y.name, auc_knn.r5kf8@y.values)), quote=FALSE)
 
 If the over-fit Random Forest wasn't considered over-fit, then it would be the recommended model; further experimentation would probably demonstrate how it has been too tightly shaped to the test dataset to deliver similar results for fresh Abalone data.
 
-If one metric were to be used to generally determine the which were the better performing models then it would be the RAUC, in which case the cross-validated KNN model comes out on top _(ROAC: 0.722)_ while the Random Forest with holdout training comes in second _(ROAC: 0.701)_; both of these values outperform the best Naive Bayes model _(ROAC: 0.695)_ though not by much, so further investigation into tuning would probably be a good idea. The good thing about these models, Random Forest and KNN is that in their own way they are fast, so while the classification performance could be improved, these two type of models would be recommended over the C4.5 decision tree.
+If one metric were to be used to generally determine which were the better performing models then it would be the RAUC, in which case the cross-validated KNN model comes out on top _(ROAC: 0.722)_ while the Random Forest with holdout training comes in second _(ROAC: 0.701)_; both of these values outperform the best Naïve Bayes model _(ROAC: 0.695)_ though not by much, so further investigation into tuning would probably be a good idea. The good thing about these models, Random Forest and KNN is that in their own way they are fast, so while the classification performance could be improved, these two type of models would be recommended over the C4.5 decision tree.
 
 Whichever model is used, repeated cross-validation has benefit, and the leave-one-out method doesn't seem worth the effort.
 

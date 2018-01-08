@@ -84,6 +84,7 @@ header h1 {
 
 table {
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 thead {
@@ -93,6 +94,11 @@ thead {
 
 th, td {
     padding: 0.125rem .5rem .5rem;
+    word-wrap: break-word;
+}
+
+th:empty, td:empty {
+    width: 0;
 }
 
 td {

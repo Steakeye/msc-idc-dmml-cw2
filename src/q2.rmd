@@ -44,7 +44,7 @@ The holdout method is the most basic separation of the dataset into training and
 
 ```{r holdout-create}
 set.seed(4321)
-head(abalone_data_cleansed)
+kable(head(abalone_data_cleansed))
 
 holdout.train_indeces <- createDataPartition(y = abalone_data_cleansed$weight.shell, p= 2/3, list = FALSE)
 head(holdout.train_indeces, n=20)
@@ -73,7 +73,7 @@ dim(holdout.testing)
 As an addition, the dataset modified to have an age_group factor attribute instead of rings attribute of integers, will also be partitioned for use with the holdout method.
 
 ```{r holdout-agre-group-create}
-head(abalone_data_cleansed_age_groups)
+kable(head(abalone_data_cleansed_age_groups))
 
 holdout_age_groups.train_indeces <- createDataPartition(y = abalone_data_cleansed_age_groups$weight.shell, p= 2/3, list = FALSE)
 head(holdout_age_groups.train_indeces, n=20)
@@ -85,7 +85,7 @@ holdout_age_groups.testing <- abalone_data_cleansed_age_groups[-holdout.train_in
 
 ##Cross-validation datasets 
 
-Cross-validation methods are a variations on the holdout method [@doc:5a4bd8d3e4b09d5cea022500, @doc:5a4c1f06e4b0c2a8b20c917c]. The k-folds cross-validation in particular is an extended holdout method whereby the dataset is chunked into smaller fragments (where the value of k is the fragment count), called 'folds' which are each in turn used as the test subset while the remaining folds make up the training subset; in this way, the training is carried out several times over the same dataset, rotating the role of the 'folds' such that every instance will be used several times as training data and once as test data.
+Cross-validation methods are variations on the holdout method [@doc:5a4bd8d3e4b09d5cea022500, @doc:5a4c1f06e4b0c2a8b20c917c]. The k-folds cross-validation in particular is an extended holdout method whereby the dataset is chunked into smaller fragments (where the value of k is the fragment count), called 'folds' which are each in turn used as the test subset while the remaining folds make up the training subset; in this way, the training is carried out several times over the same dataset, rotating the role of the 'folds' such that every instance will be used several times as training data and once as test data.
 
 This form of training makes better use of a small sample size and helps even out any biases that might occur from just taking one partition for training and another for testing. This averaging out of the training and testing, also happens to benefit larger datasets too, so it is generally considered superior to the basic holdout method.
 
@@ -93,7 +93,7 @@ This form of training makes better use of a small sample size and helps even out
 
 Repeated k-fold cross-validation takes the technique yet another step further, by splitting the dataset into k folds, repeatedly such that different fragmentation occurs each time; that is to say that even though the number of divisions are the same, each repetition creates a different set of subsets. By doing so, this sort of shuffling further economically reuses the dataset for training purposes. 
 
-For the sake of evaluating this method more thoroughly, the dataset will be used with k-fold 3 times, using Fibonacci sequence numbers 8 & 13 for k and 5 & 8 for the number of iterations of cross-validation. For comparison, a standard k-folds of will also be used
+For the sake of evaluating this method more thoroughly, the dataset will be used with k-folds 4 times, using Fibonacci sequence numbers 8 & 13 for _k_ and 5 & 8 for the number of iterations of cross-validation. For comparison, a standard k-folds (not repeated) of 8 will also be used.
 
 ```{r cross-val-k-fold}
 cv.train_control_8 <- trainControl(method="cv", number=8)
@@ -104,18 +104,11 @@ cv.train_control_13_8 <- trainControl(method="repeatedcv", number=13, repeats = 
 
 These training controls will be used later on in this study to train the various models for the task of classification but for now they are merely abstract instructions on how to chunk the data.
 
-<!--
-# train the model
-#model <- train(Species~., data=iris, trControl=train_control, method="nb")
-# summarize results
-#print(model)
--->
-
 ##Leave-one-out cross-validation
 
-Leave-one-out cross-validation is a form of exhaustive cross-validation. Exhaustive cross-validation methods are said to _"learn and test on all possible ways to divide the original sample into a training and a validation set"_ [@doc:5a4c2612e4b01d3b9773f835]. The leave-one-out method is a specific form of the leave-p-out technique, where instead of determine the test dataset as a fraction of the whole, as is the case with k-fold, p is the absolute count of instances to be used in the test subset. What makes this technique exhaustive is how the p subset is iterated such that every instance will be included in at least one test subset.
+Leave-one-out cross-validation is a form of exhaustive cross-validation. Exhaustive cross-validation methods are said to _"learn and test on all possible ways to divide the original sample into a training and a validation set"_ [@doc:5a4c2612e4b01d3b9773f835]. The leave-one-out method is a specific form of the leave-p-out technique, where instead of determine the test dataset as a fraction of the whole, as is the case with k-fold, _p_ is the absolute count of instances to be used in the test subset. What makes this technique exhaustive is how the _p_ subset is iterated such that every instance will be included in at least one test subset.
 
-Leave-p-out can be computationally expensive because the larger p is, the greater coefficient is for testing and training with the subsets, bearing in mind that for a given size of p, as many possible permutations as can be created for the test subset of this size, from the original sample set, need to be created; this is why leave-one-out might be preferred since a set of one means that there need only be as many test and training sets as the sample size value.
+Leave-p-out can be computationally expensive because the larger _p_ is, the greater coefficient is for testing and training with the subsets, bearing in mind that for a given size of _p_, as many possible permutations as can be created for the test subset of this size, from the original sample set, need to be created; this is why leave-one-out might be preferred since a set of one means that there need only be as many test and training sets as the sample size value.
 
 ```{r}
 # define training control

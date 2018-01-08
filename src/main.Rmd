@@ -46,17 +46,17 @@ set.seed(4321)
 ```{r q2, child = 'q2.rmd'}
 ```
 
-```{r q3, child = 'q3.rmd'}
-```
+<!--```{r q3, child = 'q3.rmd'}
+```-->
 
-```{r q4, child = 'q4.rmd'}
-```
+<!--```{r q4, child = 'q4.rmd'}
+```-->
 
-```{r q5, child = 'q5.rmd'}
-```
+<!--```{r q5, child = 'q5.rmd'}
+```-->
 
-```{r q6, child = 'q6.rmd'}
-```
+<!--```{r q6, child = 'q6.rmd'}
+```-->
 
 
 <section>
