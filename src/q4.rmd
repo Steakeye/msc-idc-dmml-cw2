@@ -48,7 +48,7 @@ Precedent was set in the previous task to use a specific formula to target key p
 ###Naïve Bayes with holdout
 
 ```{r nb-h_a}
-nb.h_a <- NaïveBayes(dt.formula, data=holdout_age_groups.training)
+nb.h_a <- NaiveBayes(dt.formula, data=holdout_age_groups.training)
 ```
 
 ```{r nb-h_a-summary}
