@@ -134,8 +134,8 @@ Even though the tree is able to be rendered it is not easy to get anything meani
 
 Below follows the summaries from both methods, for examination: 
 ```{r c4_5-summaries}
-dt_sum.c4_5_j48_h
-dt_sum.c4_5_h2
+kable(dt_sum.c4_5_j48_h)
+kable(dt_sum.c4_5_h2)
 ```
 
 ####Accuracy comparison of C4.5/J48 models
