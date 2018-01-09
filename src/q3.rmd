@@ -79,7 +79,6 @@ Below is not only an investigation into C4.5 but also, a comparison of two varia
 load("holdout.training.rda")
 load("holdout.testing.rda")
 
-
 dt.c4_5_j48_h <- J48(as.factor(rings)~., holdout.training) 
 dt_sum.c4_5_j48_h <- summary(dt.c4_5_j48_h)
 dt.c4_5_j48_h_party <- as.party(dt.c4_5_j48_h)
@@ -124,7 +123,6 @@ depth(dt.c4_5_h2_finalModel_party)
 It would appear that the 'final model' derived from the train function has already been pruned, making for a simpler decision tree; this tree is actually able to be represented graphically within a reasonable amount of time (under 10 seconds).
 
 ```{r c4_5-plot_tree}
-#plot(dt.c4_5_h2_finalModel)
 plot(dt.c4_5_h2_finalModel_party)
 ```
 
@@ -133,9 +131,10 @@ Even though the tree is able to be rendered it is not easy to get anything meani
 ###Comparing the two C4.5/J48 methods
 
 Below follows the summaries from both methods, for examination: 
+
 ```{r c4_5-summaries}
-kable(dt_sum.c4_5_j48_h)
-kable(dt_sum.c4_5_h2)
+kable(dt_sum.c4_5_j48_h$confusionMatrix)
+kable(dt_sum.c4_5_h2$confusionMatrix)
 ```
 
 ####Accuracy comparison of C4.5/J48 models
